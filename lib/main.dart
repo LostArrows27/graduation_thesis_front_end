@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_thesis_front_end/core/routes/router.dart';
-import 'package:graduation_thesis_front_end/core/theme/theme.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/landing_page.dart';
+import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
 void main() async {
@@ -25,7 +24,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Smart Gallery',
-        theme: AppTheme.lightModeTheme(context),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
         routerConfig: routerConfig);
   }
 }

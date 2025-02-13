@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
 
-class AppTheme {
-  static _border([Color color = AppPallete.borderColor]) {
+/// old theme class
+class AppThemeOld {
+  static _border([Color color = const Color.fromRGBO(0, 0, 0, 0.2)]) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(color: color, width: 3),
+      borderRadius: BorderRadius.circular(6),
+      borderSide: BorderSide(color: color, width: 2),
     );
   }
 
@@ -23,7 +24,7 @@ class AppTheme {
             ),
           ),
           textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-              .apply(fontFamily: GoogleFonts.poppins().fontFamily),
+              .apply(fontFamily: 'Poppins'),
           chipTheme: ChipThemeData(
             color: WidgetStatePropertyAll(AppPallete.backgroundColor),
             side: BorderSide.none,
@@ -31,7 +32,7 @@ class AppTheme {
           inputDecorationTheme: InputDecorationTheme(
             border: _border(),
             contentPadding: const EdgeInsets.all(27),
-            focusedBorder: _border(AppPallete.gradient3),
+            // focusedBorder: _border(AppPallete.primaryColor),
             enabledBorder: _border(),
             errorBorder: _border(AppPallete.errorColor),
           ),

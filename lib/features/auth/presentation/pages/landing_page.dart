@@ -57,6 +57,7 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       body: Stack(
         children: [
+          // image slider
           CarouselSlider.builder(
             options: CarouselOptions(
               height: double.infinity,
@@ -71,7 +72,6 @@ class _LandingPageState extends State<LandingPage> {
             ),
             itemCount: slides.length,
             itemBuilder: (context, index, realIndex) {
-              // moving overlay
               return Stack(
                 fit: StackFit.expand,
                 children: [
@@ -90,7 +90,8 @@ class _LandingPageState extends State<LandingPage> {
                           slides[index]['title']!,
                           style: TextStyle(
                             color: AppPallete.whiteColor,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
                             fontSize: 17,
                           ),
                           textAlign: TextAlign.center,
@@ -114,93 +115,110 @@ class _LandingPageState extends State<LandingPage> {
           ),
 
           // static overlay
-          Positioned.fill(
-            child: Column(
-              children: [
-                const SizedBox(height: 200),
-                const Text("smart gallery",
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2,
-                      color: Colors.white,
-                    )),
-                const SizedBox(height: 300),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(slides.length, (dotIndex) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentIndex == dotIndex
-                            ? Colors.white
-                            : Colors.white38,
-                      ),
-                    );
-                  }),
+          StaticOverlay(slides: slides, currentIndex: _currentIndex),
+        ],
+      ),
+    );
+  }
+}
+
+class StaticOverlay extends StatelessWidget {
+  const StaticOverlay({
+    super.key,
+    required this.slides,
+    required int currentIndex,
+  }) : _currentIndex = currentIndex;
+
+  final List<Map<String, dynamic>> slides;
+  final int _currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Column(
+        children: [
+          const SizedBox(height: 200),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: const Text("Smart Gallery",
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.5,
+                  color: Colors.white,
+                )),
+          ),
+          const SizedBox(height: 300),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(slides.length, (dotIndex) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      _currentIndex == dotIndex ? Colors.white : Colors.white38,
                 ),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: Colors.white, width: 2),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 80, vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      onPressed: () {
-                        context.push('/login');
-                      },
-                      child: const Text(
-                        "Log in",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w800),
-                      ),
-                    ),
+              );
+            }),
+          ),
+          const Spacer(),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
                   ),
                 ),
-                const SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Not a Smart Gallery member?",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.push('/sign-up');
-                      },
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: const Text("Sign up",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          )),
-                    ),
-                  ],
+                onPressed: () {
+                  context.push('/login');
+                },
+                child: const Text(
+                  "Log in",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(height: 60),
-              ],
+              ),
             ),
           ),
+          const SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Not a Smart Gallery member?",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.push('/sign-up');
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: const Text("Sign up",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    )),
+              ),
+            ],
+          ),
+          const SizedBox(height: 60),
         ],
       ),
     );
