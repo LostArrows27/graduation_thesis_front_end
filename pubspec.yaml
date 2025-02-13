@@ -1,7 +1,7 @@
 name: graduation_thesis_front_end
 description: "A new Flutter project."
 
-publish_to: 'none' 
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -11,6 +11,19 @@ dependencies:
   flutter:
     sdk: flutter
 
+  carousel_slider: ^5.0.0
+
+  fpdart: ^1.1.1
+  supabase_flutter: ^2.8.3
+  flutter_bloc: ^9.0.0
+  get_it: ^8.0.3
+  image_picker: ^1.1.2
+  uuid: ^4.5.1
+  intl: ^0.20.2
+  google_fonts: ^6.2.1
+  cached_network_image: ^3.4.1
+  transparent_image: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -18,13 +31,14 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
-
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/slide1.jpg
+    - assets/images/slide2.jpg
+    - assets/images/slide3.jpg
+    - assets/images/slide4.jpg
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
