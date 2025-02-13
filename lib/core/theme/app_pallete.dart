@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppPallete {
-  static const Color backgroundColor = Colors.black;
+  static const Color backgroundColor = Colors.white;
   static const Color textColor = Colors.black;
   static const Color secondaryTextColor = Color(0xFFF2F1F1);
   static const Color primaryColor = Color(0xFFFFED01);

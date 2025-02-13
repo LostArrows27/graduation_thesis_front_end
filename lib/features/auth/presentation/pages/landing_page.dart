@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -156,7 +157,9 @@ class _LandingPageState extends State<LandingPage> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/login');
+                      },
                       child: const Text(
                         "Log in",
                         style: TextStyle(
@@ -178,7 +181,9 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/sign-up');
+                      },
                       style: TextButton.styleFrom(
                         minimumSize: Size.zero,
                         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
