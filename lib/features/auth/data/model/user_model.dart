@@ -13,8 +13,18 @@ class UserModel extends User {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      dob: map['dob'] ?? '',
-      avatarUrl: map['avatarUrl'] ?? '',
+      dob: map['dob'] == null ? null : DateTime.parse(map['dob']),
+      avatarUrl: map['avatar_url'],
+    );
+  }
+
+  factory UserModel.fromUser(User user) {
+    return UserModel(
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      dob: user.dob,
+      avatarUrl: user.avatarUrl,
     );
   }
 
@@ -22,7 +32,7 @@ class UserModel extends User {
     String? id,
     String? name,
     String? email,
-    String? dob,
+    DateTime? dob,
     String? avatarUrl,
   }) {
     return UserModel(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/utils/padding.dart';
+import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/core/utils/validators.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
@@ -23,12 +24,21 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is AuthLoginFailure) {
+            showSnackBar(context, state.message);
+          }
         },
         builder: (context, state) {
           return Column(
@@ -180,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                               Text("Don't have an account? "),
                               GestureDetector(
                                 onTap: () {
-                                  context.push(SignUpPage.path);
+                                  context.go(SignUpPage.path);
                                 },
                                 child: Text(
                                   'Sign up',

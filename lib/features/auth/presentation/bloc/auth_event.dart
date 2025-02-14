@@ -21,3 +21,10 @@ final class AuthLogin extends AuthEvent {
 final class AuthIsUserLoggedIn extends AuthEvent {}
 
 final class AuthSignOut extends AuthEvent {}
+
+final class AuthUploadProfilePicture extends AuthEvent {
+  final File file;
+  final User user;
+
+  AuthUploadProfilePicture({required this.file, required this.user});
+}

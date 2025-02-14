@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/error/failure.dart';
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/auth/data/model/user_model.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
@@ -57,10 +60,26 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, void>> signOut() async {
-    // Changed return type
     try {
-      await remoteDataSource.signOut(); // Wait for the signOut operation
-      return right(null); // Return right with null since signOut doesn't return a User
+      await remoteDataSource.signOut();
+      return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> uploadAndUpdateUserAvatar(
+      {required File image, required User user}) async {
+    try {
+      UserModel userModel = UserModel.fromUser(user);
+
+      final avatarUrl = await remoteDataSource.uploadAvatarImage(
+          image: image, userModel: userModel);
+
+      final updatedUser = await remoteDataSource.updateUserProfileAvatar(
+          userModel: userModel, avatarUrl: avatarUrl);
+      return right(updatedUser);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

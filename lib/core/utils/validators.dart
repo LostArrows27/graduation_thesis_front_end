@@ -1,22 +1,22 @@
 class Validators {
   static String? checkEmpty(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập trường này';
+      return 'Please enter this field';
     }
     return null;
   }
 
   static String? checkZero(String? value) {
     if (value == '0') {
-      return '0 không hợp lệ';
+      return '0 is not valid';
     }
     //check if value is a number
     if (value != null && value.isNotEmpty) {
       if (double.tryParse(value) == null) {
-        return 'Vui lòng nhập số';
+        return 'Please enter a number';
       }
       if (value.length > 4) {
-        return 'Vui lòng nhập số có tối đa 4 chữ số';
+        return 'Please enter a number with a maximum of 4 digits';
       }
     }
 
@@ -25,35 +25,35 @@ class Validators {
 
   static String? check80Characters(String? value) {
     if (value != null && value.length > 80) {
-      return 'Vui lòng nhập tối đa 80 ký tự';
+      return 'Please enter a maximum of 80 characters';
     }
     return null;
   }
 
   static String? check1000Characters(String? value) {
     if (value != null && value.length > 1000) {
-      return 'Vui lòng nhập tối đa 1000 ký tự';
+      return 'Please enter a maximum of 1000 characters';
     }
     return null;
   }
 
   static String? checkEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập email';
+      return 'Please enter an email';
     }
     final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
     if (!emailRegex.hasMatch(value)) {
-      return 'Email không hợp lệ';
+      return 'Invalid email';
     }
     return null;
   }
 
   static String? checkPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập password';
+      return 'Please enter a password';
     }
     if (value.length < 8) {
-      return 'Mật khẩu phải chứa ít nhất 8 ký tự';
+      return 'Password must be at least 8 characters';
     }
     return null;
   }
@@ -61,11 +61,11 @@ class Validators {
   // check password contain at least one special character
   static String? checkPasswordSpecialChar(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập password';
+      return 'Please enter a password';
     }
     final specialCharRegex = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
     if (!specialCharRegex.hasMatch(value)) {
-      return 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt';
+      return 'Password must contain at least one special character';
     }
     return null;
   }

@@ -10,3 +10,17 @@ final class AppUserLoggedIn extends AppUserState {
 
   AppUserLoggedIn({required this.user});
 }
+
+// missing -> dob, avatar
+final class AppUserWithMissingInfo extends AppUserState {
+  final User user;
+
+  AppUserWithMissingInfo({required this.user});
+}
+
+// missing -> dob
+final class AppUserWithMissingDob extends AppUserState {
+  final User user;
+
+  AppUserWithMissingDob({required this.user});
+}

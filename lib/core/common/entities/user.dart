@@ -3,7 +3,7 @@ class User {
   final String id;
   final String name;
   final String email;
-  final String? dob;
+  final DateTime? dob;
   final String? avatarUrl;
   User({
     required this.id,

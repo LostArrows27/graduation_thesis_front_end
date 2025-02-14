@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/core/utils/validators.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
@@ -23,10 +24,20 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is AuthSignupFailure) {
+          showSnackBar(context, state.message);
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -202,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              context.push(LoginPage.path);
+                              context.go(LoginPage.path);
                             },
                             child: Text(
                               'Log in',

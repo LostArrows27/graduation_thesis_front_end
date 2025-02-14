@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/model/user_model.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
@@ -19,6 +22,14 @@ abstract interface class AuthRemoteDataSource {
   Future<void> signOut();
 
   Future<UserModel?> getCurrentUserData();
+
+  Future<String> uploadAvatarImage(
+      {required File image, required UserModel userModel});
+
+  Future<UserModel> updateUserProfileAvatar({
+    required UserModel userModel,
+    required String avatarUrl,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -41,7 +52,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJSON(response.user!.toJson());
+    } on AuthException catch (e) {
+      print(e);
+      throw ServerException('Invalid email or password.');
     } catch (e) {
+      print(e);
       throw ServerException(e.toString());
     }
   }
@@ -60,8 +75,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJSON(response.user!.toJson());
-    } catch (e, c) {
-      throw ServerException(e.toString());
+    } on AuthException catch (e) {
+      print(e);
+      throw ServerException(e.message);
+    } catch (e) {
+      print(e);
+      throw ServerException('Sign up failed, please try again later.');
     }
   }
 
@@ -78,6 +97,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return UserModel.fromJSON(userData);
     } catch (e) {
+      print(e);
       throw ServerException(e.toString());
     }
   }
@@ -87,6 +107,47 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       await supabaseClient.auth.signOut();
     } catch (e) {
+      print(e);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> uploadAvatarImage(
+      {required File image, required UserModel userModel}) async {
+    try {
+      String imagePath =
+          '/${userModel.id}/${DateFormat('yyyy_MM_dd_HH:mm:ss').format(DateTime.now())}';
+
+      await supabaseClient.storage
+          .from('user_profile')
+          .upload(imagePath, image);
+
+      return supabaseClient.storage
+          .from('user_profile')
+          .getPublicUrl(imagePath);
+    } catch (e) {
+      print('Error uploading image');
+      print(e);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> updateUserProfileAvatar(
+      {required UserModel userModel, required String avatarUrl}) async {
+    try {
+      final res = await supabaseClient
+          .from('user')
+          .update({'avatar_url': avatarUrl})
+          .eq('id', userModel.id)
+          .select()
+          .single();
+
+      return UserModel.fromJSON(res);
+    } catch (e) {
+      print('Error updating user avatar');
+      print(e);
       throw ServerException(e.toString());
     }
   }
