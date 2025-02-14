@@ -9,8 +9,30 @@ Future<void> initDependencies() async {
 
   // 1 instance everytime called
   serviceLocator.registerLazySingleton<SupabaseClient>(() => supabase.client);
+
+  // core
+  serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
 
 void _initAuth() {
-  // add dep
+  // new instance everytime called
+  serviceLocator
+    // data source
+    ..registerFactory<AuthRemoteDataSource>(
+        () => AuthRemoteDataSourceImpl(serviceLocator()))
+    // repository
+    ..registerFactory<AuthRepository>(
+        () => AuthRepositoryImpl(serviceLocator()))
+    // use case
+    ..registerFactory(() => UserSignup(serviceLocator()))
+    ..registerFactory(() => UserSignOut(serviceLocator()))
+    ..registerFactory(() => UserLogin(serviceLocator()))
+    ..registerFactory(() => CurrentUser(serviceLocator()))
+    // bloc
+    ..registerLazySingleton(() => AuthBloc(
+        userSignup: serviceLocator(),
+        userSignOut: serviceLocator(),
+        userLogin: serviceLocator(),
+        currentUser: serviceLocator(),
+        appUserCubit: serviceLocator()));
 }

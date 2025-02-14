@@ -7,6 +7,7 @@ class AuthField extends StatefulWidget {
   final TextEditingController controller;
   final List<String? Function(String?)> validators;
   final bool isObscureText;
+  final bool isEnabled;
   final String? fieldName;
   const AuthField({
     super.key,
@@ -14,6 +15,7 @@ class AuthField extends StatefulWidget {
     required this.controller,
     this.validators = const [],
     this.isObscureText = false,
+    this.isEnabled = true,
     this.fieldName,
   });
 
@@ -51,6 +53,7 @@ class _AuthFieldState extends State<AuthField> {
           ),
         TextFormField(
           controller: widget.controller,
+          enabled: widget.isEnabled,
           decoration: InputDecoration(
             contentPadding: PaddingUtils.pad(20, 15),
             floatingLabelBehavior: FloatingLabelBehavior.never,

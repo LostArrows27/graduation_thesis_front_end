@@ -2,10 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
+
+  static const String path = '/landing-page';
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -180,7 +184,7 @@ class StaticOverlay extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  context.push('/login');
+                  context.push(LoginPage.path);
                 },
                 child: const Text(
                   "Log in",
@@ -203,7 +207,7 @@ class StaticOverlay extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  context.push('/sign-up');
+                  context.push(SignUpPage.path);
                 },
                 style: TextButton.styleFrom(
                   minimumSize: Size.zero,

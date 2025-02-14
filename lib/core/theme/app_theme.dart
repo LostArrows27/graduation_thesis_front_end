@@ -25,8 +25,8 @@ abstract final class AppTheme {
       tertiaryContainer: Color(0xFFC8DBF8),
       tertiaryLightRef: Color(0xFF5C5C95),
       appBarColor: Color(0xFFC8DCF8),
-      error: Color(0x00000000),
-      errorContainer: Color(0x00000000),
+      error: Color(0xFFB00020),
+      errorContainer: Color(0xFFFCD9DF),
     ),
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,
@@ -55,8 +55,8 @@ abstract final class AppTheme {
       tertiaryContainer: Color(0xFF535393),
       tertiaryLightRef: Color(0xFF5C5C95),
       appBarColor: Color(0xFF00102B),
-      error: Color(0x00000000),
-      errorContainer: Color(0x00000000),
+      error: Color(0xFFCF6679),
+      errorContainer: Color(0xFFB1384E),
     ),
     subThemesData: const FlexSubThemesData(
       interactionEffects: true,
