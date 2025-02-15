@@ -5,11 +5,13 @@ class User {
   final String email;
   final DateTime? dob;
   final String? avatarUrl;
+  final List<String>? surveyAnswers;
   User({
     required this.id,
     required this.name,
     required this.email,
     this.dob,
     this.avatarUrl,
+    this.surveyAnswers,
   });
 }

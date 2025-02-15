@@ -7,6 +7,7 @@ import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/current_user.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_avatar.dart';
+import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_dob_name.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
@@ -21,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AppUserCubit _appUserCubit;
   final CurrentUser _currentUser;
   final UpdateUserAvatar _updateUserAvatar;
+  final UpdateUserDobName _updateUserDobName;
 
   AuthBloc(
       {required UserSignup userSignup,
@@ -28,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required UserLogin userLogin,
       required CurrentUser currentUser,
       required UpdateUserAvatar updateUserAvatar,
+      required UpdateUserDobName updateUserDobName,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -35,6 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _currentUser = currentUser,
         _updateUserAvatar = updateUserAvatar,
         _appUserCubit = appUserCubit,
+        _updateUserDobName = updateUserDobName,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       if (AuthEvent is! AuthUploadProfilePicture) {
@@ -46,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignOut>(_onAuthSignOut);
     on<AuthLogin>(_onAuthLogin);
     on<AuthUploadProfilePicture>(_onAuthUploadProfilePicture);
+    on<AuthUpdateUserDobNameEvent>(_onAuthUpdateUserDobNameHandle);
   }
 
   void _onAuthSignup(AuthSignup event, Emitter<AuthState> emit) async {
@@ -92,6 +97,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     res.fold((l) => emit(AuthAvatarUploadFailure(message: l.message)), (r) {
       _appUserCubit.updateUser(r);
       emit(AuthAvatarUploadSuccess());
+    });
+  }
+
+  void _onAuthUpdateUserDobNameHandle(
+      AuthUpdateUserDobNameEvent event, Emitter<AuthState> emit) async {
+    emit(AuthUpdateDobNameLoading());
+    final res = await _updateUserDobName(UpdateUserDobNameParams(
+        user: event.user, dob: event.dob, name: event.name));
+
+    res.fold((l) => emit(AuthUpdateDobNameFailure(message: l.message)), (r) {
+      _appUserCubit.updateUser(r);
+      emit(AuthUpdateDobNameSuccess());
     });
   }
 

@@ -6,7 +6,8 @@ class UserModel extends User {
       required super.name,
       required super.email,
       super.dob,
-      super.avatarUrl});
+      super.avatarUrl,
+      super.surveyAnswers});
 
   factory UserModel.fromJSON(Map<String, dynamic> map) {
     return UserModel(
@@ -15,6 +16,7 @@ class UserModel extends User {
       email: map['email'] ?? '',
       dob: map['dob'] == null ? null : DateTime.parse(map['dob']),
       avatarUrl: map['avatar_url'],
+      surveyAnswers: map['survey_answers'],
     );
   }
 
@@ -25,6 +27,7 @@ class UserModel extends User {
       email: user.email,
       dob: user.dob,
       avatarUrl: user.avatarUrl,
+      surveyAnswers: user.surveyAnswers,
     );
   }
 
@@ -34,6 +37,7 @@ class UserModel extends User {
     String? email,
     DateTime? dob,
     String? avatarUrl,
+    List<String>? surveyAnswers,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -41,6 +45,7 @@ class UserModel extends User {
       email: email ?? this.email,
       dob: dob ?? this.dob,
       avatarUrl: avatarUrl ?? this.avatarUrl,
+      surveyAnswers: surveyAnswers ?? this.surveyAnswers,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Validators {
   static String? checkEmpty(String? value) {
     if (value == null || value.isEmpty) {
@@ -76,10 +78,33 @@ class Validators {
       for (var validator in validators) {
         final error = validator(value);
         if (error != null) {
-          return error; // Return the first validation error
+          return error;
         }
       }
-      return null; // All validators passed
+      return null;
     };
+  }
+
+  static String? checkAgeOver14(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter date of birth';
+    }
+    try {
+      final dateFormat = DateFormat('dd/MM/yyyy');
+      final birthDate = dateFormat.parseStrict(value);
+      final today = DateTime.now();
+
+      int age = today.year - birthDate.year;
+      if (today.month < birthDate.month ||
+          (today.month == birthDate.month && today.day < birthDate.day)) {
+        age--;
+      }
+      if (age < 14) {
+        return 'You must be at least 14 years old';
+      }
+    } catch (e) {
+      return 'Please use dd/MM/yyyy format';
+    }
+    return null;
   }
 }

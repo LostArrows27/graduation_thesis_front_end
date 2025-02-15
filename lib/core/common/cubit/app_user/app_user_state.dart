@@ -24,3 +24,10 @@ final class AppUserWithMissingDob extends AppUserState {
 
   AppUserWithMissingDob({required this.user});
 }
+
+// missing -> survey forms
+final class AppUserWithMissingSurvey extends AppUserState {
+  final User user;
+
+  AppUserWithMissingSurvey({required this.user});
+}

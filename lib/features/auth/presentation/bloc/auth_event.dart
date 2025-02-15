@@ -28,3 +28,12 @@ final class AuthUploadProfilePicture extends AuthEvent {
 
   AuthUploadProfilePicture({required this.file, required this.user});
 }
+
+final class AuthUpdateUserDobNameEvent extends AuthEvent {
+  final String name;
+  final String dob;
+  final User user;
+
+  AuthUpdateUserDobNameEvent(
+      {required this.name, required this.dob, required this.user});
+}

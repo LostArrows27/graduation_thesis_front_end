@@ -24,4 +24,10 @@ abstract interface class AuthRepository {
     required File image,
     required User user,
   });
+
+  Future<Either<Failure, User>> updateUserDobName({
+    required String dob,
+    required String name,
+    required User user,
+  });
 }

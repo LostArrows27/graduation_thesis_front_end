@@ -14,6 +14,8 @@ class AppUserCubit extends Cubit<AppUserState> {
       emit(AppUserWithMissingInfo(user: user));
     } else if (user.dob == null) {
       emit(AppUserWithMissingDob(user: user));
+    } else if (user.surveyAnswers == null) {
+      emit(AppUserWithMissingSurvey(user: user));
     } else {
       emit(AppUserLoggedIn(user: user));
     }

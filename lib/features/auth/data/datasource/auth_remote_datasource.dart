@@ -30,6 +30,12 @@ abstract interface class AuthRemoteDataSource {
     required UserModel userModel,
     required String avatarUrl,
   });
+
+  Future<UserModel> updateUserDobAndName({
+    required UserModel userModel,
+    required String dob,
+    required String name,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -147,6 +153,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return UserModel.fromJSON(res);
     } catch (e) {
       print('Error updating user avatar');
+      print(e);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> updateUserDobAndName(
+      {required UserModel userModel,
+      required String dob,
+      required String name}) async {
+    try {
+      final res = await supabaseClient
+          .from('user')
+          .update({
+            'dob': DateFormat('dd/MM/yyyy').parseStrict(dob).toIso8601String(),
+            'name': name
+          })
+          .eq('id', userModel.id)
+          .select()
+          .single();
+
+      return UserModel.fromJSON(res);
+    } catch (e) {
       print(e);
       throw ServerException(e.toString());
     }

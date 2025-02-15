@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graduation_thesis_front_end/core/utils/padding.dart';
 import 'package:graduation_thesis_front_end/core/utils/validators.dart';
 
@@ -9,6 +10,10 @@ class AuthField extends StatefulWidget {
   final bool isObscureText;
   final bool isEnabled;
   final String? fieldName;
+  final Widget? prefixIcon;
+  final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+
   const AuthField({
     super.key,
     required this.hintText,
@@ -17,6 +22,9 @@ class AuthField extends StatefulWidget {
     this.isObscureText = false,
     this.isEnabled = true,
     this.fieldName,
+    this.prefixIcon,
+    this.inputFormatters,
+    this.onChanged,
   });
 
   @override
@@ -52,6 +60,8 @@ class _AuthFieldState extends State<AuthField> {
             ),
           ),
         TextFormField(
+          onChanged: widget.onChanged,
+          inputFormatters: widget.inputFormatters,
           controller: widget.controller,
           enabled: widget.isEnabled,
           decoration: InputDecoration(
@@ -61,6 +71,7 @@ class _AuthFieldState extends State<AuthField> {
               borderRadius: BorderRadius.circular(6),
             ),
             labelText: widget.hintText,
+            prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isObscureText
                 ? Padding(
                     padding: PaddingUtils.pad(10, 0),

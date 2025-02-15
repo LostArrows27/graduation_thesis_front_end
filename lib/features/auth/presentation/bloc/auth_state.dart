@@ -41,3 +41,14 @@ final class AuthAvatarUploadSuccess extends AuthAvatarUploading {}
 final class AuthAvatarUploadFailure extends AuthFailure {
   AuthAvatarUploadFailure({required super.message});
 }
+
+// update user dob and name
+final class AuthUpdateDobName extends AuthState {}
+
+final class AuthUpdateDobNameLoading extends AuthUpdateDobName {}
+
+final class AuthUpdateDobNameSuccess extends AuthUpdateDobName {}
+
+final class AuthUpdateDobNameFailure extends AuthFailure {
+  AuthUpdateDobNameFailure({required super.message});
+}
