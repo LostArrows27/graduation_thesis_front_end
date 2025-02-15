@@ -30,4 +30,9 @@ abstract interface class AuthRepository {
     required String name,
     required User user,
   });
+
+  Future<Either<Failure, User>> updateUserSurveyAnswers({
+    required List<String> answers,
+    required User user,
+  });
 }

@@ -7,6 +7,7 @@ import 'package:graduation_thesis_front_end/features/auth/domain/repositories/au
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/current_user.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_avatar.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_dob_name.dart';
+import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_survey_answer.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';

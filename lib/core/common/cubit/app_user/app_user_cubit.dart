@@ -10,12 +10,14 @@ class AppUserCubit extends Cubit<AppUserState> {
   void updateUser(User? user) {
     if (user == null) {
       emit(AppUserInitial());
-    } else if (user.avatarUrl == null) {
+    } else if (user.avatarUrl == null || user.avatarUrl!.isEmpty) {
       emit(AppUserWithMissingInfo(user: user));
     } else if (user.dob == null) {
       emit(AppUserWithMissingDob(user: user));
     } else if (user.surveyAnswers == null) {
       emit(AppUserWithMissingSurvey(user: user));
+    } else if (user.isDoneLabelForm == false) {
+      emit(AppUserWithMissingLabel(user: user));
     } else {
       emit(AppUserLoggedIn(user: user));
     }

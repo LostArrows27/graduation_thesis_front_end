@@ -28,7 +28,7 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       buildWhen: (previous, current) =>
-          current is AuthAvatarLoading || current is AuthAvatarUploadFailure,
+          current is AuthAvatarUploading || current is AuthAvatarUploadFailure,
       listener: (context, state) {
         if (state is AuthAvatarUploadSuccess) {
           context.push(DobNameFormPage.path);

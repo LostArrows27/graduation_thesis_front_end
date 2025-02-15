@@ -7,6 +7,7 @@ class UserModel extends User {
       required super.email,
       super.dob,
       super.avatarUrl,
+      super.isDoneLabelForm,
       super.surveyAnswers});
 
   factory UserModel.fromJSON(Map<String, dynamic> map) {
@@ -16,7 +17,10 @@ class UserModel extends User {
       email: map['email'] ?? '',
       dob: map['dob'] == null ? null : DateTime.parse(map['dob']),
       avatarUrl: map['avatar_url'],
-      surveyAnswers: map['survey_answers'],
+      isDoneLabelForm: map['is_done_label_form'] ?? false,
+      surveyAnswers: map['survey_answers'] != null
+          ? List<String>.from(map['survey_answers'])
+          : null,
     );
   }
 
@@ -28,6 +32,7 @@ class UserModel extends User {
       dob: user.dob,
       avatarUrl: user.avatarUrl,
       surveyAnswers: user.surveyAnswers,
+      isDoneLabelForm: user.isDoneLabelForm,
     );
   }
 
@@ -38,6 +43,7 @@ class UserModel extends User {
     DateTime? dob,
     String? avatarUrl,
     List<String>? surveyAnswers,
+    bool? isDoneLabelForm,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -46,6 +52,7 @@ class UserModel extends User {
       dob: dob ?? this.dob,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       surveyAnswers: surveyAnswers ?? this.surveyAnswers,
+      isDoneLabelForm: isDoneLabelForm ?? this.isDoneLabelForm,
     );
   }
 }

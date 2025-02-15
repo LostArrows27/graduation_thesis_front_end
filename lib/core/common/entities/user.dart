@@ -6,12 +6,13 @@ class User {
   final DateTime? dob;
   final String? avatarUrl;
   final List<String>? surveyAnswers;
-  User({
-    required this.id,
-    required this.name,
-    required this.email,
-    this.dob,
-    this.avatarUrl,
-    this.surveyAnswers,
-  });
+  final bool isDoneLabelForm;
+  User(
+      {required this.id,
+      required this.name,
+      required this.email,
+      this.dob,
+      this.avatarUrl,
+      this.surveyAnswers,
+      this.isDoneLabelForm = false});
 }

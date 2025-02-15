@@ -36,6 +36,11 @@ abstract interface class AuthRemoteDataSource {
     required String dob,
     required String name,
   });
+
+  Future<UserModel> updateUserSurveyAnswers({
+    required UserModel userModel,
+    required List<String> answers,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -169,6 +174,26 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .update({
             'dob': DateFormat('dd/MM/yyyy').parseStrict(dob).toIso8601String(),
             'name': name
+          })
+          .eq('id', userModel.id)
+          .select()
+          .single();
+
+      return UserModel.fromJSON(res);
+    } catch (e) {
+      print(e);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> updateUserSurveyAnswers(
+      {required UserModel userModel, required List<String> answers}) async {
+    try {
+      final res = await supabaseClient
+          .from('user')
+          .update({
+            'survey_answers': answers,
           })
           .eq('id', userModel.id)
           .select()

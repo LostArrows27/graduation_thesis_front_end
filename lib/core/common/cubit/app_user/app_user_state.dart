@@ -31,3 +31,10 @@ final class AppUserWithMissingSurvey extends AppUserState {
 
   AppUserWithMissingSurvey({required this.user});
 }
+
+// missing -> label forms
+final class AppUserWithMissingLabel extends AppUserState {
+  final User user;
+
+  AppUserWithMissingLabel({required this.user});
+}

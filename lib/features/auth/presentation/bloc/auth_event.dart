@@ -37,3 +37,10 @@ final class AuthUpdateUserDobNameEvent extends AuthEvent {
   AuthUpdateUserDobNameEvent(
       {required this.name, required this.dob, required this.user});
 }
+
+final class AuthUpdateUserSurveyEvent extends AuthEvent {
+  final List<String> answers;
+  final User user;
+
+  AuthUpdateUserSurveyEvent({required this.answers, required this.user});
+}

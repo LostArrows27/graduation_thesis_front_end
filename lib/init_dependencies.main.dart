@@ -30,6 +30,7 @@ void _initAuth() {
     ..registerFactory(() => CurrentUser(serviceLocator()))
     ..registerFactory(() => UpdateUserAvatar(serviceLocator()))
     ..registerFactory(() => UpdateUserDobName(serviceLocator()))
+    ..registerFactory(() => UpdateUserSurveyAnswer(serviceLocator()))
     // bloc
     ..registerLazySingleton(() => AuthBloc(
         userSignup: serviceLocator(),
@@ -38,5 +39,6 @@ void _initAuth() {
         currentUser: serviceLocator(),
         updateUserAvatar: serviceLocator(),
         updateUserDobName: serviceLocator(),
+        updateUserSurveyAnswer: serviceLocator(),
         appUserCubit: serviceLocator()));
 }

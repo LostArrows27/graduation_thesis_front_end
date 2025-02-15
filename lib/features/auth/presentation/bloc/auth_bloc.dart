@@ -8,6 +8,7 @@ import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/current_user.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_avatar.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_dob_name.dart';
+import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_survey_answer.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
@@ -23,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CurrentUser _currentUser;
   final UpdateUserAvatar _updateUserAvatar;
   final UpdateUserDobName _updateUserDobName;
+  final UpdateUserSurveyAnswer _updateUserSurveyAnswer;
 
   AuthBloc(
       {required UserSignup userSignup,
@@ -31,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required CurrentUser currentUser,
       required UpdateUserAvatar updateUserAvatar,
       required UpdateUserDobName updateUserDobName,
+      required UpdateUserSurveyAnswer updateUserSurveyAnswer,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -38,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _currentUser = currentUser,
         _updateUserAvatar = updateUserAvatar,
         _appUserCubit = appUserCubit,
+        _updateUserSurveyAnswer = updateUserSurveyAnswer,
         _updateUserDobName = updateUserDobName,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
@@ -51,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogin>(_onAuthLogin);
     on<AuthUploadProfilePicture>(_onAuthUploadProfilePicture);
     on<AuthUpdateUserDobNameEvent>(_onAuthUpdateUserDobNameHandle);
+    on<AuthUpdateUserSurveyEvent>(_onUpdateUserSurveyAnswer);
   }
 
   void _onAuthSignup(AuthSignup event, Emitter<AuthState> emit) async {
@@ -109,6 +114,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     res.fold((l) => emit(AuthUpdateDobNameFailure(message: l.message)), (r) {
       _appUserCubit.updateUser(r);
       emit(AuthUpdateDobNameSuccess());
+    });
+  }
+
+  void _onUpdateUserSurveyAnswer(
+      AuthUpdateUserSurveyEvent event, Emitter<AuthState> emit) async {
+    emit(AuthUpdateSurveyLoading());
+    final res = await _updateUserSurveyAnswer(
+        UpdateUserSurveyAnswerParams(user: event.user, answers: event.answers));
+
+    res.fold((l) => emit(AuthUpdateSurveyFailure(message: l.message)), (r) {
+      _appUserCubit.updateUser(r);
+      emit(AuthUpdateSurveySuccess());
     });
   }
 

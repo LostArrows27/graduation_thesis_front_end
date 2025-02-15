@@ -6,6 +6,7 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/dob_name_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/survey_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/upload_avatar_page.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/upload_image_label_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/landing_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
@@ -40,6 +41,10 @@ final routerConfig = GoRouter(
     GoRoute(
         path: SurveyFormPage.path,
         builder: (context, state) => SurveyFormPage()),
+
+    GoRoute(
+        path: UploadImageLabel.path,
+        builder: (context, state) => const UploadImageLabel()),
     // home route
     GoRoute(
         path: HomePageFake.path,
@@ -60,6 +65,10 @@ final routerConfig = GoRouter(
 
     if (authState is AppUserWithMissingSurvey) {
       return SurveyFormPage.path;
+    }
+
+    if (authState is AppUserWithMissingLabel) {
+      return UploadImageLabel.path;
     }
 
     if (authState is AppUserLoggedIn) {

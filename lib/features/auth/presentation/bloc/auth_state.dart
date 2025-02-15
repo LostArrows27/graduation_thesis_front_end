@@ -52,3 +52,14 @@ final class AuthUpdateDobNameSuccess extends AuthUpdateDobName {}
 final class AuthUpdateDobNameFailure extends AuthFailure {
   AuthUpdateDobNameFailure({required super.message});
 }
+
+// update user survey
+final class AuthUpdateSurvey extends AuthState {}
+
+final class AuthUpdateSurveyLoading extends AuthUpdateSurvey {}
+
+final class AuthUpdateSurveySuccess extends AuthUpdateSurvey {}
+
+final class AuthUpdateSurveyFailure extends AuthFailure {
+  AuthUpdateSurveyFailure({required super.message});
+}

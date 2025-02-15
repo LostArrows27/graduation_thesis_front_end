@@ -27,6 +27,7 @@ dependencies:
   flex_color_scheme: ^8.1.0
   image_cropper: ^9.0.0
   mask_text_input_formatter: ^2.9.0
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +47,12 @@ flutter:
     - assets/images/sign_up_banner.jpg
     - assets/images/discord.webp
     - assets/images/google.webp
+    # lottie file
+    - assets/lottie/activity.json
+    - assets/lottie/album.json
+    - assets/lottie/location.json
+    - assets/lottie/person.json
+    - assets/lottie/video.json
 
   fonts:
     - family: Poppins
