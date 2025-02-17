@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/core/utils/validators.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/auth_field.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/text_divider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
-
-  static const path = '/sign-up';
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -213,7 +211,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              context.go(LoginPage.path);
+                              context.go(Routes.loginPage);
                             },
                             child: Text(
                               'Log in',

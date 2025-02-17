@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/upload_image_label_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/lottie_answer.dart';
 
 class SurveyFormPage extends StatefulWidget {
   const SurveyFormPage({super.key});
-
-  static const path = '/information/survey-form';
 
   @override
   State<SurveyFormPage> createState() => _SurveyFormPageState();
@@ -42,7 +40,7 @@ class _SurveyFormPageState extends State<SurveyFormPage> {
           current is AuthUpdateSurveyLoading || current is AuthUpdateSurvey,
       listener: (context, state) {
         if (state is AuthUpdateSurveySuccess) {
-          context.go(UploadImageLabel.path);
+          context.go(Routes.uploadImageLabelPage);
         }
 
         if (state is AuthUpdateSurveyFailure) {

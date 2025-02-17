@@ -5,8 +5,6 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth
 class HomePageFake extends StatelessWidget {
   const HomePageFake({super.key});
 
-  static const path = '/home-fake';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

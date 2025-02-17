@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/dob_name_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/text_divider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadAvatarPage extends StatefulWidget {
   const UploadAvatarPage({super.key});
-
-  static const path = '/information/upload-avatar';
 
   @override
   State<UploadAvatarPage> createState() => _UploadAvatarPageState();
@@ -31,7 +29,7 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
           current is AuthAvatarUploading || current is AuthAvatarUploadFailure,
       listener: (context, state) {
         if (state is AuthAvatarUploadSuccess) {
-          context.push(DobNameFormPage.path);
+          context.push(Routes.dobNameFormPage);
         }
 
         if (state is AuthAvatarUploadFailure) {

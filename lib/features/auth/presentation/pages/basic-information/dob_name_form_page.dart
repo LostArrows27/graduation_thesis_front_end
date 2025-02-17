@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/date_input_formatter.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/core/utils/validators.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/survey_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/auth_field.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:intl/intl.dart';
 
 class DobNameFormPage extends StatefulWidget {
   const DobNameFormPage({super.key});
-
-  static const path = '/information/dob-name-form';
 
   @override
   State<DobNameFormPage> createState() => _DobNameFormPageState();
@@ -84,7 +82,7 @@ class _DobNameFormPageState extends State<DobNameFormPage> {
           current is AuthUpdateDobNameFailure || current is AuthUpdateDobName,
       listener: (context, state) {
         if (state is AuthUpdateDobNameSuccess) {
-          context.go(SurveyFormPage.path);
+          context.go(Routes.surveyFormPage);
         }
 
         if (state is AuthUpdateDobNameFailure) {

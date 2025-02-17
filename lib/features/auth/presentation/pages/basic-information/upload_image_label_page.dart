@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_confetti.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/confirm_done_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/view_label_result_bottom_modal.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,8 +21,6 @@ import 'package:lottie/lottie.dart';
 // skip -> set isDoneLabelForm = true in database
 class UploadImageLabel extends StatefulWidget {
   const UploadImageLabel({super.key});
-
-  static const path = '/information/upload-image-label';
 
   @override
   State<UploadImageLabel> createState() => _UploadImageLabelState();
@@ -56,7 +54,7 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
         }
 
         if (state is AuthMarkImageLabelFormDoneSuccess) {
-          return context.go(ConfirmDonePage.path);
+          return context.go(Routes.confirmDonePage);
         }
       },
       builder: (context, state) {

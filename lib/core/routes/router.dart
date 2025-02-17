@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/common/layout/layout_scaffold.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/confirm_done_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/dob_name_form_page.dart';
@@ -14,87 +17,114 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sig
 import 'package:graduation_thesis_front_end/home.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+
 final routerConfig = GoRouter(
-  initialLocation: LandingPage.path,
+  navigatorKey: _rootNavigatorKey,
+  initialLocation: Routes.landingPage,
   routes: [
     // auth route
     GoRoute(
-      path: LandingPage.path,
+      path: Routes.landingPage,
       builder: (context, state) => const LandingPage(),
     ),
     GoRoute(
-      path: LoginPage.path,
+      path: Routes.loginPage,
       builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
-      path: SignUpPage.path,
+      path: Routes.signUpPage,
       builder: (context, state) => const SignUpPage(),
     ),
     // information page
     GoRoute(
-        path: UploadAvatarPage.path,
+        path: Routes.uploadAvatarPage,
         builder: (context, state) => const UploadAvatarPage()),
 
     GoRoute(
-        path: DobNameFormPage.path,
+        path: Routes.dobNameFormPage,
         builder: (context, state) => const DobNameFormPage()),
 
     GoRoute(
-        path: SurveyFormPage.path,
+        path: Routes.surveyFormPage,
         builder: (context, state) => SurveyFormPage()),
 
     GoRoute(
-        path: UploadImageLabel.path,
+        path: Routes.uploadImageLabelPage,
         builder: (context, state) => const UploadImageLabel()),
     GoRoute(
-        path: ConfirmDonePage.path,
+        path: Routes.confirmDonePage,
         builder: (context, state) => const ConfirmDonePage()),
     // home route
-    GoRoute(
-        path: HomePageFake.path,
-        builder: (context, state) => const HomePageFake()),
+    StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            LayoutScaffold(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+                path: Routes.photosPage,
+                builder: (context, state) => const HomePageFake())
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+                path: Routes.albumsPage,
+                builder: (context, state) => const HomePageFake())
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+                path: Routes.explorePage,
+                builder: (context, state) => const HomePageFake())
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+                path: Routes.searchPage,
+                builder: (context, state) => const HomePageFake())
+          ]),
+        ])
   ],
   redirect: (context, state) {
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
     final authState = appUserCubit.state;
 
-    print(authState);
+    if (authState is AppUserLoggedIn) {
+      if (homeRouteList.contains(state.fullPath)) {
+        return null;
+      } else {
+        return Routes.albumsPage;
+      }
+    }
 
     // check app user state
     if (authState is AppUserWithMissingInfo) {
-      return UploadAvatarPage.path;
+      return Routes.uploadAvatarPage;
     }
 
     if (authState is AppUserWithMissingDob) {
-      return DobNameFormPage.path;
+      return Routes.dobNameFormPage;
     }
 
     if (authState is AppUserWithMissingSurvey) {
-      return SurveyFormPage.path;
+      return Routes.surveyFormPage;
     }
 
     if (authState is AppUserWithMissingLabel) {
-      return UploadImageLabel.path;
+      return Routes.uploadImageLabelPage;
     }
 
     // check if user in confirming page (redirect after done labeling)
-    if (state.fullPath == ConfirmDonePage.path) {
+    if (state.fullPath == Routes.confirmDonePage) {
       return null;
     }
 
-    if (authState is AppUserLoggedIn) {
-      return HomePageFake.path;
-    }
-
     // check current page
-    final isLoggingIn =
-        state.fullPath == LoginPage.path || state.fullPath == SignUpPage.path;
+    final isLoggingIn = state.fullPath == Routes.loginPage ||
+        state.fullPath == Routes.signUpPage;
 
     if (isLoggingIn) {
       return null;
     }
 
-    return LandingPage.path;
+    return Routes.landingPage;
   },
   refreshListenable: GoRouterRefreshStream(serviceLocator<AuthBloc>().stream),
 );

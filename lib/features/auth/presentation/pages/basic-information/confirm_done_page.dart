@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_thesis_front_end/home.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:lottie/lottie.dart';
 
 class ConfirmDonePage extends StatelessWidget {
   const ConfirmDonePage({super.key});
-
-  static const path = '/information/confirm-done';
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +50,7 @@ class ConfirmDonePage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      context.go(HomePageFake.path);
+                      context.go(Routes.albumsPage);
                     },
                     child: Text("Continue",
                         style: TextStyle(
