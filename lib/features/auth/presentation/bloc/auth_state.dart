@@ -63,3 +63,33 @@ final class AuthUpdateSurveySuccess extends AuthUpdateSurvey {}
 final class AuthUpdateSurveyFailure extends AuthFailure {
   AuthUpdateSurveyFailure({required super.message});
 }
+
+// upload image and get label
+final class AuthUploadAndGetImageLabel extends AuthState {}
+
+final class AuthUploadAndGetImageLabelLoading
+    extends AuthUploadAndGetImageLabel {}
+
+final class AuthUploadAndGetImageLabelSuccess
+    extends AuthUploadAndGetImageLabel {
+  final List<image.Image> images;
+
+  AuthUploadAndGetImageLabelSuccess({required this.images});
+}
+
+final class AuthUploadAndGetImageLabelFailure extends AuthFailure {
+  AuthUploadAndGetImageLabelFailure({required super.message});
+}
+
+// mark image label form process done
+final class AuthMarkImageLabelFormDone extends AuthState {}
+
+final class AuthMarkImageLabelFormDoneLoading
+    extends AuthMarkImageLabelFormDone {}
+
+final class AuthMarkImageLabelFormDoneSuccess
+    extends AuthMarkImageLabelFormDone {}
+
+final class AuthMarkImageLabelFormDoneFailure extends AuthFailure {
+  AuthMarkImageLabelFormDoneFailure({required super.message});
+}

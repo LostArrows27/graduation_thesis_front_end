@@ -6,12 +6,16 @@ import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/current_user.dart';
+import 'package:graduation_thesis_front_end/features/auth/domain/usecases/mark_user_done_labeling.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_avatar.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_dob_name.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_survey_answer.dart';
+import 'package:graduation_thesis_front_end/features/auth/domain/usecases/upload_and_get_image_label.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart'
+    as image;
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -25,6 +29,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UpdateUserAvatar _updateUserAvatar;
   final UpdateUserDobName _updateUserDobName;
   final UpdateUserSurveyAnswer _updateUserSurveyAnswer;
+  final UploadAndGetImageLabel _uploadAndGetImageLabel;
+  final MarkUserDoneLabeling _markUserDoneLabeling;
 
   AuthBloc(
       {required UserSignup userSignup,
@@ -34,6 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required UpdateUserAvatar updateUserAvatar,
       required UpdateUserDobName updateUserDobName,
       required UpdateUserSurveyAnswer updateUserSurveyAnswer,
+      required UploadAndGetImageLabel uploadAndGetImageLabel,
+      required MarkUserDoneLabeling markUserDoneLabeling,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -43,6 +51,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _appUserCubit = appUserCubit,
         _updateUserSurveyAnswer = updateUserSurveyAnswer,
         _updateUserDobName = updateUserDobName,
+        _uploadAndGetImageLabel = uploadAndGetImageLabel,
+        _markUserDoneLabeling = markUserDoneLabeling,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       if (AuthEvent is! AuthUploadProfilePicture) {
@@ -56,6 +66,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthUploadProfilePicture>(_onAuthUploadProfilePicture);
     on<AuthUpdateUserDobNameEvent>(_onAuthUpdateUserDobNameHandle);
     on<AuthUpdateUserSurveyEvent>(_onUpdateUserSurveyAnswer);
+    on<UploadAndGetImageLabelEvent>(_onUploadAndGetImageLabel);
+    on<AuthMarkDoneLabelingEvent>(_onMarkDoneLabeling);
   }
 
   void _onAuthSignup(AuthSignup event, Emitter<AuthState> emit) async {
@@ -130,7 +142,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _emitAuthSuccess(User user, Emitter<AuthState> emit) {
-    _appUserCubit.updateUser(user);
     emit(AuthSuccess(user: user));
+    _appUserCubit.updateUser(user);
+  }
+
+  void _onUploadAndGetImageLabel(
+      UploadAndGetImageLabelEvent event, Emitter<AuthState> emit) async {
+    emit(AuthUploadAndGetImageLabelLoading());
+    final res = await _uploadAndGetImageLabel(UploadAndGetImageLabelParams(
+        images: event.files, userId: event.userId));
+
+    res.fold((l) => emit(AuthUploadAndGetImageLabelFailure(message: l.message)),
+        (r) => emit(AuthUploadAndGetImageLabelSuccess(images: r)));
+  }
+
+  void _onMarkDoneLabeling(
+      AuthMarkDoneLabelingEvent event, Emitter<AuthState> emit) async {
+    emit(AuthMarkImageLabelFormDoneLoading());
+    final res = await _markUserDoneLabeling(
+        MarkUserDoneLabelingParams(user: event.user));
+
+    res.fold((l) => {}, (r) {
+      emit(AuthMarkImageLabelFormDoneSuccess());
+      _appUserCubit.updateUser(r);
+    });
   }
 }

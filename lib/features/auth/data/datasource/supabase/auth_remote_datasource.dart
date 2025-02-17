@@ -41,6 +41,8 @@ abstract interface class AuthRemoteDataSource {
     required UserModel userModel,
     required List<String> answers,
   });
+
+  Future<UserModel> markUserDoneLabeling({required UserModel userModel});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -194,6 +196,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .from('user')
           .update({
             'survey_answers': answers,
+          })
+          .eq('id', userModel.id)
+          .select()
+          .single();
+
+      return UserModel.fromJSON(res);
+    } catch (e) {
+      print(e);
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> markUserDoneLabeling({required UserModel userModel}) async {
+    try {
+      final res = await supabaseClient
+          .from('user')
+          .update({
+            'is_done_label_form': true,
           })
           .eq('id', userModel.id)
           .select()

@@ -20,8 +20,8 @@ Future<File?> pickImage([ImageSource imagesource = ImageSource.gallery]) async {
   }
 }
 
-Future<File?> selectLibraryImage(
-    ImageSource imagesource, BuildContext context) async {
+Future<File?> selectLibraryImage(ImageSource imagesource, BuildContext context,
+    [bool isPickingAvatar = true]) async {
   final pickedImage = await pickImage(imagesource);
   if (pickedImage != null) {
     final croppedImage = await ImageCropper().cropImage(
@@ -34,9 +34,12 @@ Future<File?> selectLibraryImage(
             toolbarColor: Theme.of(context).colorScheme.primary,
             activeControlsWidgetColor: Theme.of(context).colorScheme.secondary,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
+            initAspectRatio: isPickingAvatar
+                ? CropAspectRatioPreset.square
+                : CropAspectRatioPreset.original,
             lockAspectRatio: false,
             aspectRatioPresets: [
+              CropAspectRatioPreset.original,
               CropAspectRatioPreset.ratio4x3,
               CropAspectRatioPreset.square,
               CropAspectRatioPreset.ratio16x9,

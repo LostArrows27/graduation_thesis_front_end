@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CompleteStageBar extends StatelessWidget {
   final int currentStep;
-  static const int totalSteps = 4;
+  static const int totalSteps = 5;
 
   const CompleteStageBar({super.key, required this.currentStep});
 

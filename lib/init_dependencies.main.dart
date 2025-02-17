@@ -20,9 +20,15 @@ void _initAuth() {
     // data source
     ..registerFactory<AuthRemoteDataSource>(
         () => AuthRemoteDataSourceImpl(serviceLocator()))
+    ..registerFactory<ImageRemoteDataSource>(
+        () => ImageRemoteDataSourceImpl(supabaseClient: serviceLocator()))
+    ..registerFactory<ImageLabelRemoteDataSource>(
+        () => ImageLabelRemoteDataSourceImpl())
     // repository
-    ..registerFactory<AuthRepository>(
-        () => AuthRepositoryImpl(serviceLocator()))
+    ..registerFactory<AuthRepository>(() => AuthRepositoryImpl(
+        remoteDataSource: serviceLocator(),
+        imageLabelRemoteDataSource: serviceLocator(),
+        imageRemoteDataSource: serviceLocator()))
     // use case
     ..registerFactory(() => UserSignup(serviceLocator()))
     ..registerFactory(() => UserSignOut(serviceLocator()))
@@ -31,6 +37,8 @@ void _initAuth() {
     ..registerFactory(() => UpdateUserAvatar(serviceLocator()))
     ..registerFactory(() => UpdateUserDobName(serviceLocator()))
     ..registerFactory(() => UpdateUserSurveyAnswer(serviceLocator()))
+    ..registerFactory(() => UploadAndGetImageLabel(serviceLocator()))
+    ..registerFactory(() => MarkUserDoneLabeling(serviceLocator()))
     // bloc
     ..registerLazySingleton(() => AuthBloc(
         userSignup: serviceLocator(),
@@ -40,5 +48,7 @@ void _initAuth() {
         updateUserAvatar: serviceLocator(),
         updateUserDobName: serviceLocator(),
         updateUserSurveyAnswer: serviceLocator(),
+        uploadAndGetImageLabel: serviceLocator(),
+        markUserDoneLabeling: serviceLocator(),
         appUserCubit: serviceLocator()));
 }

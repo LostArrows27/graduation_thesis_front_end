@@ -40,9 +40,6 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text(''),
-          ),
           body: Stack(
             children: [
               SingleChildScrollView(

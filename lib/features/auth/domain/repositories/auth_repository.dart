@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/error/failure.dart';
 
@@ -35,4 +36,12 @@ abstract interface class AuthRepository {
     required List<String> answers,
     required User user,
   });
+
+  Future<Either<Failure, User>> markUserDoneLabeling({
+    required User user,
+  });
+
+  // image relate
+  Future<Either<Failure, List<Image>>> uploadAndLabelImage(
+      {required List<File> images, required String userId});
 }

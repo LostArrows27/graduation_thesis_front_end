@@ -1,18 +1,26 @@
 import 'dart:io';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/error/failure.dart';
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
-import 'package:graduation_thesis_front_end/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/auth/data/datasource/python/image_label_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/auth_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/image_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/model/user_model.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/repositories/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
+  final ImageLabelRemoteDataSource imageLabelRemoteDataSource;
+  final ImageRemoteDataSource imageRemoteDataSource;
 
-  const AuthRepositoryImpl(this.remoteDataSource);
+  const AuthRepositoryImpl(
+      {required this.remoteDataSource,
+      required this.imageLabelRemoteDataSource,
+      required this.imageRemoteDataSource});
 
   @override
   Future<Either<Failure, User>> loginWithEmailPassword(
@@ -108,6 +116,41 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final updatedUser = await remoteDataSource.updateUserSurveyAnswers(
           userModel: userModel, answers: answers);
+
+      return right(updatedUser);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  // image relate
+  @override
+  Future<Either<Failure, List<Image>>> uploadAndLabelImage(
+      {required List<File> images, required String userId}) async {
+    try {
+      // final imageParams = await imageRemoteDataSource.uploadImageList(
+      //     imageParams: images, userId: userId);
+
+      // final imageParams = fakeImageParams;
+
+      // final imageModelList = await imageLabelRemoteDataSource.getLabelImages(
+      //   imageParams: imageParams,
+      //   userId: userId,
+      // );
+
+      // return right(imageModelList);
+
+      return right(imageListFake);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> markUserDoneLabeling(
+      {required User user}) async {
+    try {
+      final updatedUser = await remoteDataSource.markUserDoneLabeling(userModel: UserModel.fromUser(user));
 
       return right(updatedUser);
     } on ServerException catch (e) {
