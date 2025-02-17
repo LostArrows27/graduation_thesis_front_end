@@ -58,6 +58,8 @@ final routerConfig = GoRouter(
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
     final authState = appUserCubit.state;
 
+    print(authState);
+
     // check app user state
     if (authState is AppUserWithMissingInfo) {
       return UploadAvatarPage.path;
@@ -80,7 +82,6 @@ final routerConfig = GoRouter(
       return null;
     }
 
-    
     if (authState is AppUserLoggedIn) {
       return HomePageFake.path;
     }

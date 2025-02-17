@@ -64,6 +64,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException('User is null');
       }
 
+      final userProfileData = await getCurrentUserData();
+
       return UserModel.fromJSON(response.user!.toJson());
     } on AuthException catch (e) {
       print(e);

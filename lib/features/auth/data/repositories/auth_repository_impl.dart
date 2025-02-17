@@ -41,9 +41,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<Either<Failure, User>> _getUser(Future<User> Function() fn) async {
     try {
-      final user = await fn();
+      await fn();
 
-      return right(user);
+      final userProfile = await remoteDataSource.getCurrentUserData();
+
+      return right(userProfile!);
     } on sb.AuthException catch (e) {
       return left(Failure(e.message));
     } on ServerException catch (e) {
@@ -150,7 +152,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> markUserDoneLabeling(
       {required User user}) async {
     try {
-      final updatedUser = await remoteDataSource.markUserDoneLabeling(userModel: UserModel.fromUser(user));
+      final updatedUser = await remoteDataSource.markUserDoneLabeling(
+          userModel: UserModel.fromUser(user));
 
       return right(updatedUser);
     } on ServerException catch (e) {
