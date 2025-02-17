@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/confirm_done_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/dob_name_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/survey_form_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/upload_avatar_page.dart';
@@ -45,6 +46,9 @@ final routerConfig = GoRouter(
     GoRoute(
         path: UploadImageLabel.path,
         builder: (context, state) => const UploadImageLabel()),
+    GoRoute(
+        path: ConfirmDonePage.path,
+        builder: (context, state) => const ConfirmDonePage()),
     // home route
     GoRoute(
         path: HomePageFake.path,
@@ -71,6 +75,12 @@ final routerConfig = GoRouter(
       return UploadImageLabel.path;
     }
 
+    // check if user in confirming page (redirect after done labeling)
+    if (state.fullPath == ConfirmDonePage.path) {
+      return null;
+    }
+
+    
     if (authState is AppUserLoggedIn) {
       return HomePageFake.path;
     }

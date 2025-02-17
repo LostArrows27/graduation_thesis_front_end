@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_confetti.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/pages/basic-information/confirm_done_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/view_label_result_bottom_modal.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,7 +44,7 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUploadAndGetImageLabelFailure) {
-          showSnackBar(context, state.message);
+          return showSnackBar(context, state.message);
         }
 
         if (state is AuthUploadAndGetImageLabelSuccess) {
@@ -50,6 +52,11 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
           setState(() {
             imagesLabel = state.images;
           });
+          return;
+        }
+
+        if (state is AuthMarkImageLabelFormDoneSuccess) {
+          return context.go(ConfirmDonePage.path);
         }
       },
       builder: (context, state) {

@@ -58,6 +58,7 @@ flutter:
     - assets/lottie/person.json
     - assets/lottie/video.json
     - assets/lottie/touch_here.json
+    - assets/lottie/congrat.json
 
   fonts:
     - family: Poppins
