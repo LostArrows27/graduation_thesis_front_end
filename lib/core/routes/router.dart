@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/layout/layout_scaffold.dart';
+import 'package:graduation_thesis_front_end/core/fake_page/album_page.dart';
+import 'package:graduation_thesis_front_end/core/fake_page/explore_page.dart';
+import 'package:graduation_thesis_front_end/core/fake_page/search_page.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
@@ -14,7 +17,7 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/bas
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/landing_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
-import 'package:graduation_thesis_front_end/home.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/pages/photo_page.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -63,22 +66,22 @@ final routerConfig = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.photosPage,
-                builder: (context, state) => const HomePageFake())
+                builder: (context, state) => const PhotoPage())
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.albumsPage,
-                builder: (context, state) => const HomePageFake())
+                builder: (context, state) => const AlbumPageFake())
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.explorePage,
-                builder: (context, state) => const HomePageFake())
+                builder: (context, state) => const ExplorePageFake())
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.searchPage,
-                builder: (context, state) => const HomePageFake())
+                builder: (context, state) => const SearchPageFake())
           ]),
         ])
   ],
@@ -90,7 +93,7 @@ final routerConfig = GoRouter(
       if (homeRouteList.contains(state.fullPath)) {
         return null;
       } else {
-        return Routes.albumsPage;
+        return Routes.photosPage;
       }
     }
 

@@ -25,6 +25,11 @@ const destinations = [
     selectedIcon: Icons.collections_bookmark,
   ),
   Destination(
+    label: "Add",
+    icon: Icons.add_circle,
+    selectedIcon: Icons.add_circle,
+  ),
+  Destination(
     label: "Explore",
     icon: Icons.explore_outlined,
     selectedIcon: Icons.explore,
