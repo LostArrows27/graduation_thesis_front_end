@@ -11,29 +11,20 @@ class GalleryAllViewMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PhotoBloc, PhotoState>(
-      buildWhen: (previous, current) {
-        if (current is PhotoFetchSuccess && previous is! PhotoFetchSuccess) {
-          return true;
+    return BlocSelector<PhotoBloc, PhotoState, PhotoFetchSuccess?>(
+      key: PageStorageKey('allViewMode'),
+      selector: (state) {
+        if (state is PhotoFetchSuccess) {
+          return state;
         }
-        return false;
+        return null;
       },
       builder: (context, state) {
-        if (state is! PhotoFetchSuccess) {
+        if (state == null) {
           return Center(
             child: Text('Something wrong happended !'),
           );
         }
-
-        // print('re-render');
-
-        // return ListView(
-        //     children: List.generate(100, (index) {
-        //   return Container(
-        //     height: 100,
-        //     child: Text('Item $index'),
-        //   );
-        // }));
 
         return CustomScrollView(
           // key: PageStorageKey('allView'),
@@ -48,8 +39,6 @@ class GalleryAllViewMode extends StatelessWidget {
                   DateTime sectionDate = section['date'];
                   String sectionTitle = formatDate(sectionDate);
                   List<Photo> imageLists = List<Photo>.from(section['images']);
-
-                  print('sectionTitle: $sectionTitle');
 
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),

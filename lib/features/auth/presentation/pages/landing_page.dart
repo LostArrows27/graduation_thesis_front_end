@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/lottie_loader.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class LandingPage extends StatefulWidget {
@@ -63,14 +61,7 @@ class _LandingPageState extends State<LandingPage> {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthLoading || state is AuthSuccess) {
-          // random 1 and 2 to show different loading animations
-          final random = Random().nextInt(2) + 1;
-          return Scaffold(
-            body: Center(
-                child: Lottie.asset(
-                    'assets/lottie/loading${random == 1 ? '' : '_2'}.json',
-                    height: 150)),
-          );
+          return LottieLoader();
         }
 
         return Scaffold(

@@ -12,6 +12,7 @@ class GalleryMonthViewMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PhotoBloc, PhotoState>(
+      key: PageStorageKey('monthViewMode'),
       builder: (context, state) {
         if (state is! PhotoFetchSuccess) {
           return Center(
@@ -70,7 +71,7 @@ class GalleryMonthViewMode extends StatelessWidget {
               );
             }, childCount: state.groupedByMonth.length)),
             SliverToBoxAdapter(
-              child: SizedBox(height: 60),
+              child: SizedBox(height: 20),
             ),
           ],
         );
