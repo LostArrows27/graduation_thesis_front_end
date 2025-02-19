@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+// import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +24,12 @@ Future<File?> pickImage([ImageSource imagesource = ImageSource.gallery]) async {
 Future<File?> selectLibraryImage(ImageSource imagesource, BuildContext context,
     [bool isPickingAvatar = true]) async {
   final pickedImage = await pickImage(imagesource);
+
   if (pickedImage != null) {
+    // NOTE: view exift metadata
+    // var bytes = await pickedImage.readAsBytes();
+    // var tags = await readExifFromBytes(bytes);
+    // tags.forEach((key, value) => print("$key : $value"));
     final croppedImage = await ImageCropper().cropImage(
         sourcePath: pickedImage.path,
         compressFormat: ImageCompressFormat.jpg,

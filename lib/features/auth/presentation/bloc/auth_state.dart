@@ -72,7 +72,7 @@ final class AuthUploadAndGetImageLabelLoading
 
 final class AuthUploadAndGetImageLabelSuccess
     extends AuthUploadAndGetImageLabel {
-  final List<image.Image> images;
+  final List<Photo> images;
 
   AuthUploadAndGetImageLabelSuccess({required this.images});
 }

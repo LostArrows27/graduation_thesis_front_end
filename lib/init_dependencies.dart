@@ -16,6 +16,12 @@ import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_l
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/data/datasource/photo_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/photo/data/repository/photo_repository_impl.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/repository/photo_repository.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'init_dependencies.main.dart';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_confetti.dart';
@@ -13,8 +14,6 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/complete_stage_bar.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/widgets/view_label_result_bottom_modal.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/image.dart'
-    as image;
 import 'package:lottie/lottie.dart';
 
 // NOTE: option form -> can skip
@@ -28,7 +27,7 @@ class UploadImageLabel extends StatefulWidget {
 
 class _UploadImageLabelState extends State<UploadImageLabel> {
   List<File?> imageFiles = [null, null, null];
-  List<image.Image?> imagesLabel = [];
+  List<Photo> imagesLabel = [];
 
   void addImage(int index, File? image) {
     if (image == null) return;
@@ -104,7 +103,7 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
 
                             if (imagesLabel.isNotEmpty) {
                               return viewLabelResultBottomModal(context,
-                                  imageFiles[index]!, imagesLabel[index]!);
+                                  imageFiles[index]!, imagesLabel[index]);
                             }
                             File? image = await selectLibraryImage(
                                 ImageSource.gallery, context, false);

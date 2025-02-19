@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:graduation_thesis_front_end/core/common/params/image_params.dart';
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
-import 'package:graduation_thesis_front_end/features/auth/data/model/image_model.dart';
+import 'package:graduation_thesis_front_end/core/common/model/image_model.dart';
 import 'package:http/http.dart' as http;
 
 // 1. image upload to supabase -> return imageBucketId + imageName

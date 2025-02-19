@@ -5,6 +5,7 @@ import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/error/failure.dart';
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
+import 'package:graduation_thesis_front_end/core/mock/data/fake_image_label.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/python/image_label_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/auth_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/image_remote_datasource.dart';
@@ -127,13 +128,13 @@ class AuthRepositoryImpl implements AuthRepository {
 
   // image relate
   @override
-  Future<Either<Failure, List<Image>>> uploadAndLabelImage(
+  Future<Either<Failure, List<Photo>>> uploadAndLabelImage(
       {required List<File> images, required String userId}) async {
     try {
       // final imageParams = await imageRemoteDataSource.uploadImageList(
       //     imageParams: images, userId: userId);
 
-      // final imageParams = fakeImageParams;
+      // // final imageParams = fakeImageParams;
 
       // final imageModelList = await imageLabelRemoteDataSource.getLabelImages(
       //   imageParams: imageParams,

@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/image.dart'
-    as image;
 import 'package:glass/glass.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 
 // 2 ways
 // 1. result + image + label
 // 2. folder like gallery image
 void viewLabelResultBottomModal(
-    BuildContext context, File imageFiles, image.Image imageLabel) {
+    BuildContext context, File imageFiles, Photo imageLabel) {
   const modalHeightSize = 0.65;
   const modalMaxHeightSize = 0.65;
 

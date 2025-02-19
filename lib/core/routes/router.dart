@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:graduation_thesis_front_end/core/common/layout/layout_scaffold.dart';
-import 'package:graduation_thesis_front_end/core/fake_page/album_page.dart';
-import 'package:graduation_thesis_front_end/core/fake_page/explore_page.dart';
-import 'package:graduation_thesis_front_end/core/fake_page/search_page.dart';
+import 'package:graduation_thesis_front_end/core/common/layout/home_scaffold_layout.dart';
+import 'package:graduation_thesis_front_end/core/mock/page/album_page.dart';
+import 'package:graduation_thesis_front_end/core/mock/page/explore_page.dart';
+import 'package:graduation_thesis_front_end/core/mock/page/search_page.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
@@ -61,7 +61,7 @@ final routerConfig = GoRouter(
     // home route
     StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
-            LayoutScaffold(navigationShell: navigationShell),
+            HomeScaffoldLayout(navigationShell: navigationShell),
         branches: [
           StatefulShellBranch(routes: [
             GoRoute(

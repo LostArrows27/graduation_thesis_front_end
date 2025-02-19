@@ -42,6 +42,6 @@ abstract interface class AuthRepository {
   });
 
   // image relate
-  Future<Either<Failure, List<Image>>> uploadAndLabelImage(
+  Future<Either<Failure, List<Photo>>> uploadAndLabelImage(
       {required List<File> images, required String userId});
 }

@@ -3,9 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/destination.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_add_modal.dart';
 
-class LayoutScaffold extends StatelessWidget {
-  const LayoutScaffold({required this.navigationShell, Key? key})
-      : super(key: key ?? const ValueKey('LayoutScaffold'));
+// home layout
+class HomeScaffoldLayout extends StatelessWidget {
+  const HomeScaffoldLayout({required this.navigationShell, Key? key})
+      : super(key: key ?? const ValueKey('HomeScaffoldLayout'));
 
   final StatefulNavigationShell navigationShell;
 
@@ -20,7 +21,7 @@ class LayoutScaffold extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: Theme.of(context).colorScheme.primaryFixedDim,
+          indicatorColor: Colors.transparent,
           labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
             (states) {
               if (states.contains(WidgetState.selected)) {
@@ -68,6 +69,7 @@ class LayoutScaffold extends StatelessWidget {
                   secondChild: Icon(
                     dest.selectedIcon,
                     key: ValueKey('selected_${dest.label}'),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   crossFadeState: i == selectedIndex
                       ? CrossFadeState.showSecond

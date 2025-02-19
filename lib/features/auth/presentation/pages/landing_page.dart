@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class LandingPage extends StatefulWidget {
@@ -55,70 +60,87 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // image slider
-          CarouselSlider.builder(
-            options: CarouselOptions(
-              height: double.infinity,
-              viewportFraction: 1.0,
-              autoPlay: false,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-            itemCount: slides.length,
-            itemBuilder: (context, index, realIndex) {
-              return Stack(
-                fit: StackFit.expand,
-                children: [
-                  FadeInImage(
-                    placeholder: MemoryImage(kTransparentImage),
-                    image: images[index].image,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    top: 480,
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      children: [
-                        Text(
-                          slides[index]['title']!,
-                          style: TextStyle(
-                            color: AppPallete.whiteColor,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.2,
-                            fontSize: 17,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          slides[index]['description']!,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppPallete.secondaryTextColor,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 30),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading || state is AuthSuccess) {
+          // random 1 and 2 to show different loading animations
+          final random = Random().nextInt(2) + 1;
+          return Scaffold(
+            body: Center(
+                child: Lottie.asset(
+                    'assets/lottie/loading${random == 1 ? '' : '_2'}.json',
+                    height: 150)),
+          );
+        }
 
-          // static overlay
-          StaticOverlay(slides: slides, currentIndex: _currentIndex),
-        ],
-      ),
+        return Scaffold(
+          body: Stack(
+            children: [
+              // image slider
+              CarouselSlider.builder(
+                options: CarouselOptions(
+                  height: double.infinity,
+                  viewportFraction: 1.0,
+                  autoPlay: false,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (index, reason) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    });
+                  },
+                ),
+                itemCount: slides.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      FadeInImage(
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: images[index].image,
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        top: 480,
+                        left: 0,
+                        right: 0,
+                        child: Column(
+                          children: [
+                            Text(
+                              slides[index]['title']!,
+                              style: TextStyle(
+                                color: AppPallete.whiteColor,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1.2,
+                                fontSize: 17,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              slides[index]['description']!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppPallete.secondaryTextColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 30),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+
+              // static overlay
+              StaticOverlay(slides: slides, currentIndex: _currentIndex),
+            ],
+          ),
+        );
+      },
     );
   }
 }

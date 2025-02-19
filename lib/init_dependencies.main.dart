@@ -4,6 +4,7 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initAuth();
+  _initPhoto();
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
 
@@ -51,4 +52,20 @@ void _initAuth() {
         uploadAndGetImageLabel: serviceLocator(),
         markUserDoneLabeling: serviceLocator(),
         appUserCubit: serviceLocator()));
+}
+
+void _initPhoto() {
+  serviceLocator
+    // data source
+    ..registerFactory<PhotoRemoteDataSource>(
+        () => PhotoRemoteDataSourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<PhotoRepository>(
+        () => PhotoRepositoryImpl(photoRemoteDataSource: serviceLocator()))
+    // use case
+    ..registerFactory(() => GetAllUserImage(serviceLocator()))
+    // bloc
+    ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()))
+    // cubit
+    ..registerLazySingleton(() => PhotoViewModeCubit());
 }
