@@ -32,33 +32,6 @@ class _PhotoPageContentState extends State<PhotoPageContent> {
     context.read<PhotoViewModeCubit>().changeViewMode(GalleryViewMode.all);
   }
 
-  // NOTE: test with list -> not re-render
-  // @override
-  // Widget build(BuildContext context) {
-  //   print('re-render');
-  //   return ListView(
-  //       children: List.generate(100, (index) {
-  //     return Container(
-  //       height: 100,
-  //       child: Text('Item $index'),
-  //     );
-  //   }));
-  // }
-
-  // NOTE: test with BodyLayout -> not re-render
-  // @override
-  // Widget build(BuildContext context) {
-  //   print('re-render');
-  //   return BodyLayout(
-  //       body: ListView(
-  //           children: List.generate(100, (index) {
-  //     return Container(
-  //       height: 100,
-  //       child: Text('Item $index'),
-  //     );
-  //   })));
-  // }
-
   Widget _selectViewModeWidget(GalleryViewMode viewMode) {
     switch (viewMode) {
       case GalleryViewMode.all:
@@ -81,31 +54,32 @@ class _PhotoPageContentState extends State<PhotoPageContent> {
         if (state is PhotoFetchLoading) {
           return LottieLoader();
         } else {
-          return BlocSelector<PhotoViewModeCubit, PhotoViewModeState,
-              GalleryViewMode?>(
-            selector: (state) {
-              if (state is PhotoViewModeChange) {
-                return state.viewMode;
-              }
-              return null;
-            },
-            builder: (context, state) => Stack(
-              children: [
-                state == null
-                    ? Center(
-                        child: Text('Something wrong happened !'),
-                      )
-                    : _selectViewModeWidget(state),
-                Positioned(
-                  bottom: 16,
-                  left: 16,
-                  right: 16,
-                  child: const Center(
-                    child: GalleryViewModeSelector(),
-                  ),
+          return Stack(
+            children: [
+              BlocSelector<PhotoViewModeCubit, PhotoViewModeState,
+                  GalleryViewMode?>(selector: (state) {
+                if (state is PhotoViewModeChange) {
+                  return state.viewMode;
+                }
+                return null;
+              }, builder: (context, state) {
+                if (state == null) {
+                  return Center(
+                    child: Text('Something wrong happened !'),
+                  );
+                } else {
+                  return _selectViewModeWidget(state);
+                }
+              }),
+              Positioned(
+                bottom: 16,
+                left: 16,
+                right: 16,
+                child: const Center(
+                  child: GalleryViewModeSelector(),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         }
       }),

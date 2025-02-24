@@ -7,14 +7,12 @@ class PhotoMonthView extends StatelessWidget {
   final String coverImageUrl;
   final List<Photo> images;
   final DateTime date;
-  final bool isCrab;
 
   const PhotoMonthView(
       {super.key,
       required this.month,
       required this.coverImageUrl,
       required this.date,
-      this.isCrab = false,
       required this.images});
 
   void _onMonthTap() {

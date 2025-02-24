@@ -35,7 +35,8 @@ class GalleryMonthViewMode extends StatelessWidget {
 
               return Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16)
+                      ..copyWith(bottom: 0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -54,7 +55,6 @@ class GalleryMonthViewMode extends StatelessWidget {
                           (index) {
                             var group = sectionMonth[index];
                             return PhotoMonthView(
-                              isCrab: index == 0 ? true : false,
                               month: group['month'],
                               date: DateTime(
                                 sectionYear,
@@ -70,9 +70,6 @@ class GalleryMonthViewMode extends StatelessWidget {
                     ]),
               );
             }, childCount: state.groupedByMonth.length)),
-            SliverToBoxAdapter(
-              child: SizedBox(height: 20),
-            ),
           ],
         );
       },
