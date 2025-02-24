@@ -18,7 +18,8 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
     try {
       final res = await supabaseClient
           .from('image')
-          .select('*')
+          .select(
+              'id, created_at, updated_at, album_id, image_bucket_id, image_name, labels')
           .eq('uploader_id', userId)
           .order('created_at', ascending: false);
 
@@ -30,8 +31,9 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       }).toList();
 
       return test;
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException("Failed to get user images.");
     }
   }

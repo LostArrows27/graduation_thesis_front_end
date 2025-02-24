@@ -26,10 +26,25 @@ class _PhotoPageContentState extends State<PhotoPageContent> {
   @override
   void initState() {
     super.initState();
-    context.read<PhotoBloc>().add(PhotoFetchAllEvent(
-        userId:
-            (context.read<AppUserCubit>().state as AppUserLoggedIn).user.id));
-    context.read<PhotoViewModeCubit>().changeViewMode(GalleryViewMode.all);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final appUserState = context.read<AppUserCubit>().state;
+        if (appUserState is AppUserLoggedIn) {
+          final userId = appUserState.user.id;
+
+          if (!context.read<PhotoBloc>().isClosed) {
+            context.read<PhotoBloc>().add(PhotoFetchAllEvent(userId: userId));
+          }
+
+          if (!context.read<PhotoViewModeCubit>().isClosed) {
+            context
+                .read<PhotoViewModeCubit>()
+                .changeViewMode(GalleryViewMode.all);
+          }
+        }
+      }
+    });
   }
 
   Widget _selectViewModeWidget(GalleryViewMode viewMode) {
@@ -94,7 +109,6 @@ class PhotoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => serviceLocator<PhotoBloc>()),
         BlocProvider(create: (_) => serviceLocator<PhotoViewModeCubit>()),
       ],
       child: PhotoPageContent(),

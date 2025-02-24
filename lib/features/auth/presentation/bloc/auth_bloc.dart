@@ -15,6 +15,7 @@ import 'package:graduation_thesis_front_end/features/auth/domain/usecases/upload
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -30,6 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UpdateUserSurveyAnswer _updateUserSurveyAnswer;
   final UploadAndGetImageLabel _uploadAndGetImageLabel;
   final MarkUserDoneLabeling _markUserDoneLabeling;
+  final PhotoBloc _photoBloc;
 
   AuthBloc(
       {required UserSignup userSignup,
@@ -41,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required UpdateUserSurveyAnswer updateUserSurveyAnswer,
       required UploadAndGetImageLabel uploadAndGetImageLabel,
       required MarkUserDoneLabeling markUserDoneLabeling,
+      required PhotoBloc photoBloc,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -52,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _updateUserDobName = updateUserDobName,
         _uploadAndGetImageLabel = uploadAndGetImageLabel,
         _markUserDoneLabeling = markUserDoneLabeling,
+        _photoBloc = photoBloc,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       if (AuthEvent is! AuthUploadProfilePicture) {
@@ -97,11 +101,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthSignOut(AuthSignOut event, Emitter<AuthState> emit) async {
     // NOTE: emit(AuthLoading());
     _appUserCubit.updateUser(null);
+    _photoBloc.add(PhotoClearEvent());
 
     final res = await _userSignOut(NoParams());
 
-    res.fold((l) => emit(AuthFailure(message: l.message)),
-        (r) => emit(AuthSignOutSuccess()));
+    res.fold((l) => emit(AuthFailure(message: l.message)), (r) {
+      emit(AuthSignOutSuccess());
+    });
   }
 
   void _onAuthUploadProfilePicture(
@@ -143,6 +149,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _emitAuthSuccess(User user, Emitter<AuthState> emit) {
     emit(AuthSuccess(user: user));
     _appUserCubit.updateUser(user);
+    _photoBloc.add(PhotoFetchAllEvent(userId: user.id));
   }
 
   void _onUploadAndGetImageLabel(

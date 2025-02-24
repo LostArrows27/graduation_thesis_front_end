@@ -8,3 +8,5 @@ final class PhotoFetchAllEvent extends PhotoEvent {
 
   PhotoFetchAllEvent({required this.userId});
 }
+
+final class PhotoClearEvent extends PhotoEvent {}

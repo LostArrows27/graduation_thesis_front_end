@@ -59,8 +59,9 @@ class ImageLabelRemoteDataSourceImpl implements ImageLabelRemoteDataSource {
         throw ServerException(
             "Failed to fetch label images. Status code: ${response.statusCode}");
       }
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException("Failed to fetch label images.");
     }
   }

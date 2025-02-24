@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 
 class BodyLayout extends StatelessWidget {
   final Widget body;
@@ -54,12 +55,19 @@ class BodyLayout extends StatelessWidget {
                               child: SizedBox(
                                 height: 32,
                                 width: 32,
-                                child: CachedNetworkImage(
-                                  imageUrl: state!.user.avatarUrl!,
-                                  placeholder: (context, url) => Container(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceDim,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.read<AuthBloc>().add(AuthSignOut());
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: state?.user.avatarUrl ?? '',
+                                    placeholder: (context, url) => Container(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surfaceDim,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                                 ),
                               ),

@@ -19,12 +19,14 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     });
 
     on<PhotoFetchAllEvent>(_onPhotoFetchAllEvent);
+    on<PhotoClearEvent>(_onPhotoClearEvent);
   }
 
   void _onPhotoFetchAllEvent(
       PhotoFetchAllEvent event, Emitter<PhotoState> emit) async {
     final result =
         await _getAllUserImage(GetAllUserImageParams(userId: event.userId));
+
     result.fold(
       (failure) {
         emit(PhotoFetchFailure(message: failure.message));
@@ -37,5 +39,10 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
             groupedByYear: groupImageByYear(photos)));
       },
     );
+  }
+
+  void _onPhotoClearEvent(
+      PhotoClearEvent event, Emitter<PhotoState> emit) async {
+    emit(PhotoInitial());
   }
 }

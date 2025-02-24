@@ -66,7 +66,7 @@ class LabelResponse {
 
   factory LabelResponse.fromJson(Map<String, dynamic> json) {
     return LabelResponse(
-      labels: Labels.fromJson(json['labels'] as Map<String, dynamic>),
+      labels: Labels.fromJson(json),
     );
   }
 

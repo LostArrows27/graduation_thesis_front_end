@@ -51,6 +51,7 @@ void _initAuth() {
         updateUserSurveyAnswer: serviceLocator(),
         uploadAndGetImageLabel: serviceLocator(),
         markUserDoneLabeling: serviceLocator(),
+        photoBloc: serviceLocator(),
         appUserCubit: serviceLocator()));
 }
 

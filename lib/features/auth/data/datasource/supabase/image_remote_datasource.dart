@@ -36,8 +36,9 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
 
       final results = await Future.wait(uploadFutures);
       return results;
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException("Failed to upload images.");
     }
   }

@@ -65,11 +65,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJSON(response.user!.toJson());
-    } on AuthException catch (e) {
+    } on AuthException catch (e, c) {
       print(e);
+      print(c);
       throw ServerException('Invalid email or password.');
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -88,11 +90,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJSON(response.user!.toJson());
-    } on AuthException catch (e) {
+    } on AuthException catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.message);
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException('Sign up failed, please try again later.');
     }
   }
@@ -109,8 +113,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .single();
 
       return UserModel.fromJSON(userData);
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -119,8 +124,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> signOut() async {
     try {
       await supabaseClient.auth.signOut();
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -139,9 +145,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return supabaseClient.storage
           .from('user_profile')
           .getPublicUrl(imagePath);
-    } catch (e) {
+    } catch (e, c) {
       print('Error uploading image');
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -158,9 +165,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .single();
 
       return UserModel.fromJSON(res);
-    } catch (e) {
+    } catch (e, c) {
       print('Error updating user avatar');
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -182,8 +190,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .single();
 
       return UserModel.fromJSON(res);
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -202,8 +211,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .single();
 
       return UserModel.fromJSON(res);
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
@@ -221,8 +231,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .single();
 
       return UserModel.fromJSON(res);
-    } catch (e) {
+    } catch (e, c) {
       print(e);
+      print(c);
       throw ServerException(e.toString());
     }
   }
