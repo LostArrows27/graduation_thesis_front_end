@@ -23,7 +23,7 @@ class VideoRenderStatusPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add photo to your video',
         onPressed: () {
-          context.go(Routes.videoImagePickerPage);
+          context.push(Routes.videoImagePickerPage);
         },
         child: Icon(Icons.add_photo_alternate_outlined),
       ),

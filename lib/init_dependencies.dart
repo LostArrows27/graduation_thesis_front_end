@@ -22,6 +22,12 @@ import 'package:graduation_thesis_front_end/features/photo/domain/repository/pho
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_datasource.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/repositories/video_render_repository_impl.dart';
+import 'package:graduation_thesis_front_end/features/video_render/domain/repositories/video_render_repository.dart';
+import 'package:graduation_thesis_front_end/features/video_render/domain/usecase/get_video_schema.dart';
+import 'package:graduation_thesis_front_end/features/video_render/presentation/bloc/video_render_schema/video_render_schema_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'init_dependencies.main.dart';

@@ -5,6 +5,8 @@ final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
   _initAuth();
   _initPhoto();
+  _initVideoRender();
+
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
 
@@ -70,4 +72,25 @@ void _initPhoto() {
     ..registerLazySingleton(() => PhotoViewModeCubit())
     // cubit
     ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()));
+}
+
+void _initVideoRender() {
+  serviceLocator
+    // data source
+    ..registerFactory<VideoRenderRemoteDatasource>(
+        () => VideoRenderRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    ..registerFactory<VideoRenderDatasource>(
+        () => VideoRenderDatasourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<VideoRenderRepository>(() => VideoRenderRepositoryImpl(
+        imageRemoteDataSource: serviceLocator(),
+        imageLabelRemoteDataSource: serviceLocator(),
+        videoRenderSupabaseDatasource: serviceLocator(),
+        videoRenderNodeJsDatasource: serviceLocator()))
+    // use case
+    ..registerFactory(
+        () => GetVideoSchema(videoRenderRepository: serviceLocator()))
+    // bloc
+    ..registerLazySingleton(
+        () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()));
 }

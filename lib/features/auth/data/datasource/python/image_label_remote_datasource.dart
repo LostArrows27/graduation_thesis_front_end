@@ -46,6 +46,10 @@ class ImageLabelRemoteDataSourceImpl implements ImageLabelRemoteDataSource {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseJson = jsonDecode(response.body);
 
+        if (responseJson["status"] != 'success') {
+          throw ServerException("Server error: ${responseJson['message']}");
+        }
+
         if (responseJson["status"] == "success") {
           final List<dynamic> data = responseJson["data"];
           return data

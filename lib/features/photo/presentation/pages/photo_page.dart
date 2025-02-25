@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/enum/app_enum.dart';
 import 'package:graduation_thesis_front_end/core/common/layout/home_body_layout.dart';
-import 'package:graduation_thesis_front_end/core/common/widgets/lottie_loader.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
@@ -60,7 +59,12 @@ class _PhotoPageState extends State<PhotoPage> {
         }
       }, builder: (context, state) {
         if (state is PhotoFetchLoading) {
-          return LottieLoader();
+          return Scaffold(
+            body: Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            )),
+          );
         } else {
           return Stack(
             children: [

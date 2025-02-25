@@ -21,6 +21,15 @@ Future<File?> pickImage([ImageSource imagesource = ImageSource.gallery]) async {
   }
 }
 
+Future<List<String>> pickMultiImages() async {
+  try {
+    final xFiles = await ImagePicker().pickMultiImage();
+    return xFiles.map((e) => e.path).toList();
+  } catch (e) {
+    return [];
+  }
+}
+
 Future<File?> selectLibraryImage(ImageSource imagesource, BuildContext context,
     [bool isPickingAvatar = true]) async {
   final pickedImage = await pickImage(imagesource);
