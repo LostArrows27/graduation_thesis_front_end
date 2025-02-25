@@ -52,6 +52,7 @@ void _initAuth() {
         uploadAndGetImageLabel: serviceLocator(),
         markUserDoneLabeling: serviceLocator(),
         photoBloc: serviceLocator(),
+        photoViewModeCubit: serviceLocator(),
         appUserCubit: serviceLocator()));
 }
 
@@ -66,7 +67,7 @@ void _initPhoto() {
     // use case
     ..registerFactory(() => GetAllUserImage(serviceLocator()))
     // bloc
-    ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()))
+    ..registerLazySingleton(() => PhotoViewModeCubit())
     // cubit
-    ..registerLazySingleton(() => PhotoViewModeCubit());
+    ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()));
 }

@@ -11,18 +11,17 @@ import 'package:graduation_thesis_front_end/features/photo/presentation/widget/v
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/tab/gallery_all_view_mode.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/tab/gallery_month_view_mode.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/tab/gallery_year_view_mode.dart';
-import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
 // NOTE: move photo bloc to global level if needed
 // for now -> page level
-class PhotoPageContent extends StatefulWidget {
-  const PhotoPageContent({super.key});
+class PhotoPage extends StatefulWidget {
+  const PhotoPage({super.key});
 
   @override
-  State<PhotoPageContent> createState() => _PhotoPageContentState();
+  State<PhotoPage> createState() => _PhotoPageState();
 }
 
-class _PhotoPageContentState extends State<PhotoPageContent> {
+class _PhotoPageState extends State<PhotoPage> {
   @override
   void initState() {
     super.initState();
@@ -32,16 +31,10 @@ class _PhotoPageContentState extends State<PhotoPageContent> {
         final appUserState = context.read<AppUserCubit>().state;
         if (appUserState is AppUserLoggedIn) {
           final userId = appUserState.user.id;
-
-          if (!context.read<PhotoBloc>().isClosed) {
-            context.read<PhotoBloc>().add(PhotoFetchAllEvent(userId: userId));
-          }
-
-          if (!context.read<PhotoViewModeCubit>().isClosed) {
-            context
-                .read<PhotoViewModeCubit>()
-                .changeViewMode(GalleryViewMode.all);
-          }
+          context.read<PhotoBloc>().add(PhotoFetchAllEvent(userId: userId));
+          context
+              .read<PhotoViewModeCubit>()
+              .changeViewMode(GalleryViewMode.all);
         }
       }
     });
@@ -98,20 +91,6 @@ class _PhotoPageContentState extends State<PhotoPageContent> {
           );
         }
       }),
-    );
-  }
-}
-
-class PhotoPage extends StatelessWidget {
-  const PhotoPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => serviceLocator<PhotoViewModeCubit>()),
-      ],
-      child: PhotoPageContent(),
     );
   }
 }

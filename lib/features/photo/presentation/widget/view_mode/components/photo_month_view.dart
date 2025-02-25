@@ -79,7 +79,10 @@ class PhotoMonthView extends StatelessWidget {
       ),
       placeholder: (context, url) => Container(
         height: 270,
-        color: Theme.of(context).colorScheme.surfaceDim,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.surfaceDim,
+        ),
       ),
       errorWidget: (context, url, error) => Container(
         height: 270,

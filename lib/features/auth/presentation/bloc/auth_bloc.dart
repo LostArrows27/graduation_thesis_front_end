@@ -15,6 +15,7 @@ import 'package:graduation_thesis_front_end/features/auth/domain/usecases/upload
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 
 part 'auth_event.dart';
@@ -32,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UploadAndGetImageLabel _uploadAndGetImageLabel;
   final MarkUserDoneLabeling _markUserDoneLabeling;
   final PhotoBloc _photoBloc;
+  final PhotoViewModeCubit _photoViewModeCubit;
 
   AuthBloc(
       {required UserSignup userSignup,
@@ -44,6 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required UploadAndGetImageLabel uploadAndGetImageLabel,
       required MarkUserDoneLabeling markUserDoneLabeling,
       required PhotoBloc photoBloc,
+      required PhotoViewModeCubit photoViewModeCubit,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -56,6 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _uploadAndGetImageLabel = uploadAndGetImageLabel,
         _markUserDoneLabeling = markUserDoneLabeling,
         _photoBloc = photoBloc,
+        _photoViewModeCubit = photoViewModeCubit,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       if (AuthEvent is! AuthUploadProfilePicture) {
@@ -102,6 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // NOTE: emit(AuthLoading());
     _appUserCubit.updateUser(null);
     _photoBloc.add(PhotoClearEvent());
+    _photoViewModeCubit.clearState();
 
     final res = await _userSignOut(NoParams());
 

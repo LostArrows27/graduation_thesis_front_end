@@ -17,6 +17,9 @@ class Routes {
   static const String albumsPage = '/albums';
   static const String explorePage = '/explore';
   static const String searchPage = '/search';
+
+  static const String videoRenderStatusPage = '/video-render-status';
+  static const String videoImagePickerPage = '/video-image-picker';
 }
 
 List<String> homeRouteList = [
@@ -24,4 +27,6 @@ List<String> homeRouteList = [
   Routes.albumsPage,
   Routes.explorePage,
   Routes.searchPage,
+  Routes.videoRenderStatusPage,
+  Routes.videoImagePickerPage,
 ];

@@ -4,6 +4,7 @@ import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_
 import 'package:graduation_thesis_front_end/core/routes/router.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
@@ -14,9 +15,10 @@ void main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
       BlocProvider(create: (_) => serviceLocator<AuthBloc>()),
       BlocProvider(create: (_) => serviceLocator<PhotoBloc>()),
+      BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
+      BlocProvider(create: (_) => serviceLocator<PhotoViewModeCubit>()),
     ],
     child: const MyApp(),
   ));

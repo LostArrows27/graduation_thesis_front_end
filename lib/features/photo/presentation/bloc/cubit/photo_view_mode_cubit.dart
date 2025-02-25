@@ -10,4 +10,8 @@ class PhotoViewModeCubit extends Cubit<PhotoViewModeState> {
   void changeViewMode(GalleryViewMode viewMode) {
     emit(PhotoViewModeChange(viewMode: viewMode));
   }
+
+  void clearState() {
+    emit(PhotoViewModeInitial());
+  }
 }

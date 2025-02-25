@@ -14,8 +14,6 @@ class ImageModel extends Photo {
       required super.labels});
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
-    print(json['labels']);
-
     return ImageModel(
       id: json['id'] as String,
       createdAt: json['created_at'] == null

@@ -18,6 +18,8 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/lan
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/login_page.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/photo_page.dart';
+import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_image_picker_page.dart';
+import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_render_status_page.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -83,7 +85,13 @@ final routerConfig = GoRouter(
                 path: Routes.searchPage,
                 builder: (context, state) => const SearchPageFake())
           ]),
-        ])
+        ]),
+    GoRoute(
+        path: Routes.videoRenderStatusPage,
+        builder: (context, state) => const VideoRenderStatusPage()),
+    GoRoute(
+        path: Routes.videoImagePickerPage,
+        builder: (context, state) => const VideoImagePickerPage()),
   ],
   redirect: (context, state) {
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
