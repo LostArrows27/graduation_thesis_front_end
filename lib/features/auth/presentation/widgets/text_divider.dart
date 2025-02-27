@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TextDivider extends StatelessWidget {
+  final String placeholder;
+
   const TextDivider({
     super.key,
+    this.placeholder = "or",
   });
 
   @override
@@ -17,7 +20,7 @@ class TextDivider extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "or",
+            placeholder,
             style: TextStyle(
                 fontSize: 14, color: Theme.of(context).colorScheme.outline),
           ),

@@ -12,7 +12,7 @@ class VideoRenderStatusPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context);
+            context.go(Routes.photosPage);
           },
         ),
         title: Text(
@@ -23,7 +23,11 @@ class VideoRenderStatusPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add photo to your video',
         onPressed: () {
-          context.push(Routes.videoImagePickerPage);
+          // NOTE: un-comment for dev process
+          // context.push(Routes.editVideoSchemaPage, extra: fakeVideoSchema);
+          // context.push(Routes.videoImagePickerPage);
+          context.push(Routes.videoRenderResult,
+              extra: "2854975a-8f26-498a-9c5c-6c2461652778");
         },
         child: Icon(Icons.add_photo_alternate_outlined),
       ),
@@ -34,3 +38,5 @@ class VideoRenderStatusPage extends StatelessWidget {
     );
   }
 }
+
+// NOTE: remove duplicate image

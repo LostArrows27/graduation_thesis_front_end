@@ -12,7 +12,7 @@ class VideoRenderModel extends VideoRender {
     return VideoRenderModel(
       id: map['id'] as String,
       status: map['status'] as String,
-      progress: map['progress'] as int,
+      progress: (map['progress'] as double).toInt(),
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
     );

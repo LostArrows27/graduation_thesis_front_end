@@ -90,7 +90,13 @@ void _initVideoRender() {
     // use case
     ..registerFactory(
         () => GetVideoSchema(videoRenderRepository: serviceLocator()))
+    ..registerFactory(
+        () => EditVideoSchema(videoRenderRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(
-        () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()));
+        () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()))
+    ..registerLazySingleton(
+        () => EditVideoSchemaBloc(editVideoSchema: serviceLocator()))
+    ..registerLazySingleton(
+        () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()));
 }

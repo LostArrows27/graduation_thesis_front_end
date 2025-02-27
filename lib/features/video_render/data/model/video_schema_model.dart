@@ -7,6 +7,7 @@ class VideoSchemaModel extends VideoSchema {
       required super.titleStyle,
       required super.bgMusic,
       required super.bgVideoTheme,
+      super.thumbnailUrl,
       super.maxDuration});
 
   factory VideoSchemaModel.fromJson(Map<String, dynamic> map) {
@@ -18,6 +19,8 @@ class VideoSchemaModel extends VideoSchema {
       bgVideoTheme: map['bgVideoTheme'] as String,
       maxDuration:
           map['maxDuration'] == null ? null : map['maxDuration'] as int,
+      thumbnailUrl:
+          map['thumbnailUrl'] == null ? null : map['thumbnailUrl'] as String,
     );
   }
 }

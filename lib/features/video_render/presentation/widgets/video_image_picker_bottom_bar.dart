@@ -10,13 +10,24 @@ import 'package:graduation_thesis_front_end/features/video_render/presentation/b
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_image_picker_page.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/widgets/selected_image_preview.dart';
 
-class VideoImagePickerBottomBar extends StatelessWidget {
+class VideoImagePickerBottomBar extends StatefulWidget {
   final ImageProviderModel imageProvider;
 
   const VideoImagePickerBottomBar({
     super.key,
     required this.imageProvider,
   });
+
+  @override
+  State<VideoImagePickerBottomBar> createState() =>
+      _VideoImagePickerBottomBarState();
+}
+
+class _VideoImagePickerBottomBarState extends State<VideoImagePickerBottomBar> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,8 @@ class VideoImagePickerBottomBar extends StatelessWidget {
                               color: Theme.of(context).colorScheme.onSurface),
                         ),
                         FilledButton(
-                          onPressed: imageProvider.getImageList.isEmpty ||
+                          onPressed: widget
+                                      .imageProvider.getImageList.isEmpty ||
                                   state is VideoRenderSchemaLoading
                               ? null
                               : () {
@@ -66,14 +78,14 @@ class VideoImagePickerBottomBar extends StatelessWidget {
                                         'Please wait until all images are loaded');
                                   }
 
-                                  final offlineImageList = imageProvider
-                                      .getImageList
+                                  final offlineImageList = widget
+                                      .imageProvider.getImageList
                                       .where((element) =>
                                           element.source == Source.offline)
                                       .toList();
 
-                                  final onlineImageUrl = imageProvider
-                                      .getImageList
+                                  final onlineImageUrl = widget
+                                      .imageProvider.getImageList
                                       .where((element) =>
                                           element.source == Source.online)
                                       .map((e) => e.filePath)
@@ -113,15 +125,15 @@ class VideoImagePickerBottomBar extends StatelessWidget {
                     height: 92,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: imageProvider.getImageList.length,
+                      itemCount: widget.imageProvider.getImageList.length,
                       itemBuilder: (context, index) {
                         return SelectedImagePreview(
                           removeImage: (url) {
-                            imageProvider.removeImage(url);
+                            widget.imageProvider.removeImage(url);
                           },
                           isLoading: state is VideoRenderSchemaLoading,
                           index: index,
-                          image: imageProvider.getImageList[index],
+                          image: widget.imageProvider.getImageList[index],
                         );
                       },
                     ),

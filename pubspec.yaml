@@ -36,6 +36,8 @@ dependencies:
   exif: ^3.3.0
   extended_image: ^9.1.0
   provider: ^6.1.2
+  audioplayers: ^6.2.0
+  percent_indicator: ^4.2.4
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +49,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/album_cover/
     - assets/images/slide1.jpg
     - assets/images/slide2.jpg
     - assets/images/slide3.jpg
@@ -56,6 +59,16 @@ flutter:
     - assets/images/discord.webp
     - assets/images/google.webp
     - assets/images/placeholder.jpg
+    - assets/images/slide_style_1.jpg
+    - assets/images/slide_style_2.png
+    - assets/images/spring.JPG
+    - assets/images/summer.JPG
+    - assets/images/fall.JPG
+    - assets/images/winter.JPG
+    - assets/images/alter/spring.JPG
+    - assets/images/alter/summer.JPG
+    - assets/images/alter/fall.JPG
+    - assets/images/alter/winter.JPG
     # lottie file
     - assets/lottie/activity.json
     - assets/lottie/album.json
@@ -66,6 +79,12 @@ flutter:
     - assets/lottie/congrat.json
     - assets/lottie/loading.json
     - assets/lottie/loading_2.json
+    - assets/lottie/video_loading.json
+    - assets/lottie/video_done.json
+    - assets/lottie/video_fail.json
+
+    # music directory
+    - assets/music/
 
   fonts:
     - family: Poppins

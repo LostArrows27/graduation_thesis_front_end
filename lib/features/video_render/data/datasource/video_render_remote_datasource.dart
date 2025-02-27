@@ -9,6 +9,9 @@ import 'package:http/http.dart' as http;
 abstract interface class VideoRenderRemoteDatasource {
   Future<VideoSchema> getVideoSchema(
       {required List<String> imageIdList, required String renderQueueId});
+
+  Future<VideoSchema> editVideoSchema(
+      {required VideoSchema videoSchema, required String scale});
 }
 
 class VideoRenderRemoteDatasourceImpl implements VideoRenderRemoteDatasource {
@@ -17,7 +20,7 @@ class VideoRenderRemoteDatasourceImpl implements VideoRenderRemoteDatasource {
 
   VideoRenderRemoteDatasourceImpl(
       {required this.supabaseClient,
-      this.endPointUrl = 'http://10.0.2.2:5000/api/schema'});
+      this.endPointUrl = 'http://10.0.2.2:5000/api'});
 
   @override
   Future<VideoSchema> getVideoSchema(
@@ -38,7 +41,7 @@ class VideoRenderRemoteDatasourceImpl implements VideoRenderRemoteDatasource {
       };
 
       final http.Response response = await http.post(
-        Uri.parse('$endPointUrl/create'),
+        Uri.parse('$endPointUrl/schema/create'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestBody),
       );
@@ -55,6 +58,60 @@ class VideoRenderRemoteDatasourceImpl implements VideoRenderRemoteDatasource {
       print(e);
       print(c);
       throw ServerException('Failed to get video schema');
+    }
+  }
+
+  @override
+  Future<VideoSchema> editVideoSchema(
+      {required VideoSchema videoSchema, required String scale}) async {
+    try {
+      final Map<String, dynamic> requestBody = {
+        "renderQueueId": videoSchema.videoRenderId,
+        'accessToken': supabaseClient.auth.currentSession?.accessToken,
+        'option': {
+          'title': videoSchema.videoTitle,
+          'titleStyle': videoSchema.titleStyle,
+          'bgVideoTheme': videoSchema.bgVideoTheme,
+          'bgMusic': videoSchema.bgMusic,
+          'maxDuration': videoSchema.maxDuration,
+        }
+      };
+
+      final http.Response response = await http.post(
+        Uri.parse('$endPointUrl/schema/edit'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseJson = jsonDecode(response.body);
+
+        final Map<String, dynamic> requestBody = {
+          'accessToken': supabaseClient.auth.currentSession?.accessToken,
+          "renderQueueId": videoSchema.videoRenderId,
+          "scale": [1, 1.5].contains(int.parse(scale)) ? int.parse(scale) : 1,
+        };
+
+        final http.Response videoRenderRes = await http.post(
+          Uri.parse('$endPointUrl/video/create-video'),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(requestBody),
+        );
+
+        if (videoRenderRes.statusCode != 200) {
+          print(jsonDecode(videoRenderRes.body)['error']);
+          throw ServerException('Failed to edit video schema');
+        }
+
+        return VideoSchemaModel.fromJson(responseJson['data']);
+      } else {
+        print(jsonDecode(response.body)['error']);
+        throw ServerException('Failed to edit video schema');
+      }
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException('Failed to edit video schema');
     }
   }
 }

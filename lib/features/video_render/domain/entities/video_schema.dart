@@ -19,12 +19,14 @@ class VideoSchema {
   final String bgMusic;
   final String bgVideoTheme;
   final int? maxDuration;
+  final String? thumbnailUrl;
 
-  VideoSchema(
+  const VideoSchema(
       {required this.videoRenderId,
       required this.videoTitle,
       required this.titleStyle,
       required this.bgMusic,
       required this.bgVideoTheme,
+      this.thumbnailUrl,
       this.maxDuration});
 }

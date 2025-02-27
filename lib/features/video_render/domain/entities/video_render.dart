@@ -11,4 +11,14 @@ class VideoRender {
       required this.progress,
       required this.createdAt,
       required this.updatedAt});
+
+  factory VideoRender.fromJson(Map<String, dynamic> map) {
+    return VideoRender(
+      id: map['id'] as String,
+      status: map['status'] as String,
+      progress: (map['progress'] as num).toInt(),
+      createdAt: DateTime.parse(map['created_at']),
+      updatedAt: DateTime.parse(map['updated_at']),
+    );
+  }
 }

@@ -8,8 +8,10 @@ import 'package:graduation_thesis_front_end/features/auth/data/datasource/supaba
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/selected_image.dart';
+import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_render.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_schema.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/repositories/video_render_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VideoRenderRepositoryImpl implements VideoRenderRepository {
   final ImageRemoteDataSource imageRemoteDataSource;
@@ -59,6 +61,44 @@ class VideoRenderRepositoryImpl implements VideoRenderRepository {
       final videoSchema = await videoRenderNodeJsDatasource.getVideoSchema(
           imageIdList: imageIdLists, renderQueueId: renderVideoId);
 
+      return right(videoSchema);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, VideoSchema>> editVideoSchema(
+      {required VideoSchema videoSchema, required String scale}) async {
+    try {
+      final editedVideoSchema = await videoRenderNodeJsDatasource
+          .editVideoSchema(videoSchema: videoSchema, scale: scale);
+      return right(editedVideoSchema);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  RealtimeChannel onVideoRenderStatusChange(
+      {required String videoRenderId,
+      required Function(VideoRender) callback}) {
+    return videoRenderSupabaseDatasource.onVideoRenderStatusChange(
+        videoRenderId: videoRenderId, callback: callback);
+  }
+
+  @override
+  void unSubcribeToMessagesChannel({required String channelName}) {
+    videoRenderSupabaseDatasource.unSubcribeToVideoRenderChannel(
+        channelName: channelName);
+  }
+
+  @override
+  Future<Either<Failure, VideoRender>> getVideoSchema(
+      {required String videoRenderId}) async {
+    try {
+      final videoSchema = await videoRenderSupabaseDatasource.getVideoRenderStatus(
+          videoRenderId: videoRenderId);
       return right(videoSchema);
     } on ServerException catch (e) {
       return left(Failure(e.message));
