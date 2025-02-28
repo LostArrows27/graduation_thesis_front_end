@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:graduation_thesis_front_end/core/routes/router.dart';
+import 'package:graduation_thesis_front_end/core/routes/router.dependencies.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';

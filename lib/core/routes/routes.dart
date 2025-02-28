@@ -22,6 +22,7 @@ class Routes {
   static const String videoImagePickerPage = '/video-image-picker';
   static const String editVideoSchemaPage = '/edit-video-schema';
   static const String videoRenderResult = '/video-render-result';
+  static const String videoViewerPage = '/video-viewer';
 }
 
 List<String> homeRouteList = [
@@ -33,4 +34,5 @@ List<String> homeRouteList = [
   Routes.videoImagePickerPage,
   Routes.editVideoSchemaPage,
   Routes.videoRenderResult,
+  Routes.videoViewerPage,
 ];

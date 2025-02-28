@@ -25,11 +25,18 @@ class VideoRenderResultPage extends StatelessWidget {
               context.go(Routes.videoRenderStatusPage);
             },
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                context.go(Routes.photosPage);
+              },
+            ),
+            SizedBox(width: 5),
+          ],
         ),
-        body: Container(
-          child: Center(
-            child: VideoProgressBody(videoRenderId: videoRenderId),
-          ),
+        body: Center(
+          child: VideoProgressBody(videoRenderId: videoRenderId),
         ),
       ),
     );
@@ -221,7 +228,14 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
                         ),
                       ),
                       onPressed: () {
-                        context.go(Routes.videoRenderStatusPage);
+                        if (state is VideoRenderProgressSuccess) {
+                          // TODO: navigate to video viewer page !
+                        }
+
+                        if (state is VideoRenderProgressUpdate ||
+                            state is VideoRenderProgressInitial) {
+                          context.go(Routes.videoRenderStatusPage);
+                        }
                       },
                       child: Text("See Render Result",
                           style: TextStyle(

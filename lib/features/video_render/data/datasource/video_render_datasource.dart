@@ -99,7 +99,7 @@ class VideoRenderDatasourceImpl implements VideoRenderDatasource {
       final videoSchema = await supabaseClient
           .from('video_render')
           .select(
-              'id, status, progress, created_at, updated_at, thumbnail_url, title: schema->scene->introScene->firstScene->title')
+              'id, status, progress, created_at, updated_at, thumbnail_url, title: schema->introScene->firstScene->title')
           .eq('request_user_id', userId)
           .order('created_at', ascending: false);
 

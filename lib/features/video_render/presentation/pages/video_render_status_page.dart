@@ -15,32 +15,51 @@ class VideoRenderStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => serviceLocator<RenderStatusBloc>(),
-        child: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  context.go(Routes.photosPage);
-                },
-              ),
-              title: Text(
-                'Recap Video Status',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              tooltip: 'Add photo to your video',
+        child: VideoRenderPageLayout());
+  }
+}
+
+class VideoRenderPageLayout extends StatelessWidget {
+  const VideoRenderPageLayout({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              context.go(Routes.photosPage);
+            },
+          ),
+          title: Text(
+            'Recap Video Status',
+            style: TextStyle(fontSize: 20),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
               onPressed: () {
-                // NOTE: un-comment for dev process
-                // context.push(Routes.editVideoSchemaPage, extra: fakeVideoSchema);
-                context.push(Routes.videoImagePickerPage);
+                context.read<RenderStatusBloc>().add(FetchAllRender());
               },
-              child: Icon(Icons.add_photo_alternate_outlined),
-            ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-            body: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: RenderStatusList())));
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Add photo to your video',
+          onPressed: () {
+            // NOTE: un-comment for dev process
+            // context.push(Routes.editVideoSchemaPage, extra: fakeVideoSchema);
+            context.push(Routes.videoImagePickerPage);
+          },
+          child: Icon(Icons.add_photo_alternate_outlined),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        body: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+            child: RenderStatusList()));
   }
 }
 
