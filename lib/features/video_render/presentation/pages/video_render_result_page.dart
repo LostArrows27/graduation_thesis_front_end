@@ -18,8 +18,18 @@ class VideoRenderResultPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => serviceLocator<VideoRenderProgressBloc>(),
       child: Scaffold(
-        body: Center(
-          child: VideoProgressBody(videoRenderId: videoRenderId),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              context.go(Routes.videoRenderStatusPage);
+            },
+          ),
+        ),
+        body: Container(
+          child: Center(
+            child: VideoProgressBody(videoRenderId: videoRenderId),
+          ),
         ),
       ),
     );
@@ -61,6 +71,7 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
           UnSubcribeToVideoRenderChannel(
               channelName: 'video_render_preview:${widget.videoRenderId}'),
         );
+    context.read<VideoRenderProgressBloc>().close();
     super.dispose();
   }
 
@@ -94,11 +105,44 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
     }
   }
 
+  Widget _failedWidget() {
+    return Center(
+        child: Column(
+      children: [
+        SizedBox(height: 100),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.asset('assets/images/wrong.webp', width: 350),
+        ),
+        SizedBox(height: 50),
+        Text(
+          "OOPS !",
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary),
+        ),
+        SizedBox(height: 20),
+        Text(
+          "Failed to fetch video render status",
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 15),
+        FilledButton(
+          onPressed: () {
+            context.read<VideoRenderProgressBloc>().add(
+                FirstFetchVideoProgress(videoRenderId: widget.videoRenderId));
+          },
+          child: Text("Retry"),
+        )
+      ],
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<VideoRenderProgressBloc, VideoRenderProgressState>(
       listener: (context, state) {
-        print(state);
         if (state is VideoRenderProgressUpdate) {
           return setState(() {
             _progress = state.progress.toDouble();
@@ -117,9 +161,13 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
         }
       },
       builder: (context, state) {
+        if (state is VideoRenderProgressFailure) {
+          return _failedWidget();
+        }
+
         return Column(
           children: [
-            SizedBox(height: 140),
+            SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(

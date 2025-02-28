@@ -92,11 +92,16 @@ void _initVideoRender() {
         () => GetVideoSchema(videoRenderRepository: serviceLocator()))
     ..registerFactory(
         () => EditVideoSchema(videoRenderRepository: serviceLocator()))
+    ..registerFactory(
+        () => GetAllVideoRender(videoRenderRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(
         () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()))
     ..registerLazySingleton(
         () => EditVideoSchemaBloc(editVideoSchema: serviceLocator()))
     ..registerLazySingleton(
-        () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()));
+        () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()))
+    ..registerLazySingleton(() => RenderStatusBloc(
+        videoRenderRepository: serviceLocator(),
+        getAllVideoRender: serviceLocator()));
 }

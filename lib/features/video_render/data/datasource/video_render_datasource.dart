@@ -6,13 +6,19 @@ abstract interface class VideoRenderDatasource {
   Future<String> createVideoSchema();
 
   Future<VideoRender> getVideoRenderStatus({required String videoRenderId});
+  Future<List<VideoRender>> getAllVideoRenderStatus();
 
   RealtimeChannel onVideoRenderStatusChange(
       {required String videoRenderId, required Function(VideoRender) callback});
 
+  RealtimeChannel listenVideoRenderListChange(
+      {required Function(VideoRender) callback});
+
   void unSubcribeToVideoRenderChannel({
     required String channelName,
   });
+
+  void unSubcribeToRenderListChannel();
 }
 
 class VideoRenderDatasourceImpl implements VideoRenderDatasource {
@@ -20,13 +26,15 @@ class VideoRenderDatasourceImpl implements VideoRenderDatasource {
 
   VideoRenderDatasourceImpl({required this.supabaseClient});
 
+  String get userId => supabaseClient.auth.currentUser!.id;
+
   @override
   Future<String> createVideoSchema() async {
     try {
       final videoSchema = await supabaseClient
           .from('video_render')
           .insert({
-            'request_user_id': supabaseClient.auth.currentUser!.id,
+            'request_user_id': userId,
           })
           .select()
           .single();
@@ -83,5 +91,50 @@ class VideoRenderDatasourceImpl implements VideoRenderDatasource {
       print(c);
       throw ServerException('Failed to get video schema');
     }
+  }
+
+  @override
+  Future<List<VideoRender>> getAllVideoRenderStatus() async {
+    try {
+      final videoSchema = await supabaseClient
+          .from('video_render')
+          .select(
+              'id, status, progress, created_at, updated_at, thumbnail_url, title: schema->scene->introScene->firstScene->title')
+          .eq('request_user_id', userId)
+          .order('created_at', ascending: false);
+
+      return videoSchema.map((e) => VideoRender.fromJson(e)).toList();
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException('Failed to get user video render list');
+    }
+  }
+
+  @override
+  RealtimeChannel listenVideoRenderListChange(
+      {required Function(VideoRender p1) callback}) {
+    return supabaseClient
+        .channel('video_render_list:$userId')
+        .onPostgresChanges(
+            event: PostgresChangeEvent.update,
+            schema: 'public',
+            table: 'video_render',
+            callback: (payload) async {
+              final data = payload.newRecord;
+              VideoRender newSchema = VideoRender.fromJson(data);
+
+              callback(newSchema);
+            },
+            filter: PostgresChangeFilter(
+                type: PostgresChangeFilterType.eq,
+                column: 'request_user_id',
+                value: userId))
+        .subscribe();
+  }
+
+  @override
+  void unSubcribeToRenderListChannel() {
+    supabaseClient.channel('video_render_list:$userId').unsubscribe();
   }
 }

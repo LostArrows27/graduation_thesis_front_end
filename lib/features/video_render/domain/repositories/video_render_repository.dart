@@ -14,13 +14,19 @@ abstract interface class VideoRenderRepository {
   Future<Either<Failure, VideoSchema>> editVideoSchema(
       {required VideoSchema videoSchema, required String scale});
 
-  Future<Either<Failure, VideoRender>> getVideoSchema(
+  Future<Either<Failure, VideoRender>> getVideoRenderStatus(
       {required String videoRenderId});
+
+  Future<Either<Failure, List<VideoRender>>> getAllVideoRenderStatus();
 
   RealtimeChannel onVideoRenderStatusChange(
       {required String videoRenderId, required Function(VideoRender) callback});
 
-  void unSubcribeToMessagesChannel({
+  RealtimeChannel listenVideoRenderListChange(
+      {required Function(VideoRender) callback});
+
+  void unSubcribeToVideoRenderChannel({
     required String channelName,
   });
+  void unSubcribeToRenderListChannel();
 }

@@ -30,7 +30,7 @@ class VideoRenderProgressBloc
 
   void _onFirstFetchVideoProgress(FirstFetchVideoProgress event,
       Emitter<VideoRenderProgressState> emit) async {
-    final res = await _videoRenderRepository.getVideoSchema(
+    final res = await _videoRenderRepository.getVideoRenderStatus(
         videoRenderId: event.videoRenderId);
 
     res.fold((l) => emit(VideoRenderProgressFailure()), (r) {
@@ -61,7 +61,7 @@ class VideoRenderProgressBloc
 
   void _onUnSubcribeToVideoRenderChannel(UnSubcribeToVideoRenderChannel event,
       Emitter<VideoRenderProgressState> emit) {
-    _videoRenderRepository.unSubcribeToMessagesChannel(
+    _videoRenderRepository.unSubcribeToVideoRenderChannel(
         channelName: event.channelName);
   }
 

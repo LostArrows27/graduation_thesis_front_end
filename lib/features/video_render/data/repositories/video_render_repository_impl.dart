@@ -88,20 +88,43 @@ class VideoRenderRepositoryImpl implements VideoRenderRepository {
   }
 
   @override
-  void unSubcribeToMessagesChannel({required String channelName}) {
+  Future<Either<Failure, VideoRender>> getVideoRenderStatus(
+      {required String videoRenderId}) async {
+    try {
+      final videoSchema = await videoRenderSupabaseDatasource
+          .getVideoRenderStatus(videoRenderId: videoRenderId);
+      return right(videoSchema);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<VideoRender>>> getAllVideoRenderStatus() async {
+    try {
+      final videoSchema =
+          await videoRenderSupabaseDatasource.getAllVideoRenderStatus();
+      return right(videoSchema);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  RealtimeChannel listenVideoRenderListChange(
+      {required Function(VideoRender p1) callback}) {
+    return videoRenderSupabaseDatasource.listenVideoRenderListChange(
+        callback: callback);
+  }
+
+  @override
+  void unSubcribeToVideoRenderChannel({required String channelName}) {
     videoRenderSupabaseDatasource.unSubcribeToVideoRenderChannel(
         channelName: channelName);
   }
 
   @override
-  Future<Either<Failure, VideoRender>> getVideoSchema(
-      {required String videoRenderId}) async {
-    try {
-      final videoSchema = await videoRenderSupabaseDatasource.getVideoRenderStatus(
-          videoRenderId: videoRenderId);
-      return right(videoSchema);
-    } on ServerException catch (e) {
-      return left(Failure(e.message));
-    }
+  void unSubcribeToRenderListChannel() {
+    videoRenderSupabaseDatasource.unSubcribeToRenderListChannel();
   }
 }

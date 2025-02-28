@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.1.2
   audioplayers: ^6.2.0
   percent_indicator: ^4.2.4
+  timeago: ^3.2.2
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
     - assets/images/alter/summer.JPG
     - assets/images/alter/fall.JPG
     - assets/images/alter/winter.JPG
+    - assets/images/wrong.webp
     # lottie file
     - assets/lottie/activity.json
     - assets/lottie/album.json
