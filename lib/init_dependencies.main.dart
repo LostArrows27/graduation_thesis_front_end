@@ -94,6 +94,8 @@ void _initVideoRender() {
         () => EditVideoSchema(videoRenderRepository: serviceLocator()))
     ..registerFactory(
         () => GetAllVideoRender(videoRenderRepository: serviceLocator()))
+    ..registerFactory(
+        () => GetAllVideoChunk(videoRenderRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(
         () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()))
@@ -103,5 +105,7 @@ void _initVideoRender() {
         () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()))
     ..registerLazySingleton(() => RenderStatusBloc(
         videoRenderRepository: serviceLocator(),
-        getAllVideoRender: serviceLocator()));
+        getAllVideoRender: serviceLocator()))
+    ..registerLazySingleton(
+        () => VideoChunkBloc(getAllVideoChunk: serviceLocator()));
 }

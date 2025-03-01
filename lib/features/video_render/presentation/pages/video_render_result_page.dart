@@ -230,6 +230,8 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
                       onPressed: () {
                         if (state is VideoRenderProgressSuccess) {
                           // TODO: navigate to video viewer page !
+                          context.push(Routes.videoViewerPage,
+                              extra: widget.videoRenderId);
                         }
 
                         if (state is VideoRenderProgressUpdate ||

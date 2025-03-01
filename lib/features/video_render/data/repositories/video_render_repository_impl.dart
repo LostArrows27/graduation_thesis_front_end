@@ -7,6 +7,7 @@ import 'package:graduation_thesis_front_end/features/auth/data/datasource/python
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/image_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/model/video_chunk_model.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/selected_image.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_render.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_schema.dart';
@@ -126,5 +127,17 @@ class VideoRenderRepositoryImpl implements VideoRenderRepository {
   @override
   void unSubcribeToRenderListChannel() {
     videoRenderSupabaseDatasource.unSubcribeToRenderListChannel();
+  }
+
+  @override
+  Future<Either<Failure, VideoChunkModel>> getVideoChunks(
+      {required String videoRenderId}) async {
+    try {
+      final videoChunks = await videoRenderSupabaseDatasource.getVideoChunks(
+          videoRenderId: videoRenderId);
+      return right(videoChunks);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
   }
 }

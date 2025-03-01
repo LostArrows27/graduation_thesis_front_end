@@ -129,15 +129,14 @@ class _UploadAvatarPageState extends State<UploadAvatarPage> {
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: Stack(
-                                    children: state is AuthAvatarLoading
+                                    children: state is! AuthAvatarLoading
                                         ? [
                                             ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(21),
                                               child: ColorFiltered(
                                                 colorFilter: ColorFilter.mode(
-                                                  Colors.black
-                                                      .withValues(alpha: 100),
+                                                  Colors.black.withAlpha(100),
                                                   BlendMode.saturation,
                                                 ),
                                                 child: ClipRRect(

@@ -7,9 +7,12 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
+// import 'package:media_kit/media_kit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // MediaKit.ensureInitialized();
 
   await initDependencies();
 

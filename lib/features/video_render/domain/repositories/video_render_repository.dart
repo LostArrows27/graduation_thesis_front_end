@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:graduation_thesis_front_end/core/error/failure.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/model/video_chunk_model.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/selected_image.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_render.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_schema.dart';
@@ -29,4 +30,7 @@ abstract interface class VideoRenderRepository {
     required String channelName,
   });
   void unSubcribeToRenderListChannel();
+
+  Future<Either<Failure, VideoChunkModel>> getVideoChunks(
+      {required String videoRenderId});
 }

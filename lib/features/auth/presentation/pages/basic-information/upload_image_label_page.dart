@@ -161,8 +161,7 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
                                                 BorderRadius.circular(15),
                                             child: ColorFiltered(
                                               colorFilter: ColorFilter.mode(
-                                                Colors.black
-                                                    .withValues(alpha: 100),
+                                                Colors.black.withAlpha(100),
                                                 BlendMode.saturation,
                                               ),
                                               child: ClipRRect(
@@ -183,60 +182,49 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
                                           )
                                         ],
                                       )
-                                    : imagesLabel.isNotEmpty
+                                    : !imagesLabel.isNotEmpty
                                         ? Stack(
                                             fit: StackFit.expand,
                                             children: [
                                               ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(15),
-                                                child: ColorFiltered(
-                                                  colorFilter: ColorFilter.mode(
-                                                    Colors.black
-                                                        .withValues(alpha: 255),
-                                                    BlendMode.saturation,
-                                                  ),
-                                                  child: Center(
-                                                      child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Lottie.asset(
-                                                          'assets/lottie/touch_here.json',
-                                                          delegates:
-                                                              LottieDelegates(
-                                                            values: [
-                                                              ValueDelegate
-                                                                  .color(
-                                                                const ['**'],
-                                                                value: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primary,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          width:
-                                                              double.infinity,
-                                                          height: 100),
-                                                      SizedBox(height: 20),
-                                                      Text(
-                                                        'Tap here to view\nimage categorize result',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
+                                                child: Center(
+                                                    child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Lottie.asset(
+                                                        'assets/lottie/touch_here.json',
+                                                        delegates:
+                                                            LottieDelegates(
+                                                          values: [
+                                                            ValueDelegate.color(
+                                                              const ['**'],
+                                                              value: Theme.of(
+                                                                      context)
                                                                   .colorScheme
                                                                   .primary,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                            ),
+                                                          ],
                                                         ),
+                                                        width: double.infinity,
+                                                        height: 100),
+                                                    SizedBox(height: 20),
+                                                    Text(
+                                                      'Tap here to view\nimage categorize result',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
-                                                  )),
-                                                ),
+                                                    ),
+                                                  ],
+                                                )),
                                               ),
                                             ],
                                           )

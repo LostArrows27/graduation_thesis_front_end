@@ -6,8 +6,9 @@ plugins {
 }
 
 android {
+    compileSdk = 35
     namespace = "com.example.graduation_thesis_front_end"
-    compileSdk = flutter.compileSdkVersion
+    // compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

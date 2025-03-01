@@ -35,10 +35,8 @@ class BrowseOnlineGalleryHeader extends StatelessWidget {
                   shape: const CircleBorder(),
                   child: InkWell(
                     customBorder: const CircleBorder(),
-                    splashColor: Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withValues(alpha: 0.13),
+                    splashColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(13),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -91,10 +89,8 @@ class BrowseOnlineGalleryHeader extends StatelessWidget {
                   shape: const CircleBorder(),
                   child: InkWell(
                     customBorder: const CircleBorder(),
-                    splashColor: Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withValues(alpha: 0.13),
+                    splashColor:
+                        Theme.of(context).colorScheme.primary.withAlpha(13),
                     onTap: () {},
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),

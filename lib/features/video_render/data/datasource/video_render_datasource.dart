@@ -1,4 +1,5 @@
 import 'package:graduation_thesis_front_end/core/error/server_exception.dart';
+import 'package:graduation_thesis_front_end/features/video_render/data/model/video_chunk_model.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_render.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,6 +20,8 @@ abstract interface class VideoRenderDatasource {
   });
 
   void unSubcribeToRenderListChannel();
+
+  Future<VideoChunkModel> getVideoChunks({required String videoRenderId});
 }
 
 class VideoRenderDatasourceImpl implements VideoRenderDatasource {
@@ -136,5 +139,27 @@ class VideoRenderDatasourceImpl implements VideoRenderDatasource {
   @override
   void unSubcribeToRenderListChannel() {
     supabaseClient.channel('video_render_list:$userId').unsubscribe();
+  }
+
+  @override
+  Future<VideoChunkModel> getVideoChunks(
+      {required String videoRenderId}) async {
+    try {
+      final res = await supabaseClient
+          .from('video_chunk')
+          .select()
+          .eq('video_id', videoRenderId)
+          .single();
+
+      return VideoChunkModel.fromJson(res).copyWith(
+        url: supabaseClient.storage
+            .from(res['chunk_bucket_id'])
+            .getPublicUrl(res['chunk_name']),
+      );
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException('Failed to get video chunks');
+    }
   }
 }
