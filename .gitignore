@@ -46,3 +46,5 @@ app.*.map.json
 
 # App Secret 
 /lib/core/secret/*
+
+archive/
