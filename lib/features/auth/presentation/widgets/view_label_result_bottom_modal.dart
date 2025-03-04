@@ -64,78 +64,120 @@ void viewLabelResultBottomModal(
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Wrap(
-                                    spacing: 15, // gap between adjacent chips
-                                    runSpacing: 10, // gap between Lines,
-                                    children: [
-                                      ...imageLabel.labels.labels.locationLabels
-                                          .map(
-                                        (e) => Chip(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  width: 1),
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          label: Text(
-                                            e.label,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
+                                  imageLabel.labels.labels.locationLabels
+                                          .isNotEmpty
+                                      ? Wrap(
+                                          spacing:
+                                              15, // gap between adjacent chips
+                                          runSpacing: 10, // gap between Lines,
+                                          children: [
+                                            ...imageLabel
+                                                .labels.labels.locationLabels
+                                                .map(
+                                              (e) => Chip(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        width: 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                label: Text(
+                                                  e.label,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ),
+                                            ...imageLabel
+                                                .labels.labels.eventLabels
+                                                .map(
+                                              (e) => Chip(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        width: 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                label: Text(
+                                                  e.label,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ),
+                                            ...imageLabel
+                                                .labels.labels.actionLabels
+                                                .map(
+                                              (e) => Chip(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary,
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary,
+                                                        width: 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                label: Text(
+                                                  e.label,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Wrap(
+                                          spacing: 15,
+                                          runSpacing: 10,
+                                          children: [
+                                            Chip(
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                      width: 1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              label: Text(
+                                                "Error labeling this image",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      ...imageLabel.labels.labels.eventLabels
-                                          .map(
-                                        (e) => Chip(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  width: 1),
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          label: Text(
-                                            e.label,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      ),
-                                      ...imageLabel.labels.labels.actionLabels
-                                          .map(
-                                        (e) => Chip(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary,
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary,
-                                                  width: 1),
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          label: Text(
-                                            e.label,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
                                 ],
                               )),
                         ).asGlass(

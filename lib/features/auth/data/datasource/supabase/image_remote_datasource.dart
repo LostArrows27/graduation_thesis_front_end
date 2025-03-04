@@ -37,14 +37,21 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
 
         await supabaseClient.storage.from(bucket).upload(imageName, file);
 
-        await supabaseClient.from('image').insert({
-          'uploader_id': userId,
-          'image_name': imageName,
-          'image_bucket_id': bucket,
-          // with no labels -> for DB task python listen
-        });
+        final res = await supabaseClient
+            .from('image')
+            .insert({
+              'uploader_id': userId,
+              'image_name': imageName,
+              'image_bucket_id': bucket,
+              // with no labels -> for DB task python listen
+            })
+            .select('id')
+            .single();
 
-        return ImageParams(imageBucketId: bucket, imageName: imageName);
+        return ImageParams(
+            imageBucketId: bucket,
+            imageName: imageName,
+            imageId: res['id'] as String);
       }).toList();
 
       final results = await Future.wait(uploadFutures);

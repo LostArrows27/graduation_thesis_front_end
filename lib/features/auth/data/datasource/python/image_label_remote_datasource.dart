@@ -33,6 +33,7 @@ class ImageLabelRemoteDataSourceImpl implements ImageLabelRemoteDataSource {
           return {
             "image_bucket_id": param.imageBucketId,
             "image_name": param.imageName,
+            "image_id": param.imageId,
           };
         }).toList(),
       };

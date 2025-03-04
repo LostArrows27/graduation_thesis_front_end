@@ -46,7 +46,9 @@ class VideoRenderRepositoryImpl implements VideoRenderRepository {
       await imageLabelRemoteDataSource.getLabelImages(
           imageParams: offlineImageIdLists
               .map((e) => ImageParams(
-                  imageBucketId: e.imageBucketId, imageName: e.imageName))
+                  imageId: e.id,
+                  imageBucketId: e.imageBucketId,
+                  imageName: e.imageName))
               .toList(),
           userId: userId);
 

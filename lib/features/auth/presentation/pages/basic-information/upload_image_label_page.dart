@@ -182,7 +182,7 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
                                           )
                                         ],
                                       )
-                                    : !imagesLabel.isNotEmpty
+                                    : imagesLabel.isNotEmpty
                                         ? Stack(
                                             fit: StackFit.expand,
                                             children: [

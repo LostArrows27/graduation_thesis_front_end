@@ -131,19 +131,19 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, List<Photo>>> uploadAndLabelImage(
       {required List<File> images, required String userId}) async {
     try {
-      // final imageParams = await imageRemoteDataSource.uploadImageList(
-      //     imageParams: images, userId: userId);
+      final imageParams = await imageRemoteDataSource.uploadImageList(
+          imageParams: images, userId: userId);
 
-      // // final imageParams = fakeImageParams;
+      // final imageParams = fakeImageParams;
 
-      // final imageModelList = await imageLabelRemoteDataSource.getLabelImages(
-      //   imageParams: imageParams,
-      //   userId: userId,
-      // );
+      final imageModelList = await imageLabelRemoteDataSource.getLabelImages(
+        imageParams: imageParams,
+        userId: userId,
+      );
 
-      // return right(imageModelList);
+      return right(imageModelList);
 
-      return right(imageListFake);
+      // return right(imageListFake);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }
