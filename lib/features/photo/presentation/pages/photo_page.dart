@@ -62,7 +62,8 @@ class _PhotoPageState extends State<PhotoPage> {
           return Scaffold(
             body: Center(
                 child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).colorScheme.primary),
             )),
           );
         } else {

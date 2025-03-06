@@ -6,6 +6,7 @@ Future<void> initDependencies() async {
   _initAuth();
   _initPhoto();
   _initVideoRender();
+  _initExplore();
 
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
@@ -108,4 +109,25 @@ void _initVideoRender() {
         getAllVideoRender: serviceLocator()))
     ..registerLazySingleton(
         () => VideoChunkBloc(getAllVideoChunk: serviceLocator()));
+}
+
+void _initExplore() {
+  serviceLocator
+    // data source
+    ..registerFactory<PeopleCategoryRemoteDatasource>(() =>
+        PeopleCategoryRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    ..registerFactory<PersonGroupRemoteDatasource>(
+        () => PersonGroupRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<ExploreRepository>(() => ExploreRepositoryImpl(
+        personGroupRemoteDatasource: serviceLocator(),
+        peopleCategoryRemoteDatasource: serviceLocator()))
+    // use case
+    ..registerFactory(() => GetPeopleGroup(exploreRepository: serviceLocator()))
+    ..registerFactory(
+        () => ChangePersonGroupName(exploreRepository: serviceLocator()))
+    // bloc
+    ..registerLazySingleton(() => PersonGroupBloc(
+        changePersonGroupName: serviceLocator(),
+        getPeopleGroup: serviceLocator()));
 }

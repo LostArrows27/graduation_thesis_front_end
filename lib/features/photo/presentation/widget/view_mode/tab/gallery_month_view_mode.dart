@@ -70,6 +70,9 @@ class GalleryMonthViewMode extends StatelessWidget {
                     ]),
               );
             }, childCount: state.groupedByMonth.length)),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 80),
+            ),
           ],
         );
       },

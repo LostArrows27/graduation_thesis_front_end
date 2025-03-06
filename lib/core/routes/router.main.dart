@@ -89,6 +89,19 @@ final routerConfig = GoRouter(
         builder: (context, state) {
           var videoRenderId = state.extra as String;
           return VideoViewer(videoRenderId: videoRenderId);
+        }),
+    // explore route
+    GoRoute(
+        path: Routes.peopleExplorePage,
+        builder: (context, state) {
+          final personGroups = state.extra as List<PersonGroup>;
+          return ExplorePeoplePage(peopleList: personGroups);
+        }),
+    GoRoute(
+        path: Routes.peopleDetailPage,
+        builder: (context, state) {
+          final personGroup = state.extra as PersonGroup;
+          return PeopleDetail(personGroup: personGroup);
         })
   ],
   redirect: (context, state) {

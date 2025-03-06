@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/loader.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/relative_time_covert.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_render.dart';
@@ -217,7 +218,7 @@ class _RenderStatusListState extends State<RenderStatusList> {
       },
       builder: (context, state) {
         if (state is FetchRenderLoading || state is RenderStatusInitial) {
-          return Center(child: CircularProgressIndicator());
+          return Loader();
         }
 
         if (state is FetchRenderFailure) {
