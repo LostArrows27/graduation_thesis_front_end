@@ -26,6 +26,8 @@ class Routes {
 
   static const String peopleExplorePage = '/people-explore';
   static const String peopleDetailPage = '/people-detail';
+
+  static const String uploadPhotoPage = '/upload-photo'; 
 }
 
 List<String> homeRouteList = [
@@ -40,4 +42,5 @@ List<String> homeRouteList = [
   Routes.videoViewerPage,
   Routes.peopleExplorePage,
   Routes.peopleDetailPage,
+  Routes.uploadPhotoPage,
 ];

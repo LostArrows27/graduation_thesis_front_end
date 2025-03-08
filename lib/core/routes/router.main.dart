@@ -102,7 +102,14 @@ final routerConfig = GoRouter(
         builder: (context, state) {
           final personGroup = state.extra as PersonGroup;
           return PeopleDetail(personGroup: personGroup);
-        })
+        }),
+    // photo route
+    GoRoute(
+        path: Routes.uploadPhotoPage,
+        builder: (context, state) {
+          final imageFiles = state.extra as List<File>;
+          return UploadPhotoPage(imageFiles: imageFiles);
+        }),
   ],
   redirect: (context, state) {
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);

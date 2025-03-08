@@ -160,8 +160,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onUploadAndGetImageLabel(
       UploadAndGetImageLabelEvent event, Emitter<AuthState> emit) async {
     emit(AuthUploadAndGetImageLabelLoading());
-    final res = await _uploadAndGetImageLabel(UploadAndGetImageLabelParams(
-        images: event.files, userId: event.userId));
+    final res = await _uploadAndGetImageLabel(
+        UploadAndGetImageLabelParams(images: event.files));
 
     res.fold((l) => emit(AuthUploadAndGetImageLabelFailure(message: l.message)),
         (r) => emit(AuthUploadAndGetImageLabelSuccess(images: r)));

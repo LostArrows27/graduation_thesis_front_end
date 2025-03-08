@@ -27,7 +27,7 @@ void _initAuth() {
     ..registerFactory<ImageRemoteDataSource>(
         () => ImageRemoteDataSourceImpl(supabaseClient: serviceLocator()))
     ..registerFactory<ImageLabelRemoteDataSource>(
-        () => ImageLabelRemoteDataSourceImpl())
+        () => ImageLabelRemoteDataSourceImpl(supabaseClient: serviceLocator()))
     // repository
     ..registerFactory<AuthRepository>(() => AuthRepositoryImpl(
         remoteDataSource: serviceLocator(),
@@ -69,10 +69,12 @@ void _initPhoto() {
         () => PhotoRepositoryImpl(photoRemoteDataSource: serviceLocator()))
     // use case
     ..registerFactory(() => GetAllUserImage(serviceLocator()))
+    ..registerFactory(() => UploadImages(authRepository: serviceLocator()))
     // bloc
-    ..registerLazySingleton(() => PhotoViewModeCubit())
+    ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()))
+    ..registerFactory(() => UploadPhotoBloc(uploadImages: serviceLocator()))
     // cubit
-    ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()));
+    ..registerLazySingleton(() => PhotoViewModeCubit());
 }
 
 void _initVideoRender() {

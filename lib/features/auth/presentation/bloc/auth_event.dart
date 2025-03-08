@@ -48,9 +48,8 @@ final class AuthUpdateUserSurveyEvent extends AuthEvent {
 // upload and label image
 final class UploadAndGetImageLabelEvent extends AuthEvent {
   final List<File> files;
-  final String userId;
 
-  UploadAndGetImageLabelEvent({required this.files, required this.userId});
+  UploadAndGetImageLabelEvent({required this.files});
 }
 
 final class AuthMarkDoneLabelingEvent extends AuthEvent {

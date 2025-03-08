@@ -5,7 +5,7 @@ import 'package:graduation_thesis_front_end/features/explore_people/presentation
 
 Future<void> openNameEditModal(
     BuildContext context, String initialText, int clusterId) async {
-  TextEditingController controller = TextEditingController(text: initialText);
+  TextEditingController controller = TextEditingController(text: initialText.contains('Person') || initialText.contains('Noise') ? null : initialText);
 
   return showDialog<void>(
     context: context,

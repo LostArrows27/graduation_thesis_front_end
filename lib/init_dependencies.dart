@@ -27,8 +27,10 @@ import 'package:graduation_thesis_front_end/features/photo/data/datasource/photo
 import 'package:graduation_thesis_front_end/features/photo/data/repository/photo_repository_impl.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/repository/photo_repository.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/usecases/upload_images.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/upload_photo/bloc/upload_photo_bloc.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/datasource/video_render_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/video_render/data/repositories/video_render_repository_impl.dart';

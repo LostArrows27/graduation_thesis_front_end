@@ -16,10 +16,13 @@ List<Map<String, dynamic>> groupImageByDate(List<Photo> images) {
   List<Map<String, dynamic>> result = groupedImages.entries.map((entry) {
     var dates = entry.key.split('-');
 
+    var sortImagesInDateByTimeDesc = entry.value
+      ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
     return {
       'date': DateTime(
           int.parse(dates[0]), int.parse(dates[1]), int.parse(dates[2])),
-      'images': entry.value,
+      'images': sortImagesInDateByTimeDesc,
     };
   }).toList();
 
@@ -102,10 +105,13 @@ List<Map<String, dynamic>> groupImageFaceByDate(List<Face> faces) {
   List<Map<String, dynamic>> result = groupedFace.entries.map((entry) {
     var dates = entry.key.split('-');
 
+    var sortFacesInDateByTimeDesc = entry.value
+      ..sort((a, b) => b.imageCreatedAt.compareTo(a.imageCreatedAt));
+
     return {
       'date': DateTime(
           int.parse(dates[0]), int.parse(dates[1]), int.parse(dates[2])),
-      'faces': entry.value,
+      'faces': sortFacesInDateByTimeDesc,
     };
   }).toList();
 

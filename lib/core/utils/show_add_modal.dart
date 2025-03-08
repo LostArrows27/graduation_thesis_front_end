@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
+import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
+import 'package:image_picker/image_picker.dart';
 
 void showAddModal(BuildContext context) {
   const modalHeightSize = 0.9;
   const modalMaxHeightSize = 0.9;
+
+  void onTakePhotoAndUpload() async {
+    final cameraFile = await selectLibraryImage(ImageSource.camera, context);
+
+    if (cameraFile == null) return;
+
+    // ignore: use_build_context_synchronously
+    context.push(Routes.uploadPhotoPage, extra: [cameraFile]);
+  }
+
+  void onChooseGalleryImageAndUpload() async {
+    final galleryFiles = await pickMultiImagesFile();
+
+    if (galleryFiles.isEmpty) return;
+
+    // ignore: use_build_context_synchronously
+    context.push(Routes.uploadPhotoPage, extra: galleryFiles);
+  }
 
   showModalBottomSheet(
     context: context,
@@ -70,7 +90,7 @@ void showAddModal(BuildContext context) {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 20),
                           child: Text(
-                            'Get photos',
+                            'Upload photos',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 16),
                           ),
@@ -79,9 +99,11 @@ void showAddModal(BuildContext context) {
                           height: 4,
                         ),
                         _buildListTile(
-                            context, Icons.camera_alt_outlined, "Take a photo"),
+                            context, Icons.camera_alt_outlined, "Take a photo",
+                            onTap: onTakePhotoAndUpload),
                         _buildListTile(context, Icons.phone_android_outlined,
-                            "Upload from your devices"),
+                            "Upload from your devices",
+                            onTap: onChooseGalleryImageAndUpload),
                         _buildListTile(
                             context, Icons.share, "Share with a partner"),
                       ],

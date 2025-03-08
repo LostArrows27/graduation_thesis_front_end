@@ -49,8 +49,7 @@ class VideoRenderRepositoryImpl implements VideoRenderRepository {
                   imageId: e.id,
                   imageBucketId: e.imageBucketId,
                   imageName: e.imageName))
-              .toList(),
-          userId: userId);
+              .toList());
 
       // 3. mapping offline image + online image -> List<String> imageIdLists
       final imageIdLists =

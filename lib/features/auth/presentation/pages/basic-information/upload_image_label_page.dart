@@ -326,17 +326,11 @@ class _UploadImageLabelState extends State<UploadImageLabel> {
                                             if (imageFiles.every(
                                                 (element) => element != null)) {
                                               context.read<AuthBloc>().add(
-                                                  UploadAndGetImageLabelEvent(
-                                                      files: imageFiles
-                                                          .whereType<File>()
-                                                          .toList(),
-                                                      userId: (context
-                                                                  .read<
-                                                                      AppUserCubit>()
-                                                                  .state
-                                                              as AppUserWithMissingLabel)
-                                                          .user
-                                                          .id));
+                                                      UploadAndGetImageLabelEvent(
+                                                    files: imageFiles
+                                                        .whereType<File>()
+                                                        .toList(),
+                                                  ));
                                             } else {
                                               showSnackBar(context,
                                                   'Please upload all images');

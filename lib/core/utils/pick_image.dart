@@ -3,6 +3,7 @@
 import 'dart:io';
 
 // import 'package:exif/exif.dart';
+import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,27 @@ Future<List<String>> pickMultiImages() async {
   }
 }
 
+Future<List<File>> pickMultiImagesFile() async {
+  try {
+    final xFiles = await ImagePicker().pickMultiImage();
+    // xFiles.forEach((e) async {
+    //   // NOTE: view exift metadata
+    //   var bytes = await e.readAsBytes();
+    //   var tags = await readExifFromBytes(bytes);
+    //   tags.forEach((key, value) {
+    //     if (key == 'EXIF DateTimeOriginal' || key == 'Image DateTime') {
+    //       print("$key : $value");
+    //     }
+    //   });
+    // });
+
+    return xFiles.map((e) => File(e.path)).toList();
+  } catch (e) {
+    return [];
+  }
+}
+
+// select 1 image + crop
 Future<File?> selectLibraryImage(ImageSource imagesource, BuildContext context,
     [bool isPickingAvatar = true]) async {
   final pickedImage = await pickImage(imagesource);

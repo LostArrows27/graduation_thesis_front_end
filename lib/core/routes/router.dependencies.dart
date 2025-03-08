@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +23,7 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sig
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_people.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/people_detail.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/photo_page.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/pages/upload_photo_page.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/video_schema.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/edit_video_schema_page.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_image_picker_page.dart';

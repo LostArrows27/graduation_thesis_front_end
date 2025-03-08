@@ -10,3 +10,10 @@ final class PhotoFetchAllEvent extends PhotoEvent {
 }
 
 final class PhotoClearEvent extends PhotoEvent {}
+
+// add uploaded image
+final class PhotoAddImagesEvent extends PhotoEvent {
+  final List<Photo> photos;
+
+  PhotoAddImagesEvent({required this.photos});
+}

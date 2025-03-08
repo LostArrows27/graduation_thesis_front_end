@@ -9,7 +9,6 @@ import 'package:uuid/uuid.dart';
 abstract interface class ImageRemoteDataSource {
   Future<List<ImageParams>> uploadImageList({
     required List<File> imageParams,
-    required String userId,
   });
 
   Future<List<ImageIdParams>> uploadImageListAndGetId({
@@ -23,10 +22,11 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
 
   ImageRemoteDataSourceImpl({required this.supabaseClient});
 
+  String get userId => supabaseClient.auth.currentUser!.id;
+
   @override
   Future<List<ImageParams>> uploadImageList({
     required List<File> imageParams,
-    required String userId,
   }) async {
     try {
       const bucket = "gallery_image";
