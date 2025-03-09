@@ -5,13 +5,14 @@ class HeroNetworkImage extends StatefulWidget {
   final String imageUrl;
   final Object heroTag;
   final BoxFit fit;
+  final double borderRadius;
 
-  const HeroNetworkImage({
-    super.key,
-    required this.imageUrl,
-    required this.heroTag,
-    this.fit = BoxFit.cover,
-  });
+  const HeroNetworkImage(
+      {super.key,
+      required this.imageUrl,
+      required this.heroTag,
+      this.fit = BoxFit.cover,
+      this.borderRadius = 0});
 
   @override
   State<HeroNetworkImage> createState() => _HeroNetworkImageState();
@@ -42,42 +43,48 @@ class _HeroNetworkImageState extends State<HeroNetworkImage>
     return Hero(
       tag: widget.heroTag,
       child: Container(
-        color: Theme.of(context).colorScheme.surfaceDim,
-        child: ExtendedImage.network(
-          widget.imageUrl,
-          fit: widget.fit,
-          cache: true,
-          loadStateChanged: (ExtendedImageState state) {
-            switch (state.extendedImageLoadState) {
-              case LoadState.loading:
-                _controller.reset();
-                return Container();
-              case LoadState.completed:
-                if (state.wasSynchronouslyLoaded) {
-                  return state.completedWidget;
-                }
-                _controller.forward();
-                return FadeTransition(
-                  opacity: _controller,
-                  child: state.completedWidget,
-                );
-              case LoadState.failed:
-                _controller.reset();
-                state.imageProvider.evict();
-                return GestureDetector(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.surfaceDim,
-                    child: Icon(
-                      Icons.error,
-                      color: Theme.of(context).colorScheme.error,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceDim,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          child: ExtendedImage.network(
+            widget.imageUrl,
+            fit: widget.fit,
+            cache: true,
+            loadStateChanged: (ExtendedImageState state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.loading:
+                  _controller.reset();
+                  return Container();
+                case LoadState.completed:
+                  if (state.wasSynchronouslyLoaded) {
+                    return state.completedWidget;
+                  }
+                  _controller.forward();
+                  return FadeTransition(
+                    opacity: _controller,
+                    child: state.completedWidget,
+                  );
+                case LoadState.failed:
+                  _controller.reset();
+                  state.imageProvider.evict();
+                  return GestureDetector(
+                    child: Container(
+                      color: Theme.of(context).colorScheme.surfaceDim,
+                      child: Icon(
+                        Icons.error,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
-                  ),
-                  onTap: () {
-                    state.reLoadImage();
-                  },
-                );
-            }
-          },
+                    onTap: () {
+                      state.reLoadImage();
+                    },
+                  );
+              }
+            },
+          ),
         ),
       ),
     );

@@ -29,6 +29,8 @@ class Routes {
 
   static const String uploadPhotoPage = '/upload-photo';
   static const String imageSliderPage = '/image-slider';
+  // NOTE: also use for both month and year view
+  static const String albumViewerPage = '/album-viewer';
 
   // test route
   static const String photoViewDemo = '/photo-view-demo';
@@ -40,15 +42,19 @@ List<String> homeRouteList = [
   Routes.albumsPage,
   Routes.explorePage,
   Routes.searchPage,
+
   Routes.videoRenderStatusPage,
   Routes.videoImagePickerPage,
   Routes.editVideoSchemaPage,
   Routes.videoRenderResult,
   Routes.videoViewerPage,
+
   Routes.peopleExplorePage,
   Routes.peopleDetailPage,
+
   Routes.uploadPhotoPage,
   Routes.imageSliderPage,
+  Routes.albumViewerPage,
 
   // test route
   Routes.photoViewDemo,

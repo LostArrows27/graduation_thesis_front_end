@@ -24,6 +24,8 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/log
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_people.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/people_detail.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/entities/album_folder.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/pages/album_viewer_page.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/image_slider_page.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/photo_page.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/upload_photo_page.dart';

@@ -53,7 +53,7 @@ class _GalleryAllViewModeState extends State<GalleryAllViewMode>
         return CustomScrollView(
           slivers: [
             SliverPadding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
