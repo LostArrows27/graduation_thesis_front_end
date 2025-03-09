@@ -110,26 +110,36 @@ final routerConfig = GoRouter(
           final imageFiles = state.extra as List<File>;
           return UploadPhotoPage(imageFiles: imageFiles);
         }),
-    // test route
     GoRoute(
-      path: Routes.photoViewDemo,
-      builder: (context, state) => SimplePhotoViewDemo(),
-    ),
-    GoRoute(
-      path: Routes.photoSliderDemo,
+      path: Routes.imageSliderPage,
       pageBuilder: (context, state) {
         final object = state.extra as Map<String, dynamic>;
         return CustomTransitionPage(
           key: state.pageKey,
-          child: SimplePicsWiper(
+          child: ImageSliderPage(
             url: object['url'] as String,
-            images: object['images'] as List<String>,
+            images: object['images'] as List<Photo>,
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return child; // No animation, just show the page
           },
           opaque: false, // This makes the route transparent
           barrierDismissible: false,
+        );
+      },
+    ),
+    // test route
+    GoRoute(
+      path: Routes.photoViewDemo,
+      builder: (context, state) => const SimplePhotoViewDemo(),
+    ),
+    GoRoute(
+      path: Routes.photoSliderDemo,
+      builder: (context, state) {
+        final object = state.extra as Map<String, dynamic>;
+        return SimplePicsWiper(
+          images: object['images'] as List<String>,
+          url: object['url'] as String,
         );
       },
     )
@@ -142,7 +152,7 @@ final routerConfig = GoRouter(
       if (homeRouteList.contains(state.fullPath)) {
         return null;
       } else {
-        return Routes.photoViewDemo;
+        return Routes.photosPage;
       }
     }
 

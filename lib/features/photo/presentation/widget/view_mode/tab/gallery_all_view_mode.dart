@@ -1,10 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
+import 'package:graduation_thesis_front_end/core/utils/get_url_from_image_group.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
 
 class GalleryAllViewMode extends StatefulWidget {
   const GalleryAllViewMode({super.key});
@@ -13,8 +16,25 @@ class GalleryAllViewMode extends StatefulWidget {
   State<GalleryAllViewMode> createState() => _GalleryAllViewModeState();
 }
 
-class _GalleryAllViewModeState extends State<GalleryAllViewMode> {
+class _GalleryAllViewModeState extends State<GalleryAllViewMode>
+    with SingleTickerProviderStateMixin {
   final Map<DateTime, String> formattedDatesCache = {};
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,24 +93,20 @@ class _GalleryAllViewModeState extends State<GalleryAllViewMode> {
                                 padding: const EdgeInsets.all(0),
                                 child: AspectRatio(
                                   aspectRatio: 1,
-                                  child: CachedNetworkImage(
-                                    imageUrl: image.imageUrl ?? '',
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Container(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surfaceDim,
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .surfaceDim,
-                                      child: Icon(
-                                        Icons.error,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final photos = getPhotoFromImageGroup(
+                                          state.groupedByDate);
+
+                                      context
+                                          .push(Routes.imageSliderPage, extra: {
+                                        'url': image.imageUrl,
+                                        'images': photos,
+                                      });
+                                    },
+                                    child: HeroNetworkImage(
+                                      imageUrl: image.imageUrl ?? '',
+                                      heroTag: image.imageUrl ?? index,
                                     ),
                                   ),
                                 ),

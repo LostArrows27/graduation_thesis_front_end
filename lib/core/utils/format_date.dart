@@ -19,3 +19,7 @@ String formatDate(DateTime date) {
     return DateFormat('MMM dd, yyyy').format(date);
   }
 }
+
+String formatTime(DateTime date) {
+  return DateFormat('hh:mm').format(date);
+}
