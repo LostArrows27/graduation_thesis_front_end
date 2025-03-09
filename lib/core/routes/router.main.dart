@@ -110,6 +110,29 @@ final routerConfig = GoRouter(
           final imageFiles = state.extra as List<File>;
           return UploadPhotoPage(imageFiles: imageFiles);
         }),
+    // test route
+    GoRoute(
+      path: Routes.photoViewDemo,
+      builder: (context, state) => SimplePhotoViewDemo(),
+    ),
+    GoRoute(
+      path: Routes.photoSliderDemo,
+      pageBuilder: (context, state) {
+        final object = state.extra as Map<String, dynamic>;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: SimplePicsWiper(
+            url: object['url'] as String,
+            images: object['images'] as List<String>,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child; // No animation, just show the page
+          },
+          opaque: false, // This makes the route transparent
+          barrierDismissible: false,
+        );
+      },
+    )
   ],
   redirect: (context, state) {
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
@@ -119,7 +142,7 @@ final routerConfig = GoRouter(
       if (homeRouteList.contains(state.fullPath)) {
         return null;
       } else {
-        return Routes.photosPage;
+        return Routes.photoViewDemo;
       }
     }
 

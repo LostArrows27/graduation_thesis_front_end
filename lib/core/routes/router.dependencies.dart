@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/layout/home_scaffold_layout.dart';
 import 'package:graduation_thesis_front_end/core/mock/page/album_page.dart';
+import 'package:graduation_thesis_front_end/core/mock/page/photo_slider.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_page.dart';
 import 'package:graduation_thesis_front_end/core/mock/page/search_page.dart';

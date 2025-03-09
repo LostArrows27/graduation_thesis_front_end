@@ -27,7 +27,12 @@ class Routes {
   static const String peopleExplorePage = '/people-explore';
   static const String peopleDetailPage = '/people-detail';
 
-  static const String uploadPhotoPage = '/upload-photo'; 
+  static const String uploadPhotoPage = '/upload-photo';
+  static const String imageSliderPage = '/image-slider';
+
+  // test route
+  static const String photoViewDemo = '/photo-view-demo';
+  static const String photoSliderDemo = '/photo-slider-demo';
 }
 
 List<String> homeRouteList = [
@@ -43,4 +48,9 @@ List<String> homeRouteList = [
   Routes.peopleExplorePage,
   Routes.peopleDetailPage,
   Routes.uploadPhotoPage,
+  Routes.imageSliderPage,
+
+  // test route
+  Routes.photoViewDemo,
+  Routes.photoSliderDemo,
 ];
