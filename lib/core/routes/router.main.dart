@@ -138,6 +138,19 @@ final routerConfig = GoRouter(
           return AlbumViewerPage(
               title: title, totalItem: totalItem, albumFolders: albumFolders);
         }),
+    GoRoute(
+        path: Routes.yearAlbumViewerPage,
+        builder: (context, state) {
+          final object = state.extra as Map<String, dynamic>;
+          final title = object['title'] as String;
+          final totalItem = object['totalItem'] as int;
+          final yearAlbumFolders =
+              object['yearAlbumFolders'] as List<YearAlbumFolder>;
+          return YearAlbumViewerPage(
+              title: title,
+              totalItem: totalItem,
+              yearAlbumFolders: yearAlbumFolders);
+        }),
     // test route
     GoRoute(
       path: Routes.photoViewDemo,

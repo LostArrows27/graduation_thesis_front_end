@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
+import 'package:graduation_thesis_front_end/core/utils/convert_axis_cell_count.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/album_folder.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
@@ -17,23 +18,6 @@ class AlbumViewerPage extends StatelessWidget {
     required this.totalItem,
     required this.albumFolders,
   });
-
-  List<int> _convertAxisCellCount(int index) {
-    final result = index % 6;
-
-    switch (result) {
-      case 0:
-        return [2, 2];
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-        return [1, 1];
-      default:
-        return [2, 2];
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +70,7 @@ class AlbumViewerPage extends StatelessWidget {
                           children: [
                             ...photoList.asMap().map((index, photo) {
                               final [crossAxisCount, mainAxisCount] =
-                                  _convertAxisCellCount(index);
+                                  convertAxisCellCount(index, photoList.length);
                               return MapEntry(
                                 index,
                                 StaggeredGridTile.count(
