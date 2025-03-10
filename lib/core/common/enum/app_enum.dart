@@ -8,3 +8,5 @@ enum MusicGenres { accoutic, emotional, folk, happy }
 enum RenderStatus { pending, in_progress, completed, failed }
 
 enum SmartTagsType { location, activity, event }
+
+enum ChooseImageMode { all, album }

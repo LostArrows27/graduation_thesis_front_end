@@ -1,6 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/secret/app_secret.dart';
+import 'package:graduation_thesis_front_end/features/album/data/datasource/album_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/album/data/repositories/album_repository_impl.dart';
+import 'package:graduation_thesis_front_end/features/album/domain/repositories/album_repository.dart';
+import 'package:graduation_thesis_front_end/features/album/domain/usecases/create_album.dart';
+import 'package:graduation_thesis_front_end/features/album/domain/usecases/get_all_album.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album/album_bloc.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/bloc/cubit/choose_image_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/python/image_label_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/auth_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/auth/data/datasource/supabase/image_remote_datasource.dart';

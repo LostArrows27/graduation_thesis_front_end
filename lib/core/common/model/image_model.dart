@@ -6,7 +6,6 @@ class ImageModel extends Photo {
       {required super.id,
       super.createdAt,
       super.updatedAt,
-      super.albumId,
       super.imageUrl,
       required super.uploaderId,
       required super.imageBucketId,
@@ -23,7 +22,6 @@ class ImageModel extends Photo {
           ? null
           : DateTime.parse(json['updated_at']),
       uploaderId: json['uploader_id'] as String?,
-      albumId: json['album_id'] as String?,
       imageBucketId: json['image_bucket_id'] as String,
       imageName: json['image_name'] as String,
       labels: json['labels'] == null
@@ -40,7 +38,6 @@ class ImageModel extends Photo {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? uploaderId,
-    String? albumId,
     String? imageBucketId,
     String? imageName,
     LabelResponse? labels,
@@ -51,7 +48,6 @@ class ImageModel extends Photo {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       uploaderId: uploaderId ?? this.uploaderId,
-      albumId: albumId ?? this.albumId,
       imageBucketId: imageBucketId ?? this.imageBucketId,
       imageName: imageName ?? this.imageName,
       labels: labels ?? this.labels,

@@ -51,7 +51,7 @@ final routerConfig = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.albumsPage,
-                builder: (context, state) => const AlbumPageFake())
+                builder: (context, state) => const AlbumPage())
           ]),
           StatefulShellBranch(routes: [
             GoRoute(

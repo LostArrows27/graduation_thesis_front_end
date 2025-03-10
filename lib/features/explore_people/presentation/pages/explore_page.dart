@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_thesis_front_end/core/common/layout/home_body_layout.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/image_tile.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/people_list.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/smart_tag_list.dart';
@@ -28,8 +27,7 @@ class ExploreBodyPage extends StatefulWidget {
 class _ExploreBodyPageState extends State<ExploreBodyPage> {
   @override
   Widget build(BuildContext context) {
-    return BodyLayout(
-        body: SingleChildScrollView(
+    return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -150,6 +148,6 @@ class _ExploreBodyPageState extends State<ExploreBodyPage> {
           ],
         ),
       ),
-    ));
+    );
   }
 }

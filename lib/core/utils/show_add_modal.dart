@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/widgets/open_create_album_modal.dart';
 import 'package:image_picker/image_picker.dart';
 
 void showAddModal(BuildContext context) {
@@ -68,7 +69,11 @@ void showAddModal(BuildContext context) {
                           height: 4,
                         ),
                         _buildListTile(
-                            context, Icons.photo_album_outlined, "Album"),
+                            context, Icons.photo_album_outlined, "Album",
+                            onTap: () {
+                          Navigator.pop(context);
+                          openCreateAlbumModal(context);
+                        }),
                         _buildListTile(
                           context,
                           Icons.movie_creation_outlined,

@@ -5,7 +5,6 @@ class Photo {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? uploaderId;
-  final String? albumId;
   final String imageBucketId;
   final String imageName;
   final LabelResponse labels;
@@ -15,7 +14,6 @@ class Photo {
       {required this.id,
       this.createdAt,
       this.updatedAt,
-      this.albumId,
       this.imageUrl,
       required this.uploaderId,
       required this.imageBucketId,

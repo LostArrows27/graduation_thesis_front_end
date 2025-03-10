@@ -7,6 +7,7 @@ Future<void> initDependencies() async {
   _initPhoto();
   _initVideoRender();
   _initExplore();
+  _initAlbum();
 
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
@@ -132,4 +133,22 @@ void _initExplore() {
     ..registerLazySingleton(() => PersonGroupBloc(
         changePersonGroupName: serviceLocator(),
         getPeopleGroup: serviceLocator()));
+}
+
+void _initAlbum() {
+  serviceLocator
+    // data source
+    ..registerFactory<AlbumRemoteDatasource>(
+        () => AlbumRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<AlbumRepository>(
+        () => AlbumRepositoryImpl(albumRemoteDatasource: serviceLocator()))
+    // use case
+    ..registerFactory(() => CreateAlbum(albumRepository: serviceLocator()))
+    ..registerFactory(() => GetAllAlbum(albumRepository: serviceLocator()))
+    // bloc
+    ..registerFactory(() => AlbumBloc(createAlbum: serviceLocator()))
+    ..registerLazySingleton(() => AlbumListBloc(getAllAlbum: serviceLocator()))
+    // cubit
+    ..registerFactory(() => ChooseImageModeCubit());
 }

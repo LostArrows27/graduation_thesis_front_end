@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/common/layout/home_body_layout.dart';
 import 'package:graduation_thesis_front_end/core/routes/destination.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_add_modal.dart';
 
@@ -18,7 +19,7 @@ class HomeScaffoldLayout extends StatelessWidget {
         : navigationShell.currentIndex + 1;
 
     return Scaffold(
-      body: navigationShell,
+      body: BodyLayout(body: navigationShell),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: Colors.transparent,
