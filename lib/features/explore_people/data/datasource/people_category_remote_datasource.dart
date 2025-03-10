@@ -19,6 +19,10 @@ class PeopleCategoryRemoteDatasourceImpl
 
   String get userId => supabaseClient.auth.currentUser!.id;
 
+  String getImageUrl(String imageBucketId, String imageName) {
+    return supabaseClient.storage.from(imageBucketId).getPublicUrl(imageName);
+  }
+
   @override
   Future<List<PersonGroupModel>> getPersonGroups() async {
     try {
@@ -46,7 +50,9 @@ class PeopleCategoryRemoteDatasourceImpl
           final List<PersonGroupModel> personGroups = [];
           data.forEach((key, value) {
             final Map<String, dynamic> personGroupData = value;
-            final personGroupEntity  = PersonGroupModel.fromJson(personGroupData);
+            final personGroupEntity =
+                PersonGroupModel.fromJson(personGroupData, getImageUrl);
+
             personGroups.add(personGroupEntity);
           });
 

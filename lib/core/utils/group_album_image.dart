@@ -1,9 +1,27 @@
 // NOTE: refer group_image.dart
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/album_folder.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/year_album_folder.dart';
 import 'package:intl/intl.dart';
+
+List<Photo> getAllPhotoFromFaceGroup(List<Face> faceList) {
+  List<Photo> photos = [];
+
+  for (var face in faceList) {
+    photos.add(Photo(
+        id: face.imageId,
+        imageUrl: face.imageUrl,
+        uploaderId: '',
+        createdAt: face.imageCreatedAt,
+        imageBucketId: face.imageBucketId,
+        imageName: face.imageName,
+        labels: face.imageLabel));
+  }
+
+  return photos;
+}
 
 List<Photo> getAllPhotoFromGroupImage(List<AlbumFolder> albumFolder) {
   List<Photo> photos = [];

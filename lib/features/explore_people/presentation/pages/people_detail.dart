@@ -1,15 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/convert_name.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
+import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_image.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/edit_name_model.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
 
 class PeopleDetail extends StatefulWidget {
   final PersonGroup personGroup;
@@ -167,18 +170,16 @@ class FaceGroupViewMode extends StatelessWidget {
                       padding: const EdgeInsets.all(0),
                       child: AspectRatio(
                         aspectRatio: 1,
-                        child: CachedNetworkImage(
-                          imageUrl: face.imageUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: Theme.of(context).colorScheme.surfaceDim,
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            color: Theme.of(context).colorScheme.surfaceDim,
-                            child: Icon(
-                              Icons.error,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.push(Routes.imageSliderPage, extra: {
+                              'url': face.imageUrl,
+                              'images': getAllPhotoFromFaceGroup(faceList)
+                            });
+                          },
+                          child: HeroNetworkImage(
+                            imageUrl: face.imageUrl,
+                            heroTag: face.imageUrl,
                           ),
                         ),
                       ),
