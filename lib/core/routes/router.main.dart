@@ -151,6 +151,14 @@ final routerConfig = GoRouter(
               totalItem: totalItem,
               yearAlbumFolders: yearAlbumFolders);
         }),
+    // explore route
+    GoRoute(
+        path: Routes.smartTagsViewerPage,
+        builder: (context, state) {
+          final type = state.extra as SmartTagsType;
+
+          return SmartTagViewerPage(type: type);
+        }),
     // test route
     GoRoute(
       path: Routes.photoViewDemo,

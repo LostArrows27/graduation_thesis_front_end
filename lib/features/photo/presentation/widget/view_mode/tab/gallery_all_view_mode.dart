@@ -7,7 +7,7 @@ import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_url_from_image_group.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
-import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 
 class GalleryAllViewMode extends StatefulWidget {
   const GalleryAllViewMode({super.key});

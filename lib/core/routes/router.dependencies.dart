@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/common/enum/app_enum.dart';
 import 'package:graduation_thesis_front_end/core/common/layout/home_scaffold_layout.dart';
 import 'package:graduation_thesis_front_end/core/mock/page/album_page.dart';
 import 'package:graduation_thesis_front_end/core/mock/page/photo_slider.dart';
@@ -24,6 +25,7 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/pages/log
 import 'package:graduation_thesis_front_end/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_people.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/people_detail.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/smart_tag_viewer_page.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/album_folder.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/year_album_folder.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/pages/album_viewer_page.dart';

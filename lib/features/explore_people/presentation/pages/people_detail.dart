@@ -12,7 +12,7 @@ import 'package:graduation_thesis_front_end/features/explore_people/domain/entit
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/edit_name_model.dart';
-import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 
 class PeopleDetail extends StatefulWidget {
   final PersonGroup personGroup;

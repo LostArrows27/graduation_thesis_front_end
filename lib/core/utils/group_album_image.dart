@@ -45,7 +45,7 @@ List<Photo> getAllPhotoFromYearAlbum(List<YearAlbumFolder> yearAlbumFolder) {
   return photos;
 }
 
-List<AlbumFolder> groupImagePhotoByWeek(List<Photo> monthPhoto) {
+List<AlbumFolder> groupImagePhotoByDate(List<Photo> monthPhoto) {
   // new photo list -> not refer to old photos
   List<Photo> sortedPhoto = List.from(monthPhoto)
     ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));

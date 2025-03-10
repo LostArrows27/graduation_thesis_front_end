@@ -5,7 +5,7 @@ import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
-import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 
 class GalleryYearViewMode extends StatelessWidget {
   const GalleryYearViewMode({super.key});

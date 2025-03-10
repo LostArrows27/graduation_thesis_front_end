@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
-import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 import 'package:intl/intl.dart';
 
 class PhotoMonthView extends StatelessWidget {
@@ -20,8 +20,8 @@ class PhotoMonthView extends StatelessWidget {
       required this.images});
 
   void _onMonthTap(BuildContext context) {
-    final albumFolder = groupImagePhotoByWeek(images);
-    final title = DateFormat('MMM yyyy').format(date);
+    final albumFolder = groupImagePhotoByDate(images);
+    final title = DateFormat('MMMM yyyy').format(date);
     final itemCount = images.length;
 
     context.push(Routes.albumViewerPage, extra: {

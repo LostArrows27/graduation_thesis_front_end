@@ -5,7 +5,7 @@ import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/convert_axis_cell_count.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/entities/year_album_folder.dart';
-import 'package:graduation_thesis_front_end/features/photo/presentation/widget/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 
 class YearAlbumViewerPage extends StatelessWidget {
   final String title;
@@ -28,7 +28,10 @@ class YearAlbumViewerPage extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               SizedBox(height: 5),
               Text(

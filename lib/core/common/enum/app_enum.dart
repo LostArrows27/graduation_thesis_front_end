@@ -6,3 +6,5 @@ enum MusicGenres { accoutic, emotional, folk, happy }
 
 // ignore: constant_identifier_names
 enum RenderStatus { pending, in_progress, completed, failed }
+
+enum SmartTagsType { location, activity, event }
