@@ -40,7 +40,6 @@ class OnlineImageSelectItem extends StatelessWidget {
             onTap: () {
               final selectImage = SelectedImage(
                   filePath: image.filePath, source: Source.online);
-
               isSelected ? removeImage(image.filePath) : addImage(selectImage);
             },
           ),

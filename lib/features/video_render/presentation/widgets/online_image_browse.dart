@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/utils/show_browse_online_gallery_modal.dart';
 import 'package:graduation_thesis_front_end/features/video_render/domain/entities/selected_image.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_image_picker_page.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/widgets/online_image_select_item.dart';
+import 'package:provider/provider.dart';
 
 class GallerySelectedImage extends SelectedImage {
   final bool isSelected;
@@ -15,13 +16,11 @@ class GallerySelectedImage extends SelectedImage {
 
 class OnlineImageBrowse extends StatefulWidget {
   final ScrollController scrollController;
-  final List<Photo> photos;
   final ImageProviderModel imageProvider;
 
   const OnlineImageBrowse({
     super.key,
     required this.scrollController,
-    required this.photos,
     required this.imageProvider,
   });
 
@@ -30,32 +29,26 @@ class OnlineImageBrowse extends StatefulWidget {
 }
 
 class _OnlineImageBrowseState extends State<OnlineImageBrowse> {
-  final List<String> selectedImages = [];
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      selectedImages.addAll(widget.imageProvider.getImageList
-          .where((element) => element.source == Source.online)
-          .map((e) => e.filePath));
-    });
-  }
-
-  void addImage(SelectedImage image) {
-    setState(() {
-      selectedImages.add(image.filePath);
-    });
-  }
-
-  void removeImage(String imageUrl) {
-    setState(() {
-      selectedImages.remove(imageUrl);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final providedImage = Provider.of<ProviderImageModel>(context);
+
+    if (!_initialized) {
+      providedImage.clearSelectedImages();
+      providedImage.addAllImage(widget.imageProvider.getImageList
+          .where((element) => element.source == Source.online)
+          .map((e) => e.filePath)
+          .toList());
+      _initialized = true;
+    }
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,17 +67,18 @@ class _OnlineImageBrowseState extends State<OnlineImageBrowse> {
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
               ),
-              itemCount: widget.photos.length,
+              itemCount: providedImage.getProviderImages.length,
               itemBuilder: (context, index) {
-                final photo = widget.photos[index];
+                final photo = providedImage.getProviderImages[index];
                 final selectPhoto = SelectedImage(
                     filePath: photo.imageUrl ?? '', source: Source.online);
 
                 return OnlineImageSelectItem(
                     image: selectPhoto,
-                    addImage: addImage,
-                    removeImage: removeImage,
-                    isSelected: selectedImages.contains(photo.imageUrl));
+                    addImage: providedImage.addImage,
+                    removeImage: providedImage.removeImage,
+                    isSelected:
+                        providedImage.selectedImages.contains(photo.imageUrl));
               },
             ),
           ),
@@ -110,14 +104,18 @@ class _OnlineImageBrowseState extends State<OnlineImageBrowse> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),
                         ),
-                        onPressed: selectedImages.isEmpty
+                        onPressed: providedImage.selectedImages.isEmpty
                             ? null
                             : () {
                                 List<SelectedImage> addImageLists =
-                                    selectedImages
+                                    providedImage.selectedImages
                                         .map((e) => SelectedImage(
                                             filePath: e, source: Source.online))
                                         .toList();
+
+                                addImageLists.removeWhere((element) => widget
+                                    .imageProvider.getImageList
+                                    .contains(element));
 
                                 widget.imageProvider
                                     .changeOnlineImageList(addImageLists);
@@ -125,9 +123,9 @@ class _OnlineImageBrowseState extends State<OnlineImageBrowse> {
                                 Navigator.pop(context);
                               },
                         child: Text(
-                          selectedImages.isEmpty
+                          providedImage.selectedImages.isEmpty
                               ? 'Add'
-                              : 'Add (${selectedImages.length})',
+                              : 'Add (${providedImage.selectedImages.length})',
                           style: TextStyle(
                               color: Theme.of(context)
                                   .colorScheme
