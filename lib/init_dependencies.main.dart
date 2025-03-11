@@ -148,7 +148,10 @@ void _initAlbum() {
     ..registerFactory(() => GetAllAlbum(albumRepository: serviceLocator()))
     // bloc
     ..registerFactory(() => AlbumBloc(createAlbum: serviceLocator()))
-    ..registerLazySingleton(() => AlbumListBloc(getAllAlbum: serviceLocator()))
+    ..registerLazySingleton(() => AlbumListBloc(
+        appUserCubit: serviceLocator(),
+        photoBloc: serviceLocator(),
+        getAllAlbum: serviceLocator()))
     // cubit
     ..registerFactory(() => ChooseImageModeCubit());
 }

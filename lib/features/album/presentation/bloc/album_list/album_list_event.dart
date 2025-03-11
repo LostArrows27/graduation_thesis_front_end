@@ -10,3 +10,4 @@ final class AddAlbumEvent extends AlbumListEvent {
 
   AddAlbumEvent({required this.album});
 }
+

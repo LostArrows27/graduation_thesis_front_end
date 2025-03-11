@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/loader.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
@@ -25,7 +23,26 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   void initState() {
     super.initState();
-    context.read<AlbumListBloc>().add(GetAllAlbumEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final albumState = context.read<AlbumListBloc>().state;
+        if (albumState is! AlbumListLoaded) {
+          context.read<AlbumListBloc>().add(GetAllAlbumEvent());
+        } else {
+          final tempAlbums = albumState.albums;
+
+          setState(() {
+            tempAlbums.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
+            recentAlbum = tempAlbums.length > 4
+                ? tempAlbums.sublist(0, 4)
+                : List.from(tempAlbums);
+
+            otherAlbum = tempAlbums.length > 4 ? tempAlbums.sublist(4) : [];
+          });
+        }
+      }
+    });
   }
 
   Widget _buildAlbumList(List<Album> albums) {
@@ -105,40 +122,8 @@ class _AlbumPageState extends State<AlbumPage> {
       builder: (context, photoState) {
         return BlocConsumer<AlbumListBloc, AlbumListState>(
           listener: (context, state) {
-            if (state is AlbumListLoaded && photoState is PhotoFetchSuccess) {
-              List<Album> tempAlbums = [];
-
-              for (var album in state.albums) {
-                List<Photo> albumPhotos = [];
-                List<String> imageIdList = album.imageIdList;
-                for (var photo in photoState.photos) {
-                  if (imageIdList.contains(photo.id)) {
-                    albumPhotos.add(photo);
-                  }
-                }
-                tempAlbums.add(album.copyWith(imageList: albumPhotos));
-              }
-
-              List<Photo> profilePhotos = photoState.photos
-                  .where((photo) => photo.imageBucketId == 'user_profile')
-                  .toList();
-
-              profilePhotos
-                  .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-
-              Album profileAlbum = Album(
-                  id: 'profile_picture_album_id',
-                  ownerId:
-                      (context.read<AppUserCubit>().state as AppUserLoggedIn)
-                          .user
-                          .id,
-                  createdAt: profilePhotos.last.createdAt!,
-                  updatedAt: profilePhotos.first.updatedAt!,
-                  imageList: profilePhotos,
-                  imageIdList: profilePhotos.map((e) => e.imageUrl!).toList(),
-                  name: 'Profile');
-
-              tempAlbums.add(profileAlbum);
+            if (state is AlbumListLoaded) {
+              final tempAlbums = state.albums;
 
               setState(() {
                 tempAlbums.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
