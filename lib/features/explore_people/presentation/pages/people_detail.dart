@@ -134,6 +134,7 @@ class _PeopleDetailState extends State<PeopleDetail> {
 
 class FaceGroupViewMode extends StatelessWidget {
   final List<Map<String, dynamic>> groupedByDate;
+  static String heroTag = 'people_detail_hero_tag';
 
   const FaceGroupViewMode({super.key, required this.groupedByDate});
 
@@ -174,12 +175,13 @@ class FaceGroupViewMode extends StatelessWidget {
                           onTap: () {
                             context.push(Routes.imageSliderPage, extra: {
                               'url': face.imageUrl,
-                              'images': getAllPhotoFromFaceGroup(faceList)
+                              'images': getAllPhotoFromFaceGroup(faceList),
+                              'heroTag': heroTag
                             });
                           },
                           child: HeroNetworkImage(
                             imageUrl: face.imageUrl,
-                            heroTag: face.imageUrl,
+                            heroTag: face.imageUrl + heroTag,
                           ),
                         ),
                       ),

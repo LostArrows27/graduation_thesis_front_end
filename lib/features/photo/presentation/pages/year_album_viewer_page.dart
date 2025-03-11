@@ -12,6 +12,8 @@ class YearAlbumViewerPage extends StatelessWidget {
   final int totalItem;
   final List<YearAlbumFolder> yearAlbumFolders;
 
+  static const String heroTag = 'year_album_viewer_tags';
+
   const YearAlbumViewerPage({
     super.key,
     required this.title,
@@ -112,6 +114,7 @@ class YearAlbumViewerPage extends StatelessWidget {
                                                         Routes.imageSliderPage,
                                                         extra: {
                                                           'url': photo.imageUrl,
+                                                          'heroTag': heroTag,
                                                           'images':
                                                               getAllPhotoFromYearAlbum(
                                                                   yearAlbumFolders)
@@ -120,8 +123,8 @@ class YearAlbumViewerPage extends StatelessWidget {
                                                   child: HeroNetworkImage(
                                                       borderRadius: 15,
                                                       imageUrl: photo.imageUrl!,
-                                                      heroTag:
-                                                          photo.imageUrl ?? ''),
+                                                      heroTag: photo.imageUrl! +
+                                                          heroTag),
                                                 )),
                                           );
                                         }).values

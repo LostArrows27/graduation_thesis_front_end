@@ -6,9 +6,14 @@ import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
 
 class ImageSliderPage extends StatefulWidget {
-  const ImageSliderPage({super.key, required this.url, required this.images});
+  const ImageSliderPage(
+      {super.key,
+      required this.url,
+      required this.images,
+      required this.heroTag});
   final String url;
   final List<Photo> images;
+  final String heroTag;
   @override
   State<ImageSliderPage> createState() => _ImageSliderPageState();
 }
@@ -121,7 +126,7 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                     iconSize: 24,
                     onPressed: () {
                       // TODO: display information
-                      // 1. note 
+                      // 1. note
                       // 2. add location
                       // 3. add event
                     },
@@ -202,7 +207,7 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                           ///make hero better when slide out
                           heroBuilderForSlidingPage: (Widget result) {
                             return Hero(
-                              tag: url,
+                              tag: url + widget.heroTag,
                               child: result,
                               flightShuttleBuilder: (BuildContext flightContext,
                                   Animation<double> animation,
@@ -220,7 +225,7 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                           },
                         )
                       : HeroWidget(
-                          tag: url,
+                          tag: url + widget.heroTag,
                           slideType: SlideType.wholePage,
                           slidePagekey: slidePagekey,
                           child: ExtendedImage.network(

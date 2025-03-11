@@ -12,6 +12,8 @@ class PhotoMonthView extends StatelessWidget {
   final List<Photo> images;
   final DateTime date;
 
+  static const String heroTag = 'month_view_mode_tags';
+
   const PhotoMonthView(
       {super.key,
       required this.month,
@@ -27,7 +29,8 @@ class PhotoMonthView extends StatelessWidget {
     context.push(Routes.albumViewerPage, extra: {
       'title': title,
       'totalItem': itemCount,
-      'albumFolders': albumFolder
+      'albumFolders': albumFolder,
+      'heroTag': heroTag,
     });
   }
 
@@ -47,7 +50,7 @@ class PhotoMonthView extends StatelessWidget {
               child: HeroNetworkImage(
                   borderRadius: 15,
                   imageUrl: coverImageUrl,
-                  heroTag: coverImageUrl)),
+                  heroTag: coverImageUrl + heroTag)),
           Positioned.fill(
               child: Container(
             decoration: BoxDecoration(

@@ -11,13 +11,14 @@ class AlbumViewerPage extends StatelessWidget {
   final String title;
   final int totalItem;
   final List<AlbumFolder> albumFolders;
+  final String heroTag;
 
-  const AlbumViewerPage({
-    super.key,
-    required this.title,
-    required this.totalItem,
-    required this.albumFolders,
-  });
+  const AlbumViewerPage(
+      {super.key,
+      required this.title,
+      required this.totalItem,
+      required this.albumFolders,
+      required this.heroTag});
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +88,13 @@ class AlbumViewerPage extends StatelessWidget {
                                               'images':
                                                   getAllPhotoFromGroupImage(
                                                       albumFolders),
+                                              'heroTag': heroTag
                                             });
                                       },
                                       child: HeroNetworkImage(
                                           borderRadius: 15,
                                           imageUrl: photo.imageUrl!,
-                                          heroTag: photo.imageUrl ?? ''),
+                                          heroTag: photo.imageUrl! + heroTag),
                                     )),
                               );
                             }).values

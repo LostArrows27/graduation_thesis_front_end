@@ -119,6 +119,7 @@ final routerConfig = GoRouter(
           child: ImageSliderPage(
             url: object['url'] as String,
             images: object['images'] as List<Photo>,
+            heroTag: object['heroTag'] as String,
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return child; // No animation, just show the page
@@ -135,8 +136,12 @@ final routerConfig = GoRouter(
           final title = object['title'] as String;
           final totalItem = object['totalItem'] as int;
           final albumFolders = object['albumFolders'] as List<AlbumFolder>;
+          final heroTag = object['heroTag'] as String;
           return AlbumViewerPage(
-              title: title, totalItem: totalItem, albumFolders: albumFolders);
+              heroTag: heroTag,
+              title: title,
+              totalItem: totalItem,
+              albumFolders: albumFolders);
         }),
     GoRoute(
         path: Routes.yearAlbumViewerPage,

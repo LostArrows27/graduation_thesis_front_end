@@ -19,6 +19,8 @@ class SmartTagViewerPage extends StatelessWidget {
 
   const SmartTagViewerPage({super.key, required this.type});
 
+  static const String heroTag = 'smart_tag_viewer_page_tags';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +71,8 @@ class SmartTagViewerPage extends StatelessWidget {
                           'title': captializeString(albumFolder[index].title),
                           'totalItem': albumFolder[index].photos.length,
                           'albumFolders':
-                              groupImagePhotoByDate(albumFolder[index].photos)
+                              groupImagePhotoByDate(albumFolder[index].photos),
+                          'heroTag': heroTag,
                         });
                       },
                       child: Column(

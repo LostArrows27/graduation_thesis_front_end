@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
-import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
 
 class GalleryYearViewMode extends StatelessWidget {
   const GalleryYearViewMode({super.key});
@@ -19,7 +19,7 @@ class GalleryYearViewMode extends StatelessWidget {
     context.push(Routes.yearAlbumViewerPage, extra: {
       'title': title,
       'totalItem': itemCount,
-      'yearAlbumFolders': yearAlbumFolder
+      'yearAlbumFolders': yearAlbumFolder,
     });
   }
 
@@ -60,10 +60,9 @@ class GalleryYearViewMode extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: HeroNetworkImage(
+                          child: CachedImage(
                               borderRadius: 24,
-                              imageUrl: imageLists[0].imageUrl!,
-                              heroTag: imageLists[0].imageUrl!),
+                              imageUrl: imageLists[0].imageUrl!),
                         ),
                         Positioned.fill(
                           child: Container(

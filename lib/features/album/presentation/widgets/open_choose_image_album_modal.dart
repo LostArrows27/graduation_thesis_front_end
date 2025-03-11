@@ -79,6 +79,8 @@ class ChooseImageAlbumModalBody extends StatelessWidget {
   final ScrollController scrollController;
   final String albumName;
 
+  static const String heroTag = 'choose_image_album_modal';
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PhotoBloc, PhotoState>(
@@ -129,6 +131,7 @@ class ChooseImageAlbumModalBody extends StatelessWidget {
                 'title': albumName,
                 'totalItem': albumImage.length,
                 'albumFolders': groupedImage,
+                'heroTag': heroTag,
               });
             }
           },

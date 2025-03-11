@@ -20,6 +20,8 @@ class _AlbumPageState extends State<AlbumPage> {
   List<Album> recentAlbum = [];
   List<Album> otherAlbum = [];
 
+  static const String heroTag = 'album_page_tags';
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +67,7 @@ class _AlbumPageState extends State<AlbumPage> {
                 'title': albums[index].name,
                 'totalItem': albums[index].imageList.length,
                 'albumFolders': groupImagePhotoByDate(albums[index].imageList),
+                'heroTag': heroTag,
               });
             },
             child: Container(

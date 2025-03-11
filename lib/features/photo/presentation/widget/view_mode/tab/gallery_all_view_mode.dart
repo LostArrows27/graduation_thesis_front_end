@@ -98,11 +98,12 @@ class _GalleryAllViewModeState extends State<GalleryAllViewMode>
                                       final photos = getPhotoFromImageGroup(
                                           state.groupedByDate);
 
-                                      context
-                                          .push(Routes.imageSliderPage, extra: {
-                                        'url': image.imageUrl,
-                                        'images': photos,
-                                      });
+                                      context.push(Routes.imageSliderPage,
+                                          extra: {
+                                            'url': image.imageUrl,
+                                            'images': photos,
+                                            'heroTag': ''
+                                          });
                                     },
                                     child: HeroNetworkImage(
                                       imageUrl: image.imageUrl ?? '',
