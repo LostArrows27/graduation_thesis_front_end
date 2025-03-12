@@ -41,6 +41,7 @@ dependencies:
   timeago: ^3.2.2
   chewie: 1.8.0
   video_player: ^2.8.6
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,7 @@ flutter:
     - assets/lottie/video_loading.json
     - assets/lottie/video_done.json
     - assets/lottie/video_fail.json
+    - assets/lottie/voice.json
 
     # music directory
     - assets/music/

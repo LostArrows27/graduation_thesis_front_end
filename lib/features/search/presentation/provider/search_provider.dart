@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/common/service/speech_recognition_service.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/search/domain/entities/filter.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class SearchProvider extends ChangeNotifier {
   final List<Album> _albumList;
   final List<PersonGroup> _personGroupList;
   bool _isVoiceSearchOn = false;
+  final SpeechRecognitionService _speechService = SpeechRecognitionService();
 
   static List<String> timeRangeOption = [
     'Today',
@@ -417,9 +419,33 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Bật/tắt tìm kiếm bằng giọng nói
-  void toggleVoiceSearch() {
-    _isVoiceSearchOn = !_isVoiceSearchOn;
+// Replace the existing toggleVoiceSearch method with this
+  Future<void> toggleVoiceSearch({Function(String)? onTextRecognized}) async {
+    if (_speechService.isListening) {
+      await _speechService.stopListening();
+      _isVoiceSearchOn = false;
+    } else {
+      bool available = await _speechService.initialize();
+      if (available) {
+        _isVoiceSearchOn =
+            await _speechService.startListening(onResult: (text) {
+          if (text.isNotEmpty && onTextRecognized != null) {
+            onTextRecognized(text);
+          }
+          _isVoiceSearchOn = false;
+          notifyListeners();
+        });
+      }
+    }
     notifyListeners();
+  }
+
+// Add method to stop listening
+  Future<void> stopVoiceSearch() async {
+    if (_speechService.isListening) {
+      await _speechService.stopListening();
+      _isVoiceSearchOn = false;
+      notifyListeners();
+    }
   }
 }
