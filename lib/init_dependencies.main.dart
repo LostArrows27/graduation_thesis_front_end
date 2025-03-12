@@ -8,6 +8,7 @@ Future<void> initDependencies() async {
   _initVideoRender();
   _initExplore();
   _initAlbum();
+  _initSearch();
 
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
@@ -154,4 +155,34 @@ void _initAlbum() {
         getAllAlbum: serviceLocator()))
     // cubit
     ..registerFactory(() => ChooseImageModeCubit());
+}
+
+void _initSearch() {
+  serviceLocator
+    // data source
+    ..registerFactory<SearchHistoryRemoteDatasource>(() =>
+        SearchHistoryRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    ..registerFactory<SearchHistorySupabaseDatasource>(() =>
+        SearchHistorySupabaseDatasourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<SearchRepository>(() => SearchRepositoryImpl(
+        searchHistorySupabaseDatasource: serviceLocator(),
+        searchHistoryRemoteDatasource: serviceLocator()))
+    // use case
+    ..registerFactory(
+        () => QueryImageByText(searchRepository: serviceLocator()))
+    ..registerFactory(
+        () => GetAllSearchHistory(searchRepository: serviceLocator()))
+    ..registerFactory(
+        () => DeleteSearchHistory(searchRepository: serviceLocator()))
+    ..registerFactory(
+        () => AddSearchHistory(searchRepository: serviceLocator()))
+    // bloc
+    ..registerFactory(
+        () => SearchHistoryBloc(queryImageByText: serviceLocator()))
+    ..registerLazySingleton(() => SearchHistoryListenBloc(
+        addSearchHistory: serviceLocator(),
+        deleteSearchHistory: serviceLocator(),
+        getAllSearchHistory: serviceLocator(),
+        searchRepository: serviceLocator()));
 }

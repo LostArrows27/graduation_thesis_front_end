@@ -16,8 +16,6 @@ import 'package:graduation_thesis_front_end/features/video_render/presentation/w
 import 'package:graduation_thesis_front_end/features/video_render/presentation/widgets/edit_video_schema/show_music_modal.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
-// TODO: test to see if video is push to render queue
-// TODO: redirect to video progress page
 class EditVideoSchemaPage extends StatefulWidget {
   final VideoSchema videoSchema;
 

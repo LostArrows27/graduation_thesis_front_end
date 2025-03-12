@@ -23,7 +23,6 @@ class SpeechRecognitionService {
 
     _isInitialized = await _speech.initialize(
       onStatus: (status) {
-        debugPrint('Speech recognition status: $status');
         if (status == 'done' || status == 'notListening') {
           _isListening = false;
         }
@@ -48,17 +47,18 @@ class SpeechRecognitionService {
       await stopListening();
     }
 
-    _isListening = await _speech.listen(
+    final result = await _speech.listen(
       onResult: (result) {
         if (result.finalResult) {
           onResult(result.recognizedWords);
         }
       },
       listenFor: const Duration(seconds: 30),
-      pauseFor: const Duration(seconds: 5),
+      pauseFor: const Duration(seconds: 3),
       localeId: locale,
     );
 
+    _isListening = result ?? false;
     return _isListening;
   }
 

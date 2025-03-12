@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/service/speech_recognition_service.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/failure.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/loader.dart';
+import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/bloc/search_history_listen_bloc.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/search_history/search_history_bloc.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/provider/search_provider.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/widgets/photo_grid.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/widgets/search_filter_suggestion.dart';
+import 'package:graduation_thesis_front_end/init_dependencies.dart';
 import 'package:provider/provider.dart';
 
 class FullySearchPage extends StatefulWidget {
@@ -19,9 +24,12 @@ class FullySearchPage extends StatefulWidget {
 }
 
 class _FullySearchPageState extends State<FullySearchPage> {
+  late SearchHistoryBloc _searchHistoryBloc;
+
   @override
   void initState() {
     super.initState();
+    _searchHistoryBloc = serviceLocator<SearchHistoryBloc>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final personGroupBloc = context.read<PersonGroupBloc>();
       if (personGroupBloc.state is PersonGroupInitial) {
@@ -80,22 +88,31 @@ class _FullySearchPageState extends State<FullySearchPage> {
                     return FailureWidget(message: 'Unknown error');
                   }
 
-                  return ChangeNotifierProvider(
-                      create: (context) => SearchProvider(
-                            personGroupList: personGroupState
-                                    is PersonGroupSuccess
-                                ? personGroupState.personGroups
-                                : (personGroupState as ChangeGroupNameSuccess)
-                                    .personGroups,
-                            albumList:
-                                (albumListState as AlbumListLoaded).albums,
-                            photoList: (photoState as PhotoFetchSuccess).photos,
-                          ),
-                      builder: (context, child) {
-                        return SearchProviderBody(
-                          providerContext: context,
-                        );
-                      });
+                  return BlocProvider(
+                    create: (context) => _searchHistoryBloc,
+                    child: ChangeNotifierProvider(
+                        create: (context) => SearchProvider(
+                              searchHistoryBloc: _searchHistoryBloc,
+                              personGroupList: personGroupState
+                                      is PersonGroupSuccess
+                                  ? personGroupState.personGroups
+                                  : (personGroupState as ChangeGroupNameSuccess)
+                                      .personGroups,
+                              albumList:
+                                  (albumListState as AlbumListLoaded).albums,
+                              photoList:
+                                  (photoState as PhotoFetchSuccess).photos,
+                            ),
+                        builder: (context, child) {
+                          return BlocProvider(
+                            create: (_) =>
+                                serviceLocator<SearchHistoryListenBloc>(),
+                            child: SearchProviderBody(
+                              providerContext: context,
+                            ),
+                          );
+                        }),
+                  );
                 },
               );
             },
@@ -126,11 +143,14 @@ class _SearchProviderBodyState extends State<SearchProviderBody> {
   @override
   void initState() {
     super.initState();
+    final searchHistoryListenBloc = context.read<SearchHistoryListenBloc>();
+    searchHistoryListenBloc.add(ListenSearchHistoryChange());
   }
 
   @override
   void dispose() {
     widget._searchController.dispose();
+    context.read<SearchHistoryListenBloc>().add(UnListenSearchHistoryChange());
     super.dispose();
   }
 
@@ -192,7 +212,6 @@ class _SearchProviderBodyState extends State<SearchProviderBody> {
                     Tooltip(
                       message: 'Voice search',
                       child: IconButton(
-                        isSelected: provider.isVoiceSearchOn,
                         onPressed: () {
                           setState(() {
                             _isListening = !_isListening;
@@ -207,22 +226,21 @@ class _SearchProviderBodyState extends State<SearchProviderBody> {
                             },
                           );
                         },
-                        icon: const Icon(Icons.mic_off),
-                        selectedIcon: const Icon(Icons.mic),
+                        icon: const Icon(Icons.mic),
                       ),
                     )
                   ],
                   suggestionsBuilder: (context, controller) {
                     if (controller.text.isEmpty) {
                       return SearchFilterSuggestions.buildRandomSuggestions(
-                        widget.providerContext,
-                        controller,
-                      );
+                          widget.providerContext,
+                          controller,
+                          context.read<SearchHistoryListenBloc>());
                     }
                     return SearchFilterSuggestions.buildMatchingSuggestions(
-                      widget.providerContext,
-                      controller,
-                    );
+                        widget.providerContext,
+                        controller,
+                        context.read<SearchHistoryListenBloc>());
                   },
                 ),
               );
@@ -254,13 +272,49 @@ class _SearchProviderBodyState extends State<SearchProviderBody> {
                     SizedBox(height: 20),
 
                     // display result / search filter
-                    Expanded(
-                      child: provider.selectedFilter == null
-                          ? SearchFilterSuggestions.buildSearchSuggestResults(
-                              context, widget._searchController)
-                          : provider.searchResults.isEmpty
-                              ? const Center(child: Text('No photos found'))
-                              : PhotoGrid(photos: provider.searchResults),
+                    BlocConsumer<SearchHistoryBloc, SearchHistoryState>(
+                      listener: (context, state) {
+                        if (state is SearchHistoryError) {
+                          return showErrorSnackBar(context, state.message);
+                        }
+
+                        if (state is SearchHistoryLoaded) {
+                          final searchPhotoList = state.searchHistory.result;
+
+                          searchPhotoList.sort(
+                              (a, b) => b.similarity.compareTo(a.similarity));
+
+                          List<Photo> searchResult = [];
+
+                          for (final searchPhoto in searchPhotoList) {
+                            final photoList = provider.allPhotos;
+                            searchResult.add(photoList.firstWhere((element) =>
+                                element.id == searchPhoto.imageId));
+                          }
+
+                          provider.setSearchResults(searchResult);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is SearchHistoryLoading) {
+                          return Expanded(
+                              child: Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                        }
+
+                        return Expanded(
+                          child: provider.selectedFilter == null
+                              ? SearchFilterSuggestions
+                                  .buildSearchSuggestResults(
+                                      context,
+                                      widget._searchController,
+                                      context.read<SearchHistoryListenBloc>())
+                              : provider.searchResults.isEmpty
+                                  ? const Center(child: Text('No photos found'))
+                                  : PhotoGrid(photos: provider.searchResults),
+                        );
+                      },
                     ),
                   ],
                 );

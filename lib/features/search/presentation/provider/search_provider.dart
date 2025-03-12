@@ -1,22 +1,25 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/service/speech_recognition_service.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/search/domain/entities/filter.dart';
-import 'package:provider/provider.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/search_history/search_history_bloc.dart';
+// import 'package:provider/provider.dart';
+// import 'package:get_it/get_it.dart';
 
 class SearchProvider extends ChangeNotifier {
   // State
-  FilterOption? _selectedFilter;
-  List<Photo> _searchResults = [];
   final List<Photo> _photoList;
   final List<Album> _albumList;
   final List<PersonGroup> _personGroupList;
-  bool _isVoiceSearchOn = false;
+  final SearchHistoryBloc _searchHistoryBloc;
   final SpeechRecognitionService _speechService = SpeechRecognitionService();
+
+  bool _isVoiceSearchOn = false;
+  List<Photo> _searchResults = [];
+  FilterOption? _selectedFilter;
 
   static List<String> timeRangeOption = [
     'Today',
@@ -48,41 +51,49 @@ class SearchProvider extends ChangeNotifier {
     required List<Photo> photoList,
     required List<Album> albumList,
     required List<PersonGroup> personGroupList,
+    required SearchHistoryBloc searchHistoryBloc,
   })  : _photoList = photoList,
         _albumList = albumList,
-        _personGroupList = personGroupList {
+        _personGroupList = personGroupList,
+        _searchHistoryBloc = searchHistoryBloc {
     _populateFilterOptions();
   }
 
   // Getter
   FilterOption? get selectedFilter => _selectedFilter;
+  List<Photo> get allPhotos => _photoList;
   List<Photo> get searchResults => _searchResults;
   bool get isVoiceSearchOn => _isVoiceSearchOn;
 
   // utils
+  // set search result
+  void setSearchResults(List<Photo> photos) {
+    _searchResults = photos;
+    notifyListeners();
+  }
+
   // get 2 random time range filter with 1 random photo in that time range-> give back {timeRange, timerange}
   List<Map<String, dynamic>> getRandomTimeRangeFilter() {
-    // Tạo một bản sao của danh sách timeRangeOption và xáo trộn nó
     final shuffledTimeRanges = List<String>.from(timeRangeOption)..shuffle();
 
-    // List để lưu các filter có ảnh
     final List<Map<String, dynamic>> filtersWithPhotos = [];
 
-    // Duyệt qua tất cả các time range đã xáo trộn
     for (var filter in shuffledTimeRanges) {
-      // Kiểm tra xem filter này có ảnh không
       final photos = _searchByTimeRange(filter);
       if (photos.isNotEmpty) {
-        // Thêm filter và URL của ảnh đầu tiên vào danh sách
+        final random = Random();
+        final randomIndex = random.nextInt(photos.length);
         filtersWithPhotos
-            .add({'filter': filter, 'url': photos[0].imageUrl ?? ''});
+            .add({'filter': filter, 'url': photos[randomIndex].imageUrl ?? ''});
 
-        // Nếu đã tìm thấy 2 filter có ảnh, dừng lại
         if (filtersWithPhotos.length == 2) break;
       }
     }
 
-    // Trả về danh sách các filter có ảnh (có thể là 0, 1, hoặc 2)
+    while (filtersWithPhotos.length < 2) {
+      filtersWithPhotos.add({'filter': 'This Month', 'url': ''});
+    }
+
     return filtersWithPhotos;
   }
 
@@ -202,13 +213,12 @@ class SearchProvider extends ChangeNotifier {
             yesterday.year, yesterday.month, yesterday.day, 23, 59, 59);
         break;
       case 'This Week':
-        // Lấy ngày đầu tuần (thứ Hai)
+        // Take the first day of the week
         final weekday = now.weekday;
         startDate = now.subtract(Duration(days: weekday - 1));
         startDate = DateTime(startDate.year, startDate.month, startDate.day);
         break;
       case 'Last Week':
-        // Tuần trước: từ thứ Hai tuần trước đến Chủ nhật tuần trước
         final weekday = now.weekday;
         final lastWeekEnd = now.subtract(Duration(days: weekday));
         final lastWeekStart = lastWeekEnd.subtract(const Duration(days: 6));
@@ -224,16 +234,12 @@ class SearchProvider extends ChangeNotifier {
         startDate = DateTime(now.year, now.month, 1);
         break;
       case 'Last Month':
-        // Tháng trước: từ ngày 1 tháng trước đến ngày cuối tháng trước
         if (now.month == 1) {
-          // Nếu là tháng 1 thì tháng trước là tháng 12 năm trước
           startDate = DateTime(now.year - 1, 12, 1);
-          endDate = DateTime(now.year, 1, 0, 23, 59,
-              59); // Ngày 0 của tháng 1 = ngày cuối của tháng 12
+          endDate = DateTime(now.year, 1, 0, 23, 59, 59);
         } else {
           startDate = DateTime(now.year, now.month - 1, 1);
-          endDate = DateTime(now.year, now.month, 0, 23, 59,
-              59); // Ngày 0 của tháng hiện tại = ngày cuối của tháng trước
+          endDate = DateTime(now.year, now.month, 0, 23, 59, 59);
         }
         break;
       case 'This Year':
@@ -244,7 +250,6 @@ class SearchProvider extends ChangeNotifier {
         endDate = DateTime(now.year - 1, 12, 31, 23, 59, 59);
         break;
       default:
-        // Xử lý các tháng từ January đến December
         final monthNames = [
           'January',
           'February',
@@ -262,25 +267,20 @@ class SearchProvider extends ChangeNotifier {
 
         final monthIndex = monthNames.indexOf(timeRange);
         if (monthIndex != -1) {
-          // Cách hiệu quả: đánh dấu là tìm kiếm theo tháng cụ thể
           isMonthFilter = true;
-          specificMonth =
-              monthIndex + 1; // +1 vì tháng trong DateTime bắt đầu từ 1
+          specificMonth = monthIndex + 1;
         } else {
           return [];
         }
     }
 
     return _photoList.where((photo) {
-      // Sử dụng createdAt thay vì dateTime
       final photoDate = photo.createdAt;
       if (photoDate == null) return false;
 
       if (isMonthFilter && specificMonth != null) {
-        // Với filter tháng: chỉ quan tâm đến tháng, không quan tâm năm
         return photoDate.month == specificMonth;
       } else if (startDate != null) {
-        // Với các filter khác: kiểm tra nằm trong khoảng thời gian
         return photoDate.isAfter(startDate) && photoDate.isBefore(endDate);
       }
       return false;
@@ -401,10 +401,8 @@ class SearchProvider extends ChangeNotifier {
   void selectFilter(FilterOption filter) {
     _selectedFilter = filter;
 
-    // Thực hiện tìm kiếm dựa trên bộ lọc đã chọn
     if (filter.type == FilterType.textRetrieve) {
-      // Để trống logic cho TextRetrieve - sẽ được triển khai sau
-      _searchResults = [];
+      _searchHistoryBloc.add(QueryImageByTextEvent(query: filter.value));
     } else {
       _searchResults = _searchPhotos(filter);
     }

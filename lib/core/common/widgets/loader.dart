@@ -6,21 +6,20 @@ class Loader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(),
-            (message != null) ? SizedBox(width: 10) : SizedBox(),
-            (message != null)
-                ? Text(
-                    message!,
-                  )
-                : SizedBox(),
-          ],
-        ),
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const CircularProgressIndicator(),
+          (message != null) ? SizedBox(width: 10) : SizedBox(),
+          (message != null)
+              ? Text(
+                  message!,
+                )
+              : SizedBox(),
+        ],
       ),
     );
   }

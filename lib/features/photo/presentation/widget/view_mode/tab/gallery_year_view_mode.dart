@@ -122,7 +122,6 @@ class GalleryYearViewMode extends StatelessWidget {
 
               // return GestureDetector(
               //   onTap: () {
-              //     // TODO: navigate to year album ~
               //   },
               //   child: Padding(
               //       padding: const EdgeInsets.symmetric(

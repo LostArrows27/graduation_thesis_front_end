@@ -8,6 +8,7 @@ import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/bloc/search_history_listen_bloc.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
 
 void main() async {
@@ -23,6 +24,7 @@ void main() async {
       BlocProvider(create: (_) => serviceLocator<PhotoViewModeCubit>()),
       BlocProvider(create: (_) => serviceLocator<PersonGroupBloc>()),
       BlocProvider(create: (_) => serviceLocator<AlbumListBloc>()),
+      BlocProvider(create: (_) => serviceLocator<SearchHistoryListenBloc>()),
     ],
     child: const MyApp(),
   ));

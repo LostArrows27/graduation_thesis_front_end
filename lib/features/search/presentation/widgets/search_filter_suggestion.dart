@@ -1,29 +1,21 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_thesis_front_end/core/common/layout/home_scaffold_layout.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_image.dart';
 import 'package:graduation_thesis_front_end/features/search/domain/entities/filter.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/bloc/search_history_listen_bloc.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 class SearchFilterSuggestions {
   // NOTE: build search suggest results -> user tap -> redirect to that page
-  static Widget buildSearchSuggestResults(
-      BuildContext context, SearchController controller) {
+  static Widget buildSearchSuggestResults(BuildContext context,
+      SearchController controller, SearchHistoryListenBloc searchBloc) {
     final provider = Provider.of<SearchProvider>(context, listen: false);
-
-    List<String> fakeSearchHistory = [
-      'yesterday',
-      'last week',
-      'Thanh Dung',
-      'attending a public event',
-      'firework',
-      'holiday'
-    ];
 
     final randomTimeRange = provider.getRandomTimeRangeFilter();
 
@@ -40,56 +32,81 @@ class SearchFilterSuggestions {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'Search history',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: fakeSearchHistory.map((history) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.text = history;
-                            controller.selection = TextSelection.collapsed(
-                                offset: controller.text.length);
-                            controller.openView();
-                          },
-                          child: Chip(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            deleteIconColor: Colors.white,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            label: Text(
-                              history,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onDeleted: () {
-                              // TODO: implement delete search history
-                            },
-                          ),
+          BlocBuilder<SearchHistoryListenBloc, SearchHistoryListenState>(
+            builder: (context, state) {
+              if (state is! SearchHistoryListenSuccess) {
+                return SizedBox();
+              }
+
+              if (state.searchHistory.isEmpty) {
+                return SizedBox();
+              }
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Search history',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600),
                         ),
-                      );
-                    }).toList(),
+                        IconButton(
+                            onPressed: () {
+                              context
+                                  .read<SearchHistoryListenBloc>()
+                                  .add(DeleteAllSearchHistoryEvent());
+                            },
+                            icon: Icon(Icons.delete_sweep_outlined))
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: state.searchHistory.map((history) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.text = history.content;
+                                controller.selection = TextSelection.collapsed(
+                                    offset: controller.text.length);
+                                controller.openView();
+                              },
+                              child: Chip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                deleteIconColor: Colors.white,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                label: Text(
+                                  history.content,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onDeleted: () {
+                                  searchBloc.add(
+                                      DeleteSearchHistoryEvent(id: history.id));
+                                },
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                ],
+              );
+            },
           ),
-          SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -117,6 +134,8 @@ class SearchFilterSuggestions {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                searchBloc.add(
+                                    AddSearchHistoryEvent(content: filterName));
                                 provider.selectFilter(FilterOption(
                                   type: FilterType.timeRange,
                                   value: filterName,
@@ -147,55 +166,58 @@ class SearchFilterSuggestions {
               ],
             ),
           ),
-          SizedBox(height: 30),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'People',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: peopleList.map((people) {
-                      final [top, right, bottom, left] = people
-                          .faces[0].coordinate
-                          .map((e) => e.toDouble())
-                          .toList();
-
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            context.push(Routes.peopleDetailPage,
-                                extra: people);
-                          },
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(60),
-                                child: CroppedImageWidget(
-                                    imageUrl: people.faces.first.imageUrl,
-                                    boundingBox: Rect.fromLTRB(
-                                        left, top, right, bottom))),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+          if (peopleList.isNotEmpty) SizedBox(height: 30),
+          if (peopleList.isNotEmpty)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'People',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
                 ),
-              )
-            ],
-          ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: peopleList.map((people) {
+                        final [top, right, bottom, left] = people
+                            .faces[0].coordinate
+                            .map((e) => e.toDouble())
+                            .toList();
+
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              searchBloc.add(
+                                  AddSearchHistoryEvent(content: people.name));
+                              context.push(Routes.peopleDetailPage,
+                                  extra: people);
+                            },
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(60),
+                                  child: CroppedImageWidget(
+                                      imageUrl: people.faces.first.imageUrl,
+                                      boundingBox: Rect.fromLTRB(
+                                          left, top, right, bottom))),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
           SizedBox(height: 30),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -219,6 +241,7 @@ class SearchFilterSuggestions {
                         padding: const EdgeInsets.only(right: 10),
                         child: GestureDetector(
                           onTap: () {
+                            searchBloc.add(AddSearchHistoryEvent(content: tag));
                             controller.text = tag;
                             controller.selection = TextSelection.collapsed(
                                 offset: controller.text.length);
@@ -236,15 +259,12 @@ class SearchFilterSuggestions {
                                   width: 1),
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            deleteIconColor: Colors.white,
+                            deleteIcon: null,
                             backgroundColor: getColorScheme(context).secondary,
                             label: Text(
                               tag,
                               style: TextStyle(color: Colors.white),
                             ),
-                            onDeleted: () {
-                              // TODO: implement delete smart tag
-                            },
                           ),
                         ),
                       );
@@ -260,10 +280,8 @@ class SearchFilterSuggestions {
   }
 
   // NOTE: provide filter suggest -> not type anything
-  static List<Widget> buildRandomSuggestions(
-    BuildContext context,
-    SearchController controller,
-  ) {
+  static List<Widget> buildRandomSuggestions(BuildContext context,
+      SearchController controller, SearchHistoryListenBloc searchBloc) {
     final provider = Provider.of<SearchProvider>(context, listen: false);
     final random = Random();
     List<Widget> suggestions = [];
@@ -312,6 +330,8 @@ class SearchFilterSuggestions {
               },
             ),
             onTap: () {
+              searchBloc
+                  .add(AddSearchHistoryEvent(content: category.options[idx]));
               controller.closeView(category.options[idx]);
               provider.selectFilter(FilterOption(
                 type: category.type,
@@ -331,15 +351,13 @@ class SearchFilterSuggestions {
   }
 
   // NOTE: provider filter suggest -> type something
-  static List<Widget> buildMatchingSuggestions(
-    BuildContext context,
-    SearchController controller,
-  ) {
+  static List<Widget> buildMatchingSuggestions(BuildContext context,
+      SearchController controller, SearchHistoryListenBloc searchBloc) {
     final provider = Provider.of<SearchProvider>(context, listen: false);
     final String input = controller.text.toLowerCase().trim();
 
     if (input.isEmpty) {
-      return buildRandomSuggestions(context, controller);
+      return buildRandomSuggestions(context, controller, searchBloc);
     }
 
     List<Widget> suggestions = [];
@@ -383,6 +401,7 @@ class SearchFilterSuggestions {
                   },
                 ),
                 onTap: () {
+                  searchBloc.add(AddSearchHistoryEvent(content: option));
                   controller.closeView(option);
                   provider.selectFilter(FilterOption(
                     type: category.type,
@@ -403,8 +422,7 @@ class SearchFilterSuggestions {
       }
     }
 
-    // Nếu không có khớp 100%, hiển thị TextRetrieve
-    if (!hasExactMatch && input.isNotEmpty) {
+    if (input.isNotEmpty) {
       suggestions.add(_buildTextRetrieveItem(context, input, controller));
       suggestions.add(const Divider());
     }
