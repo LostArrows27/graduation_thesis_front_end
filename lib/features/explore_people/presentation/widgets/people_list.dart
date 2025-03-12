@@ -47,6 +47,41 @@ class _PeopleListState extends State<PeopleList> {
         }
       },
       builder: (context, state) {
+        if (state is PersonGroupLoading || state is PersonGroupInitial) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 172,
+                width: 172,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'People',
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+              SizedBox(height: 3),
+              Text(
+                '${personGroups.length}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+              ),
+            ],
+          );
+        }
+
         if (state is PersonGroupFailure ||
             (state is! PersonGroupSuccess &&
                 state is! ChangeGroupNameSuccess)) {
@@ -110,41 +145,6 @@ class _PeopleListState extends State<PeopleList> {
                   ),
                 ),
               ]);
-        }
-
-        if (state is PersonGroupLoading || state is PersonGroupInitial) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 172,
-                width: 172,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'People',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-              SizedBox(height: 3),
-              Text(
-                '${personGroups.length}',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-              ),
-            ],
-          );
         }
 
         return Column(

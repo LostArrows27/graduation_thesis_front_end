@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 
 class Loader extends StatelessWidget {
-  const Loader({super.key});
+  final String? message;
+  const Loader({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: Column(
+        children: [
+          const CircularProgressIndicator(),
+          (message != null) ? SizedBox(width: 10) : SizedBox(),
+          (message != null)
+              ? Text(
+                  message!,
+                )
+              : SizedBox(),
+        ],
+      ),
     );
   }
 }

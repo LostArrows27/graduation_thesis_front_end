@@ -7,11 +7,13 @@ import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/enum/app_enum.dart';
 import 'package:graduation_thesis_front_end/core/common/layout/home_scaffold_layout.dart';
+import 'package:graduation_thesis_front_end/core/mock/page/test_searchbar.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/pages/album_page.dart';
 import 'package:graduation_thesis_front_end/core/mock/page/photo_slider.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_page.dart';
-import 'package:graduation_thesis_front_end/core/mock/page/search_page.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/pages/fully_search_page.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/pages/search_page.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';

@@ -61,7 +61,7 @@ final routerConfig = GoRouter(
           StatefulShellBranch(routes: [
             GoRoute(
                 path: Routes.searchPage,
-                builder: (context, state) => const SearchPageFake())
+                builder: (context, state) => const SearchPage())
           ]),
         ]),
     // video render route
@@ -164,6 +164,11 @@ final routerConfig = GoRouter(
 
           return SmartTagViewerPage(type: type);
         }),
+    // search page
+    GoRoute(
+      path: Routes.fullySearchPage,
+      builder: (context, state) => const FullySearchPage(),
+    ),
     // test route
     GoRoute(
       path: Routes.photoViewDemo,
@@ -178,7 +183,10 @@ final routerConfig = GoRouter(
           url: object['url'] as String,
         );
       },
-    )
+    ),
+    GoRoute(
+        path: Routes.testSearchPage,
+        builder: (context, state) => TestSearchBar()),
   ],
   redirect: (context, state) {
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);

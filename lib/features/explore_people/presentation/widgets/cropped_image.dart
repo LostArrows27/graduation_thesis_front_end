@@ -62,7 +62,7 @@ class _CroppedImageWidgetState extends State<CroppedImageWidget> {
     return Container(
       constraints: const BoxConstraints(minWidth: 1, minHeight: 1),
       child: FittedBox(
-        fit: BoxFit.contain, // scale uniformly to fit in container
+        fit: BoxFit.cover, // scale uniformly to fit in container
         alignment: Alignment.topLeft,
         child: Container(
           constraints: const BoxConstraints(minWidth: 1, minHeight: 1),

@@ -35,9 +35,12 @@ class Routes {
 
   static const String smartTagsViewerPage = '/smart-tag-viewer-page';
 
+  static const String fullySearchPage = '/fully-search-page';
+
   // test route
   static const String photoViewDemo = '/photo-view-demo';
   static const String photoSliderDemo = '/photo-slider-demo';
+  static const String testSearchPage = '/test-search-page';
 }
 
 List<String> homeRouteList = [
@@ -61,6 +64,8 @@ List<String> homeRouteList = [
   Routes.yearAlbumViewerPage,
 
   Routes.smartTagsViewerPage,
+
+  Routes.fullySearchPage,
 
   // test route
   Routes.photoViewDemo,
