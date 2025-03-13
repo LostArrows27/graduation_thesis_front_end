@@ -42,7 +42,7 @@ Future<void> openEditCaptionModel(
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          'Caption',
+                          'Image Caption',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
@@ -55,7 +55,7 @@ Future<void> openEditCaptionModel(
                           autofocus: true,
                           controller: controller,
                           decoration: InputDecoration(
-                            hintText: 'Enter image caption...',
+                            hintText: 'Enter caption...',
                             border: UnderlineInputBorder(),
                             filled: true,
                             fillColor: Colors.transparent,

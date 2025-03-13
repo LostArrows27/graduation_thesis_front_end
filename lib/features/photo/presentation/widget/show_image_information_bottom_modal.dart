@@ -7,6 +7,7 @@ import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date_to_full_time.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
+import 'package:graduation_thesis_front_end/core/utils/share_image.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
@@ -50,7 +51,7 @@ void showImageInformationBottomModal(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textIcon(Icons.share, 'Share', () {
-                          // TODO: share image
+                          shareImages(photo);
                         }, true),
                         textIcon(Icons.favorite_border, 'Favorite', () {
                           // TODO: add to favorite
@@ -59,7 +60,8 @@ void showImageInformationBottomModal(
                           // TODO: save local
                         }, true),
                         textIcon(Icons.edit, 'Edit', () {
-                          // TODO: show edit modal
+                          openEditCaptionModel(
+                              context, photo.caption, photo.id);
                         }, true),
                         textIcon(Icons.delete_outline, 'Delete', () {
                           // TODO: show delete modal

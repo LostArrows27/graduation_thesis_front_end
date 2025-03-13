@@ -5,6 +5,7 @@ import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/hero_widget.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
+import 'package:graduation_thesis_front_end/core/utils/share_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:graduation_thesis_front_end/features/explore_people/domain/entit
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/edit_caption_modal.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/show_image_information_bottom_modal.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/text_icon.dart';
 
@@ -455,7 +457,7 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   textIcon(Icons.share, 'Share', () {
-                                    // TODO: share image
+                                    shareImages(images[_currentIndex]);
                                   }),
                                   textIcon(Icons.favorite_border, 'Favorite',
                                       () {
@@ -465,7 +467,10 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                                     // TODO: save local
                                   }),
                                   textIcon(Icons.edit, 'Edit', () {
-                                    // TODO: show edit modal
+                                    openEditCaptionModel(
+                                        context,
+                                        images[_currentIndex].caption,
+                                        images[_currentIndex].id);
                                   }),
                                   textIcon(Icons.delete_outline, 'Delete', () {
                                     // TODO: show delete modal

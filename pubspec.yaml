@@ -42,6 +42,9 @@ dependencies:
   chewie: 1.8.0
   video_player: ^2.8.6
   speech_to_text: ^7.0.0
+  share_plus: 7.2.2
+  path_provider: ^2.1.5
+  file_saver: ^0.2.14
 
 dev_dependencies:
   flutter_test:
