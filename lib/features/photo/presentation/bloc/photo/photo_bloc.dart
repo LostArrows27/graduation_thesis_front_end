@@ -20,6 +20,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<PhotoFetchAllEvent>(_onPhotoFetchAllEvent);
     on<PhotoClearEvent>(_onPhotoClearEvent);
     on<PhotoAddImagesEvent>(_onPhotoAddImagesEvent);
+    on<PhotoEditCaptionEvent>(_onPhotoEditCaptionEvent);
   }
 
   void _onPhotoFetchAllEvent(
@@ -63,6 +64,25 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
           groupedByDate: groupImageByDate(event.photos),
           groupedByMonth: groupImageByMonth(event.photos),
           groupedByYear: groupImageByYear(event.photos)));
+    }
+  }
+
+  void _onPhotoEditCaptionEvent(
+      PhotoEditCaptionEvent event, Emitter<PhotoState> emit) async {
+    if (state is PhotoFetchSuccess) {
+      final currentState = state as PhotoFetchSuccess;
+      final updatedPhotos = currentState.photos
+          .map((photo) => photo.id == event.imageId
+              ? photo.copyWith(caption: event.caption)
+              : photo)
+          .toList();
+      emit(PhotoFetchSuccess(
+          photos: updatedPhotos,
+          groupedByDate: groupImageByDate(updatedPhotos),
+          groupedByMonth: groupImageByMonth(updatedPhotos),
+          groupedByYear: groupImageByYear(updatedPhotos)));
+    } else {
+      emit(PhotoFetchFailure(message: 'Cannot edit caption'));
     }
   }
 }

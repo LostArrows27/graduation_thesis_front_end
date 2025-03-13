@@ -24,4 +24,19 @@ class PhotoRepositoryImpl implements PhotoRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> editImageCaption(
+      {required String caption, required String imageId}) async {
+    try {
+      final res = await photoRemoteDataSource.editImageCaption(
+        caption: caption,
+        imageId: imageId,
+      );
+
+      return right(res);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

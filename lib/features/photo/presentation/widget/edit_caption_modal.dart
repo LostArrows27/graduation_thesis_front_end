@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
-import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
 
-Future<void> openNameEditModal(
-    BuildContext context, String initialText, int clusterId) async {
-  TextEditingController controller = TextEditingController(
-      text: initialText.contains('Person') || initialText.contains('Noise')
-          ? null
-          : initialText);
+Future<void> openEditCaptionModel(
+    BuildContext context, String? oldCaption, String imageId) async {
+  TextEditingController controller = TextEditingController(text: oldCaption);
 
   return showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
-      return BlocConsumer<PersonGroupBloc, PersonGroupState>(
+      return BlocConsumer<EditCaptionBloc, EditCaptionState>(
         listener: (context, state) {
-          if (state is ChangeGroupNameFailure) {
-            showErrorSnackBar(context, state.message);
-          }
-
-          if (state is ChangeGroupNameSuccess) {
-            Navigator.of(context).pop();
+          if (state is EditCaptionSuccess) {
+            return Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
@@ -50,7 +42,7 @@ Future<void> openNameEditModal(
                       Padding(
                         padding: EdgeInsets.all(20),
                         child: Text(
-                          'Name',
+                          'Caption',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
@@ -59,12 +51,11 @@ Future<void> openNameEditModal(
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
-                          enabled:
-                              state is ChangeGroupNameLoading ? false : true,
+                          enabled: state is EditCaptionLoading ? false : true,
                           autofocus: true,
                           controller: controller,
                           decoration: InputDecoration(
-                            hintText: 'Enter a name',
+                            hintText: 'Enter image caption...',
                             border: UnderlineInputBorder(),
                             filled: true,
                             fillColor: Colors.transparent,
@@ -86,7 +77,7 @@ Future<void> openNameEditModal(
                                     ),
                                   ),
                                 ),
-                                onPressed: state is ChangeGroupNameLoading
+                                onPressed: state is EditCaptionLoading
                                     ? null
                                     : () {
                                         Navigator.of(context).pop();
@@ -113,41 +104,20 @@ Future<void> openNameEditModal(
                                       : Theme.of(context).disabledColor,
                                 ),
                                 onPressed: !isSaveEnabled ||
-                                        state is ChangeGroupNameLoading
+                                        state is EditCaptionLoading
                                     ? null
                                     : () {
-                                        String updatedName =
+                                        String editCaption =
                                             controller.text.trim();
 
-                                        if (updatedName == initialText) {
+                                        if (editCaption == oldCaption) {
                                           Navigator.of(context).pop();
-                                          return;
-                                        }
-
-                                        if (state is PersonGroupSuccess) {
+                                        } else {
                                           return context
-                                              .read<PersonGroupBloc>()
-                                              .add(
-                                                ChangeGroupNameEvent(
-                                                  clusterId: clusterId,
-                                                  newName: updatedName,
-                                                  personGroups:
-                                                      state.personGroups,
-                                                ),
-                                              );
-                                        }
-
-                                        if (state is ChangeGroupNameSuccess) {
-                                          return context
-                                              .read<PersonGroupBloc>()
-                                              .add(
-                                                ChangeGroupNameEvent(
-                                                  clusterId: clusterId,
-                                                  newName: updatedName,
-                                                  personGroups:
-                                                      state.personGroups,
-                                                ),
-                                              );
+                                              .read<EditCaptionBloc>()
+                                              .add(ChangeCaptionEvent(
+                                                  caption: editCaption,
+                                                  imageId: imageId));
                                         }
                                       },
                                 child: Text('Save'),

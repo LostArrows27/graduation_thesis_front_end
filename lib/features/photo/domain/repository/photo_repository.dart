@@ -6,4 +6,9 @@ abstract interface class PhotoRepository {
   Future<Either<Failure, List<Photo>>> getAllUserImage({
     required String userId,
   });
+
+  Future<Either<Failure, String>> editImageCaption({
+    required String caption,
+    required String imageId,
+  });
 }

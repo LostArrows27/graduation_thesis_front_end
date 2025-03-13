@@ -6,12 +6,17 @@ abstract interface class PhotoRemoteDataSource {
   Future<List<ImageModel>> getAllUserImage({
     required String userId,
   });
+
+  Future<String> editImageCaption(
+      {required String caption, required String imageId});
 }
 
 class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
   final SupabaseClient supabaseClient;
 
   PhotoRemoteDataSourceImpl({required this.supabaseClient});
+
+  String get getUserId => supabaseClient.auth.currentUser!.id;
 
   @override
   Future<List<ImageModel>> getAllUserImage({required String userId}) async {
@@ -31,6 +36,24 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       }).toList();
 
       return test;
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException("Failed to get user images.");
+    }
+  }
+
+  @override
+  Future<String> editImageCaption(
+      {required String caption, required String imageId}) async {
+    try {
+      await supabaseClient
+          .from('image')
+          .update({'caption': caption})
+          .eq('uploader_id', getUserId)
+          .eq('id', imageId);
+
+      return imageId;
     } catch (e, c) {
       print(e);
       print(c);

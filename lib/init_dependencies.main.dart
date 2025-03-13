@@ -72,9 +72,12 @@ void _initPhoto() {
     // use case
     ..registerFactory(() => GetAllUserImage(serviceLocator()))
     ..registerFactory(() => UploadImages(authRepository: serviceLocator()))
+    ..registerFactory(() => EditImageCaption(photoRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()))
     ..registerFactory(() => UploadPhotoBloc(uploadImages: serviceLocator()))
+    ..registerLazySingleton(() => EditCaptionBloc(
+        photoBloc: serviceLocator(), editImageCaption: serviceLocator()))
     // cubit
     ..registerLazySingleton(() => PhotoViewModeCubit());
 }

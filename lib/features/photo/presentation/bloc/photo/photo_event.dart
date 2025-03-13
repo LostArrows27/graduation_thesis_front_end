@@ -17,3 +17,14 @@ final class PhotoAddImagesEvent extends PhotoEvent {
 
   PhotoAddImagesEvent({required this.photos});
 }
+
+// edit image caption
+final class PhotoEditCaptionEvent extends PhotoEvent {
+  final String caption;
+  final String imageId;
+
+  PhotoEditCaptionEvent({
+    required this.caption,
+    required this.imageId,
+  });
+}
