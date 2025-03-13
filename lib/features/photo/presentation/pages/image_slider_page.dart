@@ -1,9 +1,17 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/hero_widget.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
+import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/show_image_information_bottom_modal.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/text_icon.dart';
 
 class ImageSliderPage extends StatefulWidget {
   const ImageSliderPage(
@@ -68,35 +76,6 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
     });
   }
 
-  Widget _textIcon(IconData icon, String text, VoidCallback onPressed) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          child: SizedBox(
-            width: 60,
-            height: 60,
-            child: Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: Column(
-                children: [
-                  Icon(icon, color: Colors.white, size: 22),
-                  SizedBox(height: 4),
-                  Text(
-                    text,
-                    style: TextStyle(color: Colors.white, fontSize: 11),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -125,10 +104,43 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                     icon: Icon(Icons.more_vert, color: Colors.white),
                     iconSize: 24,
                     onPressed: () {
-                      // TODO: display information
-                      // 1. note
-                      // 2. add location
-                      // 3. add event
+                      final photo = widget.images[_currentIndex];
+                      final albumState = context.read<AlbumListBloc>().state;
+
+                      final personGroupState =
+                          context.read<PersonGroupBloc>().state;
+
+                      if (albumState is AlbumListLoaded &&
+                          (personGroupState is PersonGroupSuccess ||
+                              personGroupState is ChangeGroupNameSuccess)) {
+                        List<Album> albums = [];
+
+                        for (var album in albumState.albums) {
+                          if (album.imageIdList.contains(photo.id)) {
+                            albums.add(album);
+                          }
+                        }
+
+                        List<Face> faces = [];
+                        List<PersonGroup> allPersonGroup = [];
+
+                        if (personGroupState is PersonGroupSuccess) {
+                          allPersonGroup = personGroupState.personGroups;
+                        } else if (personGroupState is ChangeGroupNameSuccess) {
+                          allPersonGroup = personGroupState.personGroups;
+                        }
+
+                        for (var group in allPersonGroup) {
+                          for (var face in group.faces) {
+                            if (face.imageId == photo.id) {
+                              faces.add(face.copyWith(name: group.name));
+                            }
+                          }
+                        }
+
+                        showImageInformationBottomModal(
+                            context, photo, albums, faces);
+                      }
                     },
                   ),
                 ],
@@ -370,20 +382,19 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                _textIcon(Icons.share, 'Share', () {
+                                textIcon(Icons.share, 'Share', () {
                                   // TODO: share image
                                 }),
-                                _textIcon(Icons.favorite_border, 'Favorite',
-                                    () {
+                                textIcon(Icons.favorite_border, 'Favorite', () {
                                   // TODO: add to favorite
                                 }),
-                                _textIcon(Icons.download, 'Save', () {
+                                textIcon(Icons.download, 'Save', () {
                                   // TODO: save local
                                 }),
-                                _textIcon(Icons.edit, 'Edit', () {
+                                textIcon(Icons.edit, 'Edit', () {
                                   // TODO: show edit modal
                                 }),
-                                _textIcon(Icons.delete_outline, 'Delete', () {
+                                textIcon(Icons.delete_outline, 'Delete', () {
                                   // TODO: show delete modal
                                 }),
                               ],

@@ -9,12 +9,14 @@ class Photo {
   final String imageName;
   final LabelResponse labels;
   final String? imageUrl;
+  final String? caption;
 
   Photo(
       {required this.id,
       this.createdAt,
       this.updatedAt,
       this.imageUrl,
+      this.caption,
       required this.uploaderId,
       required this.imageBucketId,
       required this.imageName,

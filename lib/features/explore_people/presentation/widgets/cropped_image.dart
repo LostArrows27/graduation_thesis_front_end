@@ -1,5 +1,6 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 
 class CroppedImageWidget extends StatefulWidget {
   final String imageUrl;
@@ -20,7 +21,7 @@ class _CroppedImageWidgetState extends State<CroppedImageWidget> {
   double? imgHeight;
 
   Future<void> _getImageDimensions(String imageUrl) async {
-    final image = CachedNetworkImageProvider(imageUrl);
+    final image = ExtendedNetworkImageProvider(imageUrl, cache: true);
     final configuration = createLocalImageConfiguration(context);
 
     image.resolve(configuration).addListener(
@@ -63,7 +64,7 @@ class _CroppedImageWidgetState extends State<CroppedImageWidget> {
       constraints: const BoxConstraints(minWidth: 1, minHeight: 1),
       child: FittedBox(
         fit: BoxFit.cover, // scale uniformly to fit in container
-        alignment: Alignment.topLeft,
+        alignment: Alignment.center,
         child: Container(
           constraints: const BoxConstraints(minWidth: 1, minHeight: 1),
           child: ClipRect(
@@ -71,7 +72,7 @@ class _CroppedImageWidgetState extends State<CroppedImageWidget> {
               alignment: regionAlignment,
               widthFactor: widthFactor,
               heightFactor: heightFactor,
-              child: CachedNetworkImage(
+              child: CachedImage(
                 imageUrl: widget.imageUrl,
                 fit: BoxFit.none, // do not scale the image itself
               ),

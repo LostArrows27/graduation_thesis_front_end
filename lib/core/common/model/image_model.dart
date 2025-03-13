@@ -7,6 +7,7 @@ class ImageModel extends Photo {
       super.createdAt,
       super.updatedAt,
       super.imageUrl,
+      super.caption,
       required super.uploaderId,
       required super.imageBucketId,
       required super.imageName,
@@ -24,6 +25,7 @@ class ImageModel extends Photo {
       uploaderId: json['uploader_id'] as String?,
       imageBucketId: json['image_bucket_id'] as String,
       imageName: json['image_name'] as String,
+      caption: json['caption'] as String?,
       labels: json['labels'] == null
           ? LabelResponse(
               labels:
@@ -33,25 +35,25 @@ class ImageModel extends Photo {
     );
   }
 
-  ImageModel copyWith({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? uploaderId,
-    String? imageBucketId,
-    String? imageName,
-    LabelResponse? labels,
-    String? imageUrl,
-  }) {
+  ImageModel copyWith(
+      {String? id,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      String? uploaderId,
+      String? imageBucketId,
+      String? imageName,
+      LabelResponse? labels,
+      String? imageUrl,
+      String? caption}) {
     return ImageModel(
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      uploaderId: uploaderId ?? this.uploaderId,
-      imageBucketId: imageBucketId ?? this.imageBucketId,
-      imageName: imageName ?? this.imageName,
-      labels: labels ?? this.labels,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        uploaderId: uploaderId ?? this.uploaderId,
+        imageBucketId: imageBucketId ?? this.imageBucketId,
+        imageName: imageName ?? this.imageName,
+        labels: labels ?? this.labels,
+        imageUrl: imageUrl ?? this.imageUrl,
+        caption: caption ?? this.caption);
   }
 }

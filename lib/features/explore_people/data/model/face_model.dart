@@ -4,6 +4,7 @@ import 'package:graduation_thesis_front_end/features/explore_people/domain/entit
 class FaceModel extends Face {
   FaceModel(
       {required super.id,
+      super.name,
       required super.coordinate,
       required super.imageUrl,
       required super.imageCreatedAt,
@@ -38,6 +39,7 @@ class FaceModel extends Face {
     String? imageName,
     String? imageBucketId,
     LabelResponse? imageLabel,
+    String? name,
   }) {
     return FaceModel(
       id: id ?? this.id,
@@ -48,6 +50,7 @@ class FaceModel extends Face {
       imageName: imageName ?? this.imageName,
       imageBucketId: imageBucketId ?? this.imageBucketId,
       imageLabel: imageLabel ?? this.imageLabel,
+      name: name ?? this.name,
     );
   }
 }

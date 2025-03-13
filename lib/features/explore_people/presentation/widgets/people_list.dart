@@ -22,7 +22,20 @@ class _PeopleListState extends State<PeopleList> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PersonGroupBloc>().add(PersonGroupFetch());
+      final personGroupBloc = context.read<PersonGroupBloc>();
+      if (personGroupBloc.state is PersonGroupSuccess) {
+        setState(() {
+          personGroups =
+              (personGroupBloc.state as PersonGroupSuccess).personGroups;
+        });
+      } else if (personGroupBloc.state is ChangeGroupNameSuccess) {
+        setState(() {
+          personGroups =
+              (personGroupBloc.state as ChangeGroupNameSuccess).personGroups;
+        });
+      } else if (personGroupBloc.state is PersonGroupInitial) {
+        personGroupBloc.add(PersonGroupFetch());
+      }
     });
   }
 

@@ -4,6 +4,7 @@ import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_
 import 'package:graduation_thesis_front_end/core/common/enum/app_enum.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/gallery_view_mode_selector.dart';
@@ -34,6 +35,17 @@ class _PhotoPageState extends State<PhotoPage> {
           context
               .read<PhotoViewModeCubit>()
               .changeViewMode(GalleryViewMode.all);
+        }
+
+        final albumListBloc = context.read<AlbumListBloc>();
+
+        if (albumListBloc.state is AlbumListInitial) {
+          albumListBloc.add(GetAllAlbumEvent());
+        }
+
+        final personGroupBloc = context.read<PersonGroupBloc>();
+        if (personGroupBloc.state is PersonGroupInitial) {
+          personGroupBloc.add(PersonGroupFetch());
         }
       }
     });
