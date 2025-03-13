@@ -28,3 +28,11 @@ final class PhotoEditCaptionEvent extends PhotoEvent {
     required this.imageId,
   });
 }
+
+// delete image
+final class PhotoDeleteEvent extends PhotoEvent {
+  final String imageBucketId;
+  final String imageName;
+
+  PhotoDeleteEvent({required this.imageBucketId, required this.imageName});
+}

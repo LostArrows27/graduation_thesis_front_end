@@ -21,6 +21,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<PhotoClearEvent>(_onPhotoClearEvent);
     on<PhotoAddImagesEvent>(_onPhotoAddImagesEvent);
     on<PhotoEditCaptionEvent>(_onPhotoEditCaptionEvent);
+    on<PhotoDeleteEvent>(_onPhotoDeleteEvent);
   }
 
   void _onPhotoFetchAllEvent(
@@ -83,6 +84,23 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
           groupedByYear: groupImageByYear(updatedPhotos)));
     } else {
       emit(PhotoFetchFailure(message: 'Cannot edit caption'));
+    }
+  }
+
+  void _onPhotoDeleteEvent(
+      PhotoDeleteEvent event, Emitter<PhotoState> emit) async {
+    if (state is PhotoFetchSuccess) {
+      final currentState = state as PhotoFetchSuccess;
+      final updatedPhotos = currentState.photos
+          .where((photo) => photo.imageName != event.imageName)
+          .toList();
+      emit(PhotoFetchSuccess(
+          photos: updatedPhotos,
+          groupedByDate: groupImageByDate(updatedPhotos),
+          groupedByMonth: groupImageByMonth(updatedPhotos),
+          groupedByYear: groupImageByYear(updatedPhotos)));
+    } else {
+      emit(PhotoFetchFailure(message: 'Cannot delete photo'));
     }
   }
 }

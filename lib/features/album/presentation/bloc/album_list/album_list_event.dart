@@ -5,6 +5,8 @@ sealed class AlbumListEvent {}
 
 final class GetAllAlbumEvent extends AlbumListEvent {}
 
+final class ReloadAlbum extends AlbumListEvent {}
+
 final class AddAlbumEvent extends AlbumListEvent {
   final Album album;
 

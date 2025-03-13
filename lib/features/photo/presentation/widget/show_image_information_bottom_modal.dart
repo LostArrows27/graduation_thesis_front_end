@@ -12,6 +12,7 @@ import 'package:graduation_thesis_front_end/core/utils/share_image.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/edit_caption_modal.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/image_information.dart';
@@ -65,7 +66,8 @@ void showImageInformationBottomModal(
                               context, photo.caption, photo.id);
                         }, true),
                         textIcon(Icons.delete_outline, 'Delete', () {
-                          // TODO: show delete modal
+                          context.read<DeleteImageCubit>().deleteImage(
+                              photo.imageBucketId, photo.imageName);
                         }, true),
                       ],
                     ),

@@ -5,6 +5,8 @@ sealed class PersonGroupEvent {}
 
 final class PersonGroupFetch extends PersonGroupEvent {}
 
+final class ReloadPersonGroup extends PersonGroupEvent {}
+
 final class PersonGroupSetSuccuess extends PersonGroupEvent {
   final List<PersonGroup> personGroups;
 

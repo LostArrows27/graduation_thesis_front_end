@@ -9,6 +9,9 @@ abstract interface class PhotoRemoteDataSource {
 
   Future<String> editImageCaption(
       {required String caption, required String imageId});
+
+  Future<void> deleteImage(
+      {required String imageBucketId, required String imageName});
 }
 
 class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
@@ -58,6 +61,18 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       print(e);
       print(c);
       throw ServerException("Failed to get user images.");
+    }
+  }
+
+  @override
+  Future<void> deleteImage(
+      {required String imageBucketId, required String imageName}) async {
+    try {
+      await supabaseClient.storage.from(imageBucketId).remove([imageName]);
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException("Failed to delete images.");
     }
   }
 }

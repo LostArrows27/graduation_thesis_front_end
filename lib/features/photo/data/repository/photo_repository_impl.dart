@@ -39,4 +39,18 @@ class PhotoRepositoryImpl implements PhotoRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteImage(
+      {required String imageBucketId, required String imageName}) async {
+    try {
+      await photoRemoteDataSource.deleteImage(
+        imageBucketId: imageBucketId,
+        imageName: imageName,
+      );
+      return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

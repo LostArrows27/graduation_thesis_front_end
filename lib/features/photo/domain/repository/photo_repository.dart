@@ -11,4 +11,9 @@ abstract interface class PhotoRepository {
     required String caption,
     required String imageId,
   });
+
+  Future<Either<Failure, void>> deleteImage({
+    required String imageBucketId,
+    required String imageName,
+  });
 }

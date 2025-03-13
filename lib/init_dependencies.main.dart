@@ -73,13 +73,16 @@ void _initPhoto() {
     ..registerFactory(() => GetAllUserImage(serviceLocator()))
     ..registerFactory(() => UploadImages(authRepository: serviceLocator()))
     ..registerFactory(() => EditImageCaption(photoRepository: serviceLocator()))
+    ..registerFactory(() => DeleteImage(photoRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(() => PhotoBloc(getAllUserImage: serviceLocator()))
     ..registerFactory(() => UploadPhotoBloc(uploadImages: serviceLocator()))
     ..registerLazySingleton(() => EditCaptionBloc(
         photoBloc: serviceLocator(), editImageCaption: serviceLocator()))
     // cubit
-    ..registerLazySingleton(() => PhotoViewModeCubit());
+    ..registerLazySingleton(() => PhotoViewModeCubit())
+    ..registerLazySingleton(() => DeleteImageCubit(
+        deleteImage: serviceLocator(), photoBloc: serviceLocator()));
 }
 
 void _initVideoRender() {
@@ -135,6 +138,7 @@ void _initExplore() {
         () => ChangePersonGroupName(exploreRepository: serviceLocator()))
     // bloc
     ..registerLazySingleton(() => PersonGroupBloc(
+        photoBloc: serviceLocator(),
         changePersonGroupName: serviceLocator(),
         getPeopleGroup: serviceLocator()));
 }
