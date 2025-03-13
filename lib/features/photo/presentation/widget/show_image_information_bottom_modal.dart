@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
+import 'package:graduation_thesis_front_end/core/utils/dowload_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date_to_full_time.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
@@ -56,8 +57,8 @@ void showImageInformationBottomModal(
                         textIcon(Icons.favorite_border, 'Favorite', () {
                           // TODO: add to favorite
                         }, true),
-                        textIcon(Icons.download, 'Save', () {
-                          // TODO: save local
+                        textIcon(Icons.download, 'Save', () async {
+                          await saveImage(context, photo);
                         }, true),
                         textIcon(Icons.edit, 'Edit', () {
                           openEditCaptionModel(

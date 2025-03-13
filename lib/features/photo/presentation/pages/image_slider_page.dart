@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/hero_widget.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
+import 'package:graduation_thesis_front_end/core/utils/dowload_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
 import 'package:graduation_thesis_front_end/core/utils/share_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
@@ -464,7 +465,7 @@ class _ImageSliderPageState extends State<ImageSliderPage> {
                                     // TODO: add to favorite
                                   }),
                                   textIcon(Icons.download, 'Save', () {
-                                    // TODO: save local
+                                    saveImage(context, images[_currentIndex]);
                                   }),
                                   textIcon(Icons.edit, 'Edit', () {
                                     openEditCaptionModel(
