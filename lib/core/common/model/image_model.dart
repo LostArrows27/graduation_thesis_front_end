@@ -8,6 +8,7 @@ class ImageModel extends Photo {
       super.updatedAt,
       super.imageUrl,
       super.caption,
+      required super.isFavorite,
       required super.uploaderId,
       required super.imageBucketId,
       required super.imageName,
@@ -32,9 +33,11 @@ class ImageModel extends Photo {
                   Labels(locationLabels: [], actionLabels: [], eventLabels: []))
           : LabelResponse.fromJson(json['labels'] as Map<String, dynamic>),
       imageUrl: json['image_url'] == null ? null : json['image_url'] as String,
+      isFavorite: json['is_favorite'] as bool,
     );
   }
 
+  @override
   ImageModel copyWith(
       {String? id,
       DateTime? createdAt,
@@ -44,6 +47,7 @@ class ImageModel extends Photo {
       String? imageName,
       LabelResponse? labels,
       String? imageUrl,
+      bool? isFavorite,
       String? caption}) {
     return ImageModel(
         id: id ?? this.id,
@@ -54,6 +58,7 @@ class ImageModel extends Photo {
         imageName: imageName ?? this.imageName,
         labels: labels ?? this.labels,
         imageUrl: imageUrl ?? this.imageUrl,
+        isFavorite: isFavorite ?? this.isFavorite,
         caption: caption ?? this.caption);
   }
 }

@@ -22,6 +22,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<PhotoAddImagesEvent>(_onPhotoAddImagesEvent);
     on<PhotoEditCaptionEvent>(_onPhotoEditCaptionEvent);
     on<PhotoDeleteEvent>(_onPhotoDeleteEvent);
+    on<PhotoFavoriteEvent>(_onPhotoFavoriteEvent);
   }
 
   void _onPhotoFetchAllEvent(
@@ -101,6 +102,25 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
           groupedByYear: groupImageByYear(updatedPhotos)));
     } else {
       emit(PhotoFetchFailure(message: 'Cannot delete photo'));
+    }
+  }
+
+  void _onPhotoFavoriteEvent(
+      PhotoFavoriteEvent event, Emitter<PhotoState> emit) async {
+    if (state is PhotoFetchSuccess) {
+      final currentState = state as PhotoFetchSuccess;
+      final updatedPhotos = currentState.photos
+          .map((photo) => photo.id == event.imageId
+              ? photo.copyWith(isFavorite: !photo.isFavorite)
+              : photo)
+          .toList();
+      emit(PhotoFetchSuccess(
+          photos: updatedPhotos,
+          groupedByDate: groupImageByDate(updatedPhotos),
+          groupedByMonth: groupImageByMonth(updatedPhotos),
+          groupedByYear: groupImageByYear(updatedPhotos)));
+    } else {
+      emit(PhotoFetchFailure(message: 'Cannot favorite photo'));
     }
   }
 }

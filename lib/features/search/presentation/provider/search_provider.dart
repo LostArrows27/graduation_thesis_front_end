@@ -308,25 +308,26 @@ class SearchProvider extends ChangeNotifier {
   }
 
   List<Photo> _searchByImageName(String name) {
-    return [];
-    // return _photoList.where((photo) =>
-    //   photo.name.toLowerCase().contains(name.toLowerCase())
-    // ).toList();
+  return _photoList
+        .where((photo) => (photo.caption != null &&
+                photo.caption!.toLowerCase().contains(name.toLowerCase()) ||
+            photo.imageName.toLowerCase().contains(name.toLowerCase())))
+        .toList();
   }
 
   List<Photo> _searchByPerson(String personName) {
-    return _personGroupList
-        .where((person) => person.name == personName)
-        .first
-        .faces
-        .map((face) => Photo(
-            id: face.imageId,
-            imageUrl: face.imageUrl,
-            uploaderId: 'temp_uploader_id',
-            imageBucketId: face.imageBucketId,
-            imageName: face.imageName,
-            labels: face.imageLabel))
-        .toList();
+    final personGroup =
+        _personGroupList.where((person) => person.name == personName).first;
+
+    final Set<String> personImageIds =
+        personGroup.faces.map((face) => face.imageId).toSet();
+
+    final List<Photo> matchingPhotos =
+        _photoList.where((photo) => personImageIds.contains(photo.id)).toList();
+
+    matchingPhotos.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+    return matchingPhotos;
   }
 
   // Điền các tùy chọn từ danh sách ảnh
@@ -350,15 +351,13 @@ class SearchProvider extends ChangeNotifier {
     // add option -> filter.smartTag
     final smartTags = getAllSmartTag();
 
-    // TODO: add implement here
-    // NOTE: AFTER ADD CAPTION TO IMAGE
     // add option -> filter.imageName
-    // final Set<String> imageNames = {};
-    // for (var photo in _photoList) {
-    //   if (photo.name.isNotEmpty) {
-    //     imageNames.add(photo.name);
-    //   }
-    // }
+    final Set<String> imageNames = {};
+    for (var photo in _photoList) {
+      if (photo.caption != null && photo.caption!.isNotEmpty) {
+        imageNames.add(photo.caption!);
+      }
+    }
 
     // Cập nhật danh sách filterCategories
     for (var i = 0; i < filterCategories.length; i++) {
@@ -383,14 +382,14 @@ class SearchProvider extends ChangeNotifier {
           label: 'People',
           options: people.toList(),
         );
+      } else if (filterCategories[i].type == FilterType.imageName) {
+        filterCategories[i] = FilterCategory(
+          type: FilterType.imageName,
+          icon: Icons.text_fields,
+          label: 'Image Name',
+          options: imageNames.toList(),
+        );
       }
-      // else if (filterCategories[i].type == FilterType.imageName) {
-      //   filterCategories[i] = FilterCategory(
-      //     type: FilterType.imageName,
-      //     icon: Icons.image,
-      //     label: 'Image Name',
-      //     options: imageNames.toList(),
-      //   );
     }
   }
 

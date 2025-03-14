@@ -7,12 +7,15 @@ import 'package:graduation_thesis_front_end/core/utils/convert_name.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_image.dart';
+import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/edit_name_model.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/hero_network_image.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 
 class PeopleDetail extends StatefulWidget {
   final PersonGroup personGroup;
@@ -42,90 +45,115 @@ class _PeopleDetailState extends State<PeopleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
+    return BlocListener<DeleteImageCubit, DeleteImageCubitState>(
+      listener: (context, state) {
+        if (state is DeleteImageCubitError) {
+          return showErrorSnackBar(context, state.message);
+        }
+
+        if (state is DeleteImageCubitSuccess) {
+          final imageBucketId = state.imageBucketId;
+          final imageName = state.imageName;
+
+          setState(() {
+            final updatedFaces = _personGroup.faces
+                .where((face) => !(face.imageBucketId == imageBucketId &&
+                    face.imageName == imageName))
+                .toList();
+
+            _personGroup = _personGroup.copyWith(faces: updatedFaces);
+          });
+
+          if (_personGroup.faces.isEmpty) {
             Navigator.pop(context);
-          },
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              convertName(_personGroup.name),
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 5),
-            Text(
-              '${_personGroup.faces.length} items',
-              style: TextStyle(
-                  fontSize: 14, color: Theme.of(context).colorScheme.outline),
-            ),
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                convertName(_personGroup.name),
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 5),
+              Text(
+                '${_personGroup.faces.length} items',
+                style: TextStyle(
+                    fontSize: 14, color: Theme.of(context).colorScheme.outline),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: () {
+                // TODO: show more options
+              },
+            )
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // TODO: show more options
-            },
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  Stack(
-                    children: [
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: buildFaceImage(_personGroup.faces[0]),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  BlocListener<PersonGroupBloc, PersonGroupState>(
-                    listener: (context, state) {
-                      if (state is ChangeGroupNameSuccess) {
-                        _updatePersonGroup(state.newName);
-                      }
-                    },
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(
-                        minimumSize: Size(100, 36),
-                      ),
-                      onPressed: () async {
-                        await openNameEditModal(
-                            context, _personGroup.name, _personGroup.clusterId);
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Stack(
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: buildFaceImage(_personGroup.faces[0]),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    BlocListener<PersonGroupBloc, PersonGroupState>(
+                      listener: (context, state) {
+                        if (state is ChangeGroupNameSuccess) {
+                          _updatePersonGroup(state.newName);
+                        }
                       },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(convertName(_personGroup.name),
-                              style: TextStyle(fontSize: 14)),
-                          SizedBox(width: 10),
-                          Icon(Icons.edit, size: 14)
-                        ],
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          minimumSize: Size(100, 36),
+                        ),
+                        onPressed: () async {
+                          await openNameEditModal(context, _personGroup.name,
+                              _personGroup.clusterId);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(convertName(_personGroup.name),
+                                style: TextStyle(fontSize: 14)),
+                            SizedBox(width: 10),
+                            Icon(Icons.edit, size: 14)
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            FaceGroupViewMode(
-                groupedByDate: groupImageFaceByDate(_personGroup.faces)),
-          ],
+              SizedBox(height: 20),
+              FaceGroupViewMode(
+                  groupedByDate: groupImageFaceByDate(_personGroup.faces)),
+            ],
+          ),
         ),
       ),
     );
@@ -173,9 +201,14 @@ class FaceGroupViewMode extends StatelessWidget {
                         aspectRatio: 1,
                         child: GestureDetector(
                           onTap: () {
+                            final allPhotos = (context.read<PhotoBloc>().state
+                                    as PhotoFetchSuccess)
+                                .photos;
+
                             context.push(Routes.imageSliderPage, extra: {
                               'url': face.imageUrl,
-                              'images': getAllPhotoFromFaceGroup(faceList),
+                              'images':
+                                  getAllPhotoFromFaceGroup(faceList, allPhotos),
                               'heroTag': heroTag
                             });
                           },

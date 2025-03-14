@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget textIcon(IconData icon, String text, VoidCallback onPressed,
-    [bool isDark = false]) {
+    [bool isDark = false, bool isFavorite = false]) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(30),
     child: Material(
@@ -16,7 +16,14 @@ Widget textIcon(IconData icon, String text, VoidCallback onPressed,
             child: Column(
               children: [
                 Icon(icon,
-                    color: isDark ? Colors.black : Colors.white, size: 22),
+                    color: isFavorite && !isDark
+                        ? Colors.red.shade400
+                        : isFavorite && isDark
+                            ? Colors.redAccent.shade700
+                            : isDark
+                                ? Colors.black
+                                : Colors.white,
+                    size: 22),
                 SizedBox(height: 4),
                 Text(
                   text,

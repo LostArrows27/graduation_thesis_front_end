@@ -53,4 +53,18 @@ class PhotoRepositoryImpl implements PhotoRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> favoriteImage(
+      {required String imageId, required bool isFavorite}) async {
+    try {
+      await photoRemoteDataSource.favoriteImage(
+        imageId: imageId,
+        isFavorite: isFavorite,
+      );
+      return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

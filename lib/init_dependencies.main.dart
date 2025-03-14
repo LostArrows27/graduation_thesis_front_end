@@ -82,7 +82,9 @@ void _initPhoto() {
     // cubit
     ..registerLazySingleton(() => PhotoViewModeCubit())
     ..registerLazySingleton(() => DeleteImageCubit(
-        deleteImage: serviceLocator(), photoBloc: serviceLocator()));
+        deleteImage: serviceLocator(), photoBloc: serviceLocator()))
+    ..registerLazySingleton(() => FavoriteImageCubit(
+        photoRepository: serviceLocator(), photoBloc: serviceLocator()));
 }
 
 void _initVideoRender() {

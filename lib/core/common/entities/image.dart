@@ -11,6 +11,7 @@ class Photo {
   final LabelResponse labels;
   final String? imageUrl;
   final String? caption;
+  final bool isFavorite;
 
   Photo(
       {required this.id,
@@ -20,6 +21,7 @@ class Photo {
       this.caption,
       required this.uploaderId,
       required this.imageBucketId,
+      required this.isFavorite,
       required this.imageName,
       required this.labels});
 
@@ -33,6 +35,7 @@ class Photo {
     LabelResponse? labels,
     String? imageUrl,
     String? caption,
+    bool? isFavorite,
   }) {
     return Photo(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class Photo {
       labels: labels ?? this.labels,
       imageUrl: imageUrl ?? this.imageUrl,
       caption: caption ?? this.caption,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }

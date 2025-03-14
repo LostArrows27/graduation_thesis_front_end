@@ -36,3 +36,10 @@ final class PhotoDeleteEvent extends PhotoEvent {
 
   PhotoDeleteEvent({required this.imageBucketId, required this.imageName});
 }
+
+final class PhotoFavoriteEvent extends PhotoEvent {
+  final String imageId;
+  final bool isFavorite;
+
+  PhotoFavoriteEvent({required this.imageId, required this.isFavorite});
+}

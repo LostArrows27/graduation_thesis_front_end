@@ -39,6 +39,7 @@ import 'package:graduation_thesis_front_end/features/photo/domain/usecases/edit_
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/upload_images.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/favorite_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';

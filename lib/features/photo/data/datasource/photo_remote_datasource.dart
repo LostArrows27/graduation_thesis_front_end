@@ -12,6 +12,9 @@ abstract interface class PhotoRemoteDataSource {
 
   Future<void> deleteImage(
       {required String imageBucketId, required String imageName});
+
+  Future<void> favoriteImage(
+      {required String imageId, required bool isFavorite});
 }
 
 class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
@@ -27,7 +30,7 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       final res = await supabaseClient
           .from('image')
           .select(
-              'id, created_at, updated_at, album_id, image_bucket_id, image_name, labels, caption')
+              'id, created_at, updated_at, album_id, image_bucket_id, image_name, labels, caption, is_favorite')
           .eq('uploader_id', userId)
           .order('created_at', ascending: false);
 
@@ -73,6 +76,22 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       print(e);
       print(c);
       throw ServerException("Failed to delete images.");
+    }
+  }
+
+  @override
+  Future<void> favoriteImage(
+      {required String imageId, required bool isFavorite}) async {
+    try {
+      await supabaseClient
+          .from('image')
+          .update({'is_favorite': isFavorite})
+          .eq('uploader_id', getUserId)
+          .eq('id', imageId);
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException("Failed to favorite image.");
     }
   }
 }

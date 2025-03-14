@@ -16,4 +16,9 @@ abstract interface class PhotoRepository {
     required String imageBucketId,
     required String imageName,
   });
+
+  Future<Either<Failure, void>> favoriteImage({
+    required String imageId,
+    required bool isFavorite,
+  });
 }
