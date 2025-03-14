@@ -9,6 +9,10 @@ abstract interface class AlbumRemoteDatasource {
   });
 
   Future<List<AlbumModel>> getAllAlbums();
+
+  Future<void> deleteAlbum(String albumId);
+
+  Future<void> changeAlbumName(String albumId, String newName);
 }
 
 class AlbumRemoteDatasourceImpl implements AlbumRemoteDatasource {
@@ -79,6 +83,30 @@ class AlbumRemoteDatasourceImpl implements AlbumRemoteDatasource {
       print(e);
       print(c);
       throw ServerException("Failed to get user albums.");
+    }
+  }
+
+  @override
+  Future<void> deleteAlbum(String albumId) async {
+    try {
+      await supabaseClient.from('album').delete().eq('id', albumId);
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException("Failed to delete this albums.");
+    }
+  }
+
+  @override
+  Future<void> changeAlbumName(String albumId, String newName) async {
+    try {
+      await supabaseClient
+          .from('album')
+          .update({'name': newName}).eq('id', albumId);
+    } catch (e, c) {
+      print(e);
+      print(c);
+      throw ServerException("Failed to change album name.");
     }
   }
 }

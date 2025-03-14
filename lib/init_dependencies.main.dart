@@ -156,6 +156,8 @@ void _initAlbum() {
     // use case
     ..registerFactory(() => CreateAlbum(albumRepository: serviceLocator()))
     ..registerFactory(() => GetAllAlbum(albumRepository: serviceLocator()))
+    ..registerFactory(() => DeleteAlbum(albumRepository: serviceLocator()))
+    ..registerFactory(() => ChangeAlbumName(albumRepository: serviceLocator()))
     // bloc
     ..registerFactory(() => AlbumBloc(createAlbum: serviceLocator()))
     ..registerLazySingleton(() => AlbumListBloc(
@@ -163,7 +165,11 @@ void _initAlbum() {
         photoBloc: serviceLocator(),
         getAllAlbum: serviceLocator()))
     // cubit
-    ..registerFactory(() => ChooseImageModeCubit());
+    ..registerFactory(() => ChooseImageModeCubit())
+    ..registerLazySingleton(() => DeleteAlbumCubit(
+        deleteAlbum: serviceLocator(), albumListBloc: serviceLocator()))
+    ..registerLazySingleton(() => ChangeAlbumNameCubit(
+        changeAlbumName: serviceLocator(), albumListBloc: serviceLocator()));
 }
 
 void _initSearch() {

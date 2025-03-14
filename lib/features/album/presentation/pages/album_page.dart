@@ -68,6 +68,10 @@ class _AlbumPageState extends State<AlbumPage> {
                 'totalItem': albums[index].imageList.length,
                 'albumFolders': groupImagePhotoByDate(albums[index].imageList),
                 'heroTag': heroTag,
+                'albumId': albums[index].id != 'favorite_album_id' &&
+                        albums[index].id != 'profile_picture_album_id'
+                    ? albums[index].id
+                    : null,
               });
             },
             child: Container(

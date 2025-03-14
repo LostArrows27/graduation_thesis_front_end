@@ -10,3 +10,5 @@ enum RenderStatus { pending, in_progress, completed, failed }
 enum SmartTagsType { location, activity, event }
 
 enum ChooseImageMode { all, album }
+
+enum Menu { edit, download, delete }

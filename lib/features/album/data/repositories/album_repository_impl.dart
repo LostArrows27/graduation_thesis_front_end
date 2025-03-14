@@ -31,4 +31,25 @@ class AlbumRepositoryImpl implements AlbumRepository {
       return left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAlbum({required String albumId}) async {
+    try {
+      await albumRemoteDatasource.deleteAlbum(albumId);
+      return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changeAlbumName(
+      {required String albumId, required String newName}) async {
+    try {
+      await albumRemoteDatasource.changeAlbumName(albumId, newName);
+      return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

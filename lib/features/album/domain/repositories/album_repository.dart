@@ -7,4 +7,9 @@ abstract interface class AlbumRepository {
       {required String name, required List<String> imageId});
 
   Future<Either<Failure, List<Album>>> getAllAlbums();
+
+  Future<Either<Failure, void>> deleteAlbum({required String albumId});
+
+  Future<Either<Failure, void>> changeAlbumName(
+      {required String albumId, required String newName});
 }

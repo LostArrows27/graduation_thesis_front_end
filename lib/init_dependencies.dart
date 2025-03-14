@@ -34,10 +34,14 @@ import 'package:graduation_thesis_front_end/features/explore_people/presentation
 import 'package:graduation_thesis_front_end/features/photo/data/datasource/photo_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/photo/data/repository/photo_repository_impl.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/repository/photo_repository.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/usecases/change_album_name.dart';
+import 'package:graduation_thesis_front_end/features/photo/domain/usecases/delete_album.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/delete_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/edit_image_caption.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/upload_images.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/change_album_name_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_album_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/favorite_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';

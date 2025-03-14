@@ -41,69 +41,73 @@ class _YearAlbumViewerPageState extends State<YearAlbumViewerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FavoriteImageCubit, FavoriteImageState>(
-      listener: (context, favoriteState) {
-        if (favoriteState is FavoriteImageError) {
-          return showErrorSnackBar(context, favoriteState.message);
-        }
-
-        if (favoriteState is FavoriteImageSuccess) {
-          final imageId = favoriteState.imageId;
-          final isFavorite = favoriteState.isFavorite;
-
-          setState(() {
-            for (var yearFolder in yearAlbumFolders) {
-              for (var albumFolder in yearFolder.folderList) {
-                final photoList = albumFolder.photos;
-                final index =
-                    photoList.indexWhere((element) => element.id == imageId);
-
-                if (index != -1) {
-                  photoList[index] = photoList[index].copyWith(isFavorite: isFavorite);
-                }
+    return MultiBlocListener(
+        listeners: [
+          BlocListener<FavoriteImageCubit, FavoriteImageState>(
+            listener: (context, favoriteState) {
+              if (favoriteState is FavoriteImageError) {
+                return showErrorSnackBar(context, favoriteState.message);
               }
+
+              if (favoriteState is FavoriteImageSuccess) {
+                final imageId = favoriteState.imageId;
+                final isFavorite = favoriteState.isFavorite;
+
+                setState(() {
+                  for (var yearFolder in yearAlbumFolders) {
+                    for (var albumFolder in yearFolder.folderList) {
+                      final photoList = albumFolder.photos;
+                      final index = photoList
+                          .indexWhere((element) => element.id == imageId);
+
+                      if (index != -1) {
+                        photoList[index] =
+                            photoList[index].copyWith(isFavorite: isFavorite);
+                      }
+                    }
+                  }
+                });
+              }
+            },
+          ),
+          BlocListener<EditCaptionBloc, EditCaptionState>(
+              listener: (context, state) {
+            if (state is EditCaptionFailure) {
+              return showErrorSnackBar(context, state.message);
             }
-          });
-        }
-      },
-      child: BlocListener<EditCaptionBloc, EditCaptionState>(
-        listener: (context, state) {
-          if (state is EditCaptionFailure) {
-            return showErrorSnackBar(context, state.message);
-          }
 
-          if (state is EditCaptionSuccess) {
-            final caption = state.caption;
-            final imageId = state.imageId;
+            if (state is EditCaptionSuccess) {
+              final caption = state.caption;
+              final imageId = state.imageId;
 
-            setState(() {
-              bool photoUpdated = false;
+              setState(() {
+                bool photoUpdated = false;
 
-              for (var yearFolder in yearAlbumFolders) {
-                if (photoUpdated) break;
-
-                for (var albumFolder in yearFolder.folderList) {
+                for (var yearFolder in yearAlbumFolders) {
                   if (photoUpdated) break;
 
-                  for (int photoIndex = 0;
-                      photoIndex < albumFolder.photos.length;
-                      photoIndex++) {
-                    final photo = albumFolder.photos[photoIndex];
+                  for (var albumFolder in yearFolder.folderList) {
+                    if (photoUpdated) break;
 
-                    if (photo.id == imageId) {
-                      albumFolder.photos[photoIndex] =
-                          photo.copyWith(caption: caption);
-                      photoUpdated = true;
-                      break;
+                    for (int photoIndex = 0;
+                        photoIndex < albumFolder.photos.length;
+                        photoIndex++) {
+                      final photo = albumFolder.photos[photoIndex];
+
+                      if (photo.id == imageId) {
+                        albumFolder.photos[photoIndex] =
+                            photo.copyWith(caption: caption);
+                        photoUpdated = true;
+                        break;
+                      }
                     }
                   }
                 }
-              }
-            });
-          }
-        },
-        child: BlocListener<DeleteImageCubit, DeleteImageCubitState>(
-          listener: (context, state) {
+              });
+            }
+          }),
+          BlocListener<DeleteImageCubit, DeleteImageCubitState>(
+              listener: (context, state) {
             if (state is DeleteImageCubitError) {
               return showErrorSnackBar(context, state.message);
             }
@@ -133,140 +137,137 @@ class _YearAlbumViewerPageState extends State<YearAlbumViewerPage> {
                 }
               });
             }
-          },
-          child: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Column(
-                  children: [
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
+          })
+        ],
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Column(
+                children: [
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      '${widget.totalItem} photos',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.outline),
-                    )
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    '//${widget.totalItem} photos',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.outline),
+                  )
+                ],
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, yearIndex) {
-                          final yearFolder = yearAlbumFolders[yearIndex];
-                          final folderList = yearFolder.folderList;
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, yearIndex) {
+                        final yearFolder = yearAlbumFolders[yearIndex];
+                        final folderList = yearFolder.folderList;
 
-                          return Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  yearFolder.bigTitle,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(height: 20),
-                                ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, folderIndex) {
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            folderList[folderIndex].title,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .outline),
-                                          ),
-                                          SizedBox(height: 20),
-                                          StaggeredGrid.count(
-                                            crossAxisCount: 3,
-                                            mainAxisSpacing: 12,
-                                            crossAxisSpacing: 12,
-                                            children: [
-                                              ...folderList[folderIndex]
-                                                  .photos
-                                                  .asMap()
-                                                  .map((index, photo) {
-                                                final [
-                                                  crossAxisCount,
-                                                  mainAxisCount
-                                                ] = convertAxisCellCount(
-                                                    index,
-                                                    folderList[folderIndex]
-                                                        .photos
-                                                        .length);
-                                                return MapEntry(
+                        return Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                yearFolder.bigTitle,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(height: 20),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, folderIndex) {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          folderList[folderIndex].title,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .outline),
+                                        ),
+                                        SizedBox(height: 20),
+                                        StaggeredGrid.count(
+                                          crossAxisCount: 3,
+                                          mainAxisSpacing: 12,
+                                          crossAxisSpacing: 12,
+                                          children: [
+                                            ...folderList[folderIndex]
+                                                .photos
+                                                .asMap()
+                                                .map((index, photo) {
+                                              final [
+                                                crossAxisCount,
+                                                mainAxisCount
+                                              ] = convertAxisCellCount(
                                                   index,
-                                                  StaggeredGridTile.count(
-                                                      crossAxisCellCount:
-                                                          crossAxisCount,
-                                                      mainAxisCellCount:
-                                                          mainAxisCount,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          context.push(
-                                                              Routes
-                                                                  .imageSliderPage,
-                                                              extra: {
-                                                                'url': photo
-                                                                    .imageUrl,
-                                                                'heroTag':
-                                                                    YearAlbumViewerPage
-                                                                        .heroTag,
-                                                                'images':
-                                                                    getAllPhotoFromYearAlbum(
-                                                                        yearAlbumFolders)
-                                                              });
-                                                        },
-                                                        child: HeroNetworkImage(
-                                                            borderRadius: 15,
-                                                            imageUrl:
-                                                                photo.imageUrl!,
-                                                            heroTag: photo
-                                                                    .imageUrl! +
-                                                                YearAlbumViewerPage
-                                                                    .heroTag),
-                                                      )),
-                                                );
-                                              }).values
-                                            ],
-                                          ),
-                                          SizedBox(height: 20),
-                                        ],
-                                      );
-                                    },
-                                    itemCount: folderList.length)
-                              ],
-                            ),
-                          );
-                        },
-                        itemCount: yearAlbumFolders.length)
-                  ],
-                ),
-              )),
-        ),
-      ),
-    );
+                                                  folderList[folderIndex]
+                                                      .photos
+                                                      .length);
+                                              return MapEntry(
+                                                index,
+                                                StaggeredGridTile.count(
+                                                    crossAxisCellCount:
+                                                        crossAxisCount,
+                                                    mainAxisCellCount:
+                                                        mainAxisCount,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        context.push(
+                                                            Routes
+                                                                .imageSliderPage,
+                                                            extra: {
+                                                              'url': photo
+                                                                  .imageUrl,
+                                                              'heroTag':
+                                                                  YearAlbumViewerPage
+                                                                      .heroTag,
+                                                              'images':
+                                                                  getAllPhotoFromYearAlbum(
+                                                                      yearAlbumFolders)
+                                                            });
+                                                      },
+                                                      child: HeroNetworkImage(
+                                                          borderRadius: 15,
+                                                          imageUrl:
+                                                              photo.imageUrl!,
+                                                          heroTag: photo
+                                                                  .imageUrl! +
+                                                              YearAlbumViewerPage
+                                                                  .heroTag),
+                                                    )),
+                                              );
+                                            }).values
+                                          ],
+                                        ),
+                                        SizedBox(height: 20),
+                                      ],
+                                    );
+                                  },
+                                  itemCount: folderList.length)
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: yearAlbumFolders.length)
+                ],
+              ),
+            )));
   }
 }

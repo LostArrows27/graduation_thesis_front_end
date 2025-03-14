@@ -6,6 +6,8 @@ import 'package:graduation_thesis_front_end/core/theme/app_theme.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/change_album_name_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_album_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/favorite_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
@@ -31,6 +33,8 @@ void main() async {
       BlocProvider(create: (_) => serviceLocator<EditCaptionBloc>()),
       BlocProvider(create: (_) => serviceLocator<DeleteImageCubit>()),
       BlocProvider(create: (_) => serviceLocator<FavoriteImageCubit>()),
+      BlocProvider(create: (_) => serviceLocator<DeleteAlbumCubit>()),
+      BlocProvider(create: (_) => serviceLocator<ChangeAlbumNameCubit>()),
     ],
     child: const MyApp(),
   ));

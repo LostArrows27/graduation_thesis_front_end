@@ -137,9 +137,11 @@ final routerConfig = GoRouter(
           final totalItem = object['totalItem'] as int;
           final albumFolders = object['albumFolders'] as List<AlbumFolder>;
           final heroTag = object['heroTag'] as String;
+          final albumId = object['albumId'] as String?;
           return AlbumViewerPage(
               heroTag: heroTag,
               title: title,
+              albumId: albumId,
               totalItem: totalItem,
               albumFolders: albumFolders);
         }),
