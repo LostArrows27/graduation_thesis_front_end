@@ -30,7 +30,7 @@ class PhotoRemoteDataSourceImpl implements PhotoRemoteDataSource {
       final res = await supabaseClient
           .from('image')
           .select(
-              'id, created_at, updated_at, album_id, image_bucket_id, image_name, labels, caption, is_favorite')
+              'id, created_at, updated_at, image_bucket_id, image_name, labels, caption, is_favorite')
           .eq('uploader_id', userId)
           .order('created_at', ascending: false);
 

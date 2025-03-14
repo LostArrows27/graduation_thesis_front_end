@@ -41,6 +41,7 @@ class Routes {
   static const String photoViewDemo = '/photo-view-demo';
   static const String photoSliderDemo = '/photo-slider-demo';
   static const String testSearchPage = '/test-search-page';
+  static const String testGoogleMapPage = '/test-google-map-page';
 }
 
 List<String> homeRouteList = [
@@ -70,4 +71,5 @@ List<String> homeRouteList = [
   // test route
   Routes.photoViewDemo,
   Routes.photoSliderDemo,
+  Routes.testGoogleMapPage,
 ];

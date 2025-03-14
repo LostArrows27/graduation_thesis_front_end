@@ -189,8 +189,13 @@ final routerConfig = GoRouter(
     GoRoute(
         path: Routes.testSearchPage,
         builder: (context, state) => TestSearchBar()),
+
+    GoRoute(
+        path: Routes.testGoogleMapPage,
+        builder: (context, state) => MapPlacemarkScreen()),
   ],
   redirect: (context, state) {
+    return Routes.testGoogleMapPage;
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
     final authState = appUserCubit.state;
 

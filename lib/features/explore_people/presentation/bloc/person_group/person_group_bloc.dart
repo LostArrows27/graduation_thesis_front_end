@@ -81,15 +81,15 @@ class PersonGroupBloc extends Bloc<PersonGroupEvent, PersonGroupState> {
   ) async {
     emit(PersonGroupLoading());
     // NOTE: dev process
-    final result = await _getPeopleGroup(NoParams());
-    result.fold(
-      (failure) => emit(PersonGroupFailure(message: failure.message)),
-      (personGroups) {
-        emit(PersonGroupSuccess(personGroups: personGroups));
-      },
-    );
+    // final result = await _getPeopleGroup(NoParams());
+    // result.fold(
+    //   (failure) => emit(PersonGroupFailure(message: failure.message)),
+    //   (personGroups) {
+    //     emit(PersonGroupSuccess(personGroups: personGroups));
+    //   },
+    // );
 
-    // emit(PersonGroupSuccess(personGroups: []));
+    emit(PersonGroupSuccess(personGroups: []));
   }
 
   void _onPersonGroupSetSuccuess(
