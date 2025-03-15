@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:geocoding/geocoding.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/label.dart';
 
 class Photo {
@@ -12,6 +13,9 @@ class Photo {
   final String? imageUrl;
   final String? caption;
   final bool isFavorite;
+  final double? longitude;
+  final double? latitude;
+  final Placemark? locationMetaData;
 
   Photo(
       {required this.id,
@@ -19,6 +23,9 @@ class Photo {
       this.updatedAt,
       this.imageUrl,
       this.caption,
+      this.longitude,
+      this.latitude,
+      this.locationMetaData,
       required this.uploaderId,
       required this.imageBucketId,
       required this.isFavorite,
@@ -36,6 +43,9 @@ class Photo {
     String? imageUrl,
     String? caption,
     bool? isFavorite,
+    double? longitude,
+    double? latitude,
+    Placemark? locationMetaData,
   }) {
     return Photo(
       id: id ?? this.id,
@@ -48,6 +58,9 @@ class Photo {
       imageUrl: imageUrl ?? this.imageUrl,
       caption: caption ?? this.caption,
       isFavorite: isFavorite ?? this.isFavorite,
+      longitude: longitude ?? this.longitude,
+      latitude: latitude ?? this.latitude,
+      locationMetaData: locationMetaData ?? this.locationMetaData,
     );
   }
 }

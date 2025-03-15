@@ -1,3 +1,4 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/label.dart';
 
@@ -8,6 +9,9 @@ class ImageModel extends Photo {
       super.updatedAt,
       super.imageUrl,
       super.caption,
+      super.longitude,
+      super.latitude,
+      super.locationMetaData,
       required super.isFavorite,
       required super.uploaderId,
       required super.imageBucketId,
@@ -34,6 +38,16 @@ class ImageModel extends Photo {
           : LabelResponse.fromJson(json['labels'] as Map<String, dynamic>),
       imageUrl: json['image_url'] == null ? null : json['image_url'] as String,
       isFavorite: json['is_favorite'] as bool,
+      longitude: json['longitude'] == null
+          ? null
+          : (json['longitude'] as num).toDouble(),
+      latitude: json['latitude'] == null
+          ? null
+          : (json['latitude'] as num).toDouble(),
+      locationMetaData: json['location_meta_data'] == null
+          ? null
+          : Placemark.fromMap(
+              json['location_meta_data'] as Map<String, dynamic>),
     );
   }
 
@@ -48,6 +62,9 @@ class ImageModel extends Photo {
       LabelResponse? labels,
       String? imageUrl,
       bool? isFavorite,
+      double? longitude,
+      double? latitude,
+      Placemark? locationMetaData,
       String? caption}) {
     return ImageModel(
         id: id ?? this.id,
@@ -59,6 +76,9 @@ class ImageModel extends Photo {
         labels: labels ?? this.labels,
         imageUrl: imageUrl ?? this.imageUrl,
         isFavorite: isFavorite ?? this.isFavorite,
+        longitude: longitude ?? this.longitude,
+        latitude: latitude ?? this.latitude,
+        locationMetaData: locationMetaData ?? this.locationMetaData,
         caption: caption ?? this.caption);
   }
 }

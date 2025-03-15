@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
@@ -13,6 +14,7 @@ import 'package:graduation_thesis_front_end/features/album/presentation/pages/al
 import 'package:graduation_thesis_front_end/core/mock/page/photo_slider.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/explore_page.dart';
+import 'package:graduation_thesis_front_end/features/location/presentation/pages/pick_location_for_image_page.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/pages/fully_search_page.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/pages/search_page.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';
@@ -43,5 +45,6 @@ import 'package:graduation_thesis_front_end/features/video_render/presentation/p
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_render_status_page.dart';
 import 'package:graduation_thesis_front_end/features/video_render/presentation/pages/video_viewer_page.dart';
 import 'package:graduation_thesis_front_end/init_dependencies.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'router.main.dart';

@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- access current location -->
     <!-- end speech regconition permission -->
     <application android:usesCleartextTraffic="true" android:label="graduation_thesis_front_end" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">

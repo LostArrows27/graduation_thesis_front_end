@@ -9,6 +9,7 @@ Future<void> initDependencies() async {
   _initExplore();
   _initAlbum();
   _initSearch();
+  _initLocation();
 
   final supabase = await Supabase.initialize(
       url: AppSecret.supabaseUrl, anonKey: AppSecret.supabaseAnonKey);
@@ -200,4 +201,17 @@ void _initSearch() {
         deleteSearchHistory: serviceLocator(),
         getAllSearchHistory: serviceLocator(),
         searchRepository: serviceLocator()));
+}
+
+void _initLocation() {
+  serviceLocator
+    // data source
+    ..registerFactory<LocationRemoteDatasource>(
+        () => LocationRemoteDatasourceImpl(supabaseClient: serviceLocator()))
+    // repository
+    ..registerFactory<LocationRepository>(() =>
+        LocationRepositoryImpl(locationRemoteDatasource: serviceLocator()))
+    // bloc + cubit
+    ..registerFactory(() => UpdateLocationCubit(
+        locationRepository: serviceLocator(), photoBloc: serviceLocator()));
 }

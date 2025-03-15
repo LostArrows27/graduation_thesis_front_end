@@ -1,5 +1,5 @@
 import 'package:geocoding/geocoding.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/location_with_address.dart';
+import 'package:graduation_thesis_front_end/features/location/domain/entities/location_with_address.dart';
 import 'package:latlong2/latlong.dart';
 
 class LocationService {
@@ -37,6 +37,24 @@ class LocationService {
     if (placemark.locality?.isNotEmpty ?? false) {
       addressParts.add(placemark.locality!);
     }
+    if (placemark.subAdministrativeArea?.isNotEmpty ?? false) {
+      addressParts.add(placemark.subAdministrativeArea!);
+    }
+    if (placemark.administrativeArea?.isNotEmpty ?? false) {
+      addressParts.add(placemark.administrativeArea!);
+    }
+    if (placemark.country?.isNotEmpty ?? false) {
+      addressParts.add(placemark.country!);
+    }
+
+    return addressParts.isNotEmpty
+        ? addressParts.join(', ')
+        : 'Unknown location';
+  }
+
+  static String formatShortAddress(Placemark placemark) {
+    List<String> addressParts = [];
+
     if (placemark.subAdministrativeArea?.isNotEmpty ?? false) {
       addressParts.add(placemark.subAdministrativeArea!);
     }

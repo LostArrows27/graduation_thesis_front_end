@@ -31,6 +31,10 @@ import 'package:graduation_thesis_front_end/features/explore_people/domain/repos
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/change_person_group_name.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/get_people_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
+import 'package:graduation_thesis_front_end/features/location/data/datasource/location_remote_datasource.dart';
+import 'package:graduation_thesis_front_end/features/location/data/repository/location_repository_impl.dart';
+import 'package:graduation_thesis_front_end/features/location/domain/repositories/location_repository.dart';
+import 'package:graduation_thesis_front_end/features/location/presentation/bloc/cubit/update_location_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/data/datasource/photo_remote_datasource.dart';
 import 'package:graduation_thesis_front_end/features/photo/data/repository/photo_repository_impl.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/repository/photo_repository.dart';

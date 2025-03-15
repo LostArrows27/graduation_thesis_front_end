@@ -25,6 +25,7 @@ class UploadPhotoBloc extends Bloc<UploadPhotoEvent, UploadPhotoState> {
 
   void _onUploadImagesEvent(
       UploadImagesEvent event, Emitter<UploadPhotoState> emit) async {
+        
     final result =
         await _uploadImages(UploadImagesParams(images: event.images));
 

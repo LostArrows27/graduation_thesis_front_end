@@ -171,6 +171,20 @@ final routerConfig = GoRouter(
       path: Routes.fullySearchPage,
       builder: (context, state) => const FullySearchPage(),
     ),
+    //  location page
+    GoRoute(
+      path: Routes.pickImageLocationPage,
+      builder: (context, state) {
+        final object = state.extra as Map<String, dynamic>;
+        final photos = object['photos'] as List<Photo>;
+        final initialPostion = object['initialPosition'] as LatLng?;
+        final initialPlacemark = object['initialPlacemark'] as Placemark?;
+        return PickLocationForImagePage(
+            photos: photos,
+            initialPosition: initialPostion,
+            initialPlacemark: initialPlacemark);
+      },
+    ),
     // test route
     GoRoute(
       path: Routes.photoViewDemo,
@@ -195,7 +209,7 @@ final routerConfig = GoRouter(
         builder: (context, state) => MapPlacemarkScreen()),
   ],
   redirect: (context, state) {
-    return Routes.testGoogleMapPage;
+    // return Routes.testGoogleMapPage;
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
     final authState = appUserCubit.state;
 

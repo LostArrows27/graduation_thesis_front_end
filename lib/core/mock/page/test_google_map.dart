@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:graduation_thesis_front_end/core/common/controller/map_controller.dart';
-import 'package:graduation_thesis_front_end/core/common/entities/location_with_address.dart';
+import 'package:graduation_thesis_front_end/features/location/domain/entities/location_with_address.dart';
 import 'package:graduation_thesis_front_end/core/common/service/location_services.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
@@ -262,8 +262,9 @@ class _MapPlacemarkScreenState extends State<MapPlacemarkScreen>
               child: _selectedPosition == null
                   ? const Center(
                       child: Text(
-                        'Tap on the map to select a location',
+                        'Tap on the map\nto select a location',
                         style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
                       ),
                     )
                   : _buildLocationInfoPanel(),
@@ -276,6 +277,7 @@ class _MapPlacemarkScreenState extends State<MapPlacemarkScreen>
         children: [
           FloatingActionButton(
             heroTag: 'my_location',
+            mini: true,
             onPressed: () {
               setState(
                 () => _alignPositionOnUpdate = AlignOnUpdate.always,
@@ -286,6 +288,7 @@ class _MapPlacemarkScreenState extends State<MapPlacemarkScreen>
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
+            mini: true,
             heroTag: 'zoom_in',
             onPressed: () {
               _mapController.zoomIn();
@@ -294,6 +297,7 @@ class _MapPlacemarkScreenState extends State<MapPlacemarkScreen>
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
+            mini: true,
             heroTag: 'zoom_out',
             onPressed: () {
               _mapController.zoomOut();

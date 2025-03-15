@@ -50,6 +50,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_map_animations: ^0.8.0
   flutter_map_location_marker: ^9.1.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +97,7 @@ flutter:
     - assets/lottie/video_done.json
     - assets/lottie/video_fail.json
     - assets/lottie/voice.json
+    - assets/lottie/location_loading.json
 
     # music directory
     - assets/music/

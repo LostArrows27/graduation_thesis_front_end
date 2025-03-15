@@ -1,6 +1,7 @@
 // ignore_for_file: library_prefixes
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/domain/usecases/get_all_user_image.dart';
@@ -23,6 +24,32 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<PhotoEditCaptionEvent>(_onPhotoEditCaptionEvent);
     on<PhotoDeleteEvent>(_onPhotoDeleteEvent);
     on<PhotoFavoriteEvent>(_onPhotoFavoriteEvent);
+    on<PhotoLocationUpdate>(_onPhotoLocationUpdate);
+  }
+
+  void _onPhotoLocationUpdate(
+      PhotoLocationUpdate event, Emitter<PhotoState> emit) async {
+    if (state is PhotoFetchSuccess) {
+      final imageIdList = event.photos.map((photo) => photo.id).toList();
+
+      final updatedPhotos = (state as PhotoFetchSuccess)
+          .photos
+          .map((photo) => imageIdList.contains(photo.id)
+              ? photo.copyWith(
+                  latitude: event.latitude,
+                  longitude: event.longitude,
+                  locationMetaData: event.locationMetaData)
+              : photo)
+          .toList();
+
+      emit(PhotoFetchSuccess(
+          photos: updatedPhotos,
+          groupedByDate: groupImageByDate(updatedPhotos),
+          groupedByMonth: groupImageByMonth(updatedPhotos),
+          groupedByYear: groupImageByYear(updatedPhotos)));
+    } else {
+      emit(PhotoFetchFailure(message: 'Cannot update location'));
+    }
   }
 
   void _onPhotoFetchAllEvent(

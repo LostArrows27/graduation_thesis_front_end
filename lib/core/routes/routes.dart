@@ -37,6 +37,8 @@ class Routes {
 
   static const String fullySearchPage = '/fully-search-page';
 
+  static const String pickImageLocationPage = '/pick-image-location-page';
+
   // test route
   static const String photoViewDemo = '/photo-view-demo';
   static const String photoSliderDemo = '/photo-slider-demo';
@@ -67,6 +69,8 @@ List<String> homeRouteList = [
   Routes.smartTagsViewerPage,
 
   Routes.fullySearchPage,
+
+  Routes.pickImageLocationPage,
 
   // test route
   Routes.photoViewDemo,

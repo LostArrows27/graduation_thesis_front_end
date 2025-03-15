@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/pick_image.dart';
 import 'package:graduation_thesis_front_end/features/album/presentation/widgets/open_create_album_modal.dart';
+import 'package:graduation_thesis_front_end/features/location/presentation/widgets/open_choose_location_image_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 void showAddModal(BuildContext context) {
@@ -29,14 +30,15 @@ void showAddModal(BuildContext context) {
 
   showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) {
       return DraggableScrollableSheet(
-          initialChildSize: modalHeightSize,
-          minChildSize: modalHeightSize,
-          maxChildSize: modalMaxHeightSize,
+          initialChildSize: 0.6,
+          minChildSize: 0.25,
+          maxChildSize: 0.65,
           expand: false,
           builder: (context, scrollController) {
             return SingleChildScrollView(
@@ -83,6 +85,11 @@ void showAddModal(BuildContext context) {
                             context.push(Routes.videoRenderStatusPage);
                           },
                         ),
+                        _buildListTile(context, Icons.location_on_outlined,
+                            "Pick location for image", onTap: () {
+                          Navigator.pop(context);
+                          openChooseLocationAlbumModal(context);
+                        }),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 15),

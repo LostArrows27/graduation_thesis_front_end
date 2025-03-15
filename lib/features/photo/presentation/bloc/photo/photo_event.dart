@@ -43,3 +43,18 @@ final class PhotoFavoriteEvent extends PhotoEvent {
 
   PhotoFavoriteEvent({required this.imageId, required this.isFavorite});
 }
+
+// update image location
+final class PhotoLocationUpdate extends PhotoEvent {
+  final double longitude;
+  final double latitude;
+  final Placemark locationMetaData;
+  final List<Photo> photos;
+
+  PhotoLocationUpdate({
+    required this.longitude,
+    required this.latitude,
+    required this.locationMetaData,
+    required this.photos,
+  });
+}

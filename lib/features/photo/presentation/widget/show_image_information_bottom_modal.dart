@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
+import 'package:graduation_thesis_front_end/core/common/service/location_services.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/dowload_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/format_date_to_full_time.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
+import 'package:graduation_thesis_front_end/core/utils/open_google_map.dart';
 import 'package:graduation_thesis_front_end/core/utils/share_image.dart';
 import 'package:graduation_thesis_front_end/features/album/domain/entities/album.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/face.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/cropped_avatar.dart';
+import 'package:graduation_thesis_front_end/features/location/presentation/widgets/location_map_view.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/favorite_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/edit_caption_modal.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/image_information.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/text_icon.dart';
+import 'package:latlong2/latlong.dart';
 
 void showImageInformationBottomModal(
     BuildContext context, Photo photo, List<Album> albums, List<Face> faces) {
@@ -127,6 +131,7 @@ void showImageInformationBottomModal(
                                   openEditCaptionModel(
                                       context, photo.caption, photo.id);
                                 },
+                                iconSize: 20,
                                 icon: Icon(Icons.edit))
                           ],
                         ),
@@ -255,6 +260,93 @@ void showImageInformationBottomModal(
                                         );
                                       },
                                       itemCount: albums.length)
+                                ],
+                              )
+                            : Container(),
+                        photo.latitude != null && photo.longitude != null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Location',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      TextButton(
+                                          onPressed: () async {
+                                            await openGoogleMap(
+                                                context,
+                                                LatLng(photo.latitude!,
+                                                    photo.longitude!));
+                                          },
+                                          child: Text('Open in Maps'))
+                                    ],
+                                  ),
+                                  SizedBox(height: 16),
+                                  LocationMapView(
+                                      imageUrl: photo.imageUrl!,
+                                      location: LatLng(
+                                          photo.latitude!, photo.longitude!)),
+                                  SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              LocationService
+                                                  .formatShortAddress(
+                                                      photo.locationMetaData!),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              '${photo.latitude!.toStringAsFixed(4)}, ${photo.longitude!.toStringAsFixed(4)}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: getColorScheme(context)
+                                                    .outline,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 16),
+                                      IconButton(
+                                          onPressed: () {
+                                            context.push(
+                                                Routes.pickImageLocationPage,
+                                                extra: {
+                                                  'photos': [photo],
+                                                  'initialPosition': LatLng(
+                                                      photo.latitude!,
+                                                      photo.longitude!),
+                                                  'initialPlacemark':
+                                                      photo.locationMetaData!
+                                                });
+                                          },
+                                          iconSize: 20,
+                                          icon: Icon(Icons.edit)),
+                                    ],
+                                  )
                                 ],
                               )
                             : Container(),
