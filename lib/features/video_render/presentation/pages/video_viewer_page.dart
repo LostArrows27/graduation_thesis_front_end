@@ -60,7 +60,7 @@ class _VideoViewerBodyState extends State<VideoViewerBody> {
   }
 
   void _disposePage() {
-    context.read<VideoChunkBloc>().close();
+    // context.read<VideoChunkBloc>().close();
     _videoPlayerController.pause();
     _videoPlayerController.removeListener(() {});
     _videoPlayerController.dispose();
@@ -130,7 +130,7 @@ class _VideoViewerBodyState extends State<VideoViewerBody> {
                       child: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {
-                          _disposePage();
+                          // _disposePage();
                           Navigator.of(context).pop();
                         },
                       ),

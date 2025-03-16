@@ -136,11 +136,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       {required File image, required UserModel userModel}) async {
     try {
       String imagePath =
-          '/${userModel.id}/${DateFormat('yyyy_MM_dd_HH:mm:ss').format(DateTime.now())}';
+          '${userModel.id}/${DateFormat('yyyy_MM_dd_HH:mm:ss').format(DateTime.now())}';
 
       await supabaseClient.storage
           .from('user_profile')
-          .upload(imagePath, image);
+          .upload('/$imagePath', image);
 
       await supabaseClient.from('image').insert({
         'uploader_id': userModel.id,
@@ -150,7 +150,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return supabaseClient.storage
           .from('user_profile')
-          .getPublicUrl(imagePath);
+          .getPublicUrl('/$imagePath');
     } catch (e, c) {
       print('Error uploading image');
       print(e);

@@ -40,14 +40,18 @@ class _OnlineImageBrowseState extends State<OnlineImageBrowse> {
   Widget build(BuildContext context) {
     final providedImage = Provider.of<ProviderImageModel>(context);
 
-    if (!_initialized) {
-      providedImage.clearSelectedImages();
-      providedImage.addAllImage(widget.imageProvider.getImageList
-          .where((element) => element.source == Source.online)
-          .map((e) => e.filePath)
-          .toList());
-      _initialized = true;
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        if (!_initialized) {
+          providedImage.clearSelectedImages();
+          providedImage.addAllImage(widget.imageProvider.getImageList
+              .where((element) => element.source == Source.online)
+              .map((e) => e.filePath)
+              .toList());
+          _initialized = true;
+        }
+      }
+    });
 
     return Expanded(
       child: Column(

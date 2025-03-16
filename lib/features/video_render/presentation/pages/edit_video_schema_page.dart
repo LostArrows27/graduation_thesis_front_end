@@ -98,7 +98,7 @@ class _EditVideoSchemaPageState extends State<EditVideoSchemaPage> {
               leading: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
-                  context.go(Routes.videoRenderStatusPage);
+                  context.push(Routes.videoRenderStatusPage);
                 },
               ),
               actions: [

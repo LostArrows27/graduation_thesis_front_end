@@ -162,7 +162,7 @@ class _AlbumPageState extends State<AlbumPage> {
               );
             }
 
-            if (state is AlbumListLoading) {
+            if (state is AlbumListLoading || state is AlbumListInitial) {
               return Loader();
             }
 

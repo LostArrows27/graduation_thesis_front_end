@@ -22,7 +22,7 @@ class VideoRenderResultPage extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              context.go(Routes.videoRenderStatusPage);
+              context.pop();
             },
           ),
           actions: [
@@ -57,28 +57,34 @@ class VideoProgressBody extends StatefulWidget {
 
 class _VideoProgressBodyState extends State<VideoProgressBody> {
   double _progress = 0;
+  late VideoRenderProgressBloc _videoBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Store a reference to the bloc
+    _videoBloc = context.read<VideoRenderProgressBloc>();
+  }
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<VideoRenderProgressBloc>().add(
+      _videoBloc.add(
           ListenVideoRenderProgressEvent(videoRenderId: widget.videoRenderId));
-
-      context
-          .read<VideoRenderProgressBloc>()
+      _videoBloc
           .add(FirstFetchVideoProgress(videoRenderId: widget.videoRenderId));
     });
   }
 
   @override
   void dispose() {
-    context.read<VideoRenderProgressBloc>().add(
-          UnSubcribeToVideoRenderChannel(
-              channelName: 'video_render_preview:${widget.videoRenderId}'),
-        );
-    context.read<VideoRenderProgressBloc>().close();
+    // Use the stored reference instead of context.read()
+    _videoBloc.add(
+      UnSubcribeToVideoRenderChannel(
+          channelName: 'video_render_preview:${widget.videoRenderId}'),
+    );
     super.dispose();
   }
 
@@ -156,11 +162,6 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
           });
         }
 
-        if (state is VideoRenderProgressFailure) {
-          return showSnackBar(
-              context, 'Failed to render video. Please try again.');
-        }
-
         if (state is VideoRenderProgressSuccess) {
           setState(() {
             _progress = 100;
@@ -168,6 +169,12 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
         }
       },
       builder: (context, state) {
+        if (state is VideoRenderProgressLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
         if (state is VideoRenderProgressFailure) {
           return _failedWidget();
         }
@@ -235,7 +242,7 @@ class _VideoProgressBodyState extends State<VideoProgressBody> {
 
                         if (state is VideoRenderProgressUpdate ||
                             state is VideoRenderProgressInitial) {
-                          context.go(Routes.videoRenderStatusPage);
+                          context.push(Routes.videoRenderStatusPage);
                         }
                       },
                       child: Text("See Render Result",

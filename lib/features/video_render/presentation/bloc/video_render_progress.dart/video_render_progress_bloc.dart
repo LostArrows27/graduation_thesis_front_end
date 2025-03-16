@@ -30,6 +30,7 @@ class VideoRenderProgressBloc
 
   void _onFirstFetchVideoProgress(FirstFetchVideoProgress event,
       Emitter<VideoRenderProgressState> emit) async {
+    emit(VideoRenderProgressLoading());
     final res = await _videoRenderRepository.getVideoRenderStatus(
         videoRenderId: event.videoRenderId);
 

@@ -119,17 +119,16 @@ void _initVideoRender() {
     ..registerFactory(
         () => GetAllVideoChunk(videoRenderRepository: serviceLocator()))
     // bloc
-    ..registerLazySingleton(
+    ..registerFactory(
         () => VideoRenderSchemaBloc(getVideoSchema: serviceLocator()))
-    ..registerLazySingleton(
+    ..registerFactory(
         () => EditVideoSchemaBloc(editVideoSchema: serviceLocator()))
-    ..registerLazySingleton(
+    ..registerFactory(
         () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()))
     ..registerFactory(() => RenderStatusBloc(
         videoRenderRepository: serviceLocator(),
         getAllVideoRender: serviceLocator()))
-    ..registerLazySingleton(
-        () => VideoChunkBloc(getAllVideoChunk: serviceLocator()));
+    ..registerFactory(() => VideoChunkBloc(getAllVideoChunk: serviceLocator()));
 }
 
 void _initExplore() {

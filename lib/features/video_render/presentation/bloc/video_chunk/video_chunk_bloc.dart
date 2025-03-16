@@ -12,9 +12,7 @@ class VideoChunkBloc extends Bloc<VideoChunkEvent, VideoChunkState> {
   VideoChunkBloc({required GetAllVideoChunk getAllVideoChunk})
       : _getAllVideoChunk = getAllVideoChunk,
         super(VideoChunkInitial()) {
-    on<VideoChunkEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<VideoChunkEvent>((event, emit) {});
 
     on<GetAllChunk>(_getAllChunk);
   }

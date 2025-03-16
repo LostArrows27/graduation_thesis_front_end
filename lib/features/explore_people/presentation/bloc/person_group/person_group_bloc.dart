@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/change_person_group_name.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/get_people_group.dart';
@@ -84,15 +85,15 @@ class PersonGroupBloc extends Bloc<PersonGroupEvent, PersonGroupState> {
   ) async {
     emit(PersonGroupLoading());
     // NOTE: dev process
-    // final result = await _getPeopleGroup(NoParams());
-    // result.fold(
-    //   (failure) => emit(PersonGroupFailure(message: failure.message)),
-    //   (personGroups) {
-    //     emit(PersonGroupSuccess(personGroups: personGroups));
-    //   },
-    // );
+    final result = await _getPeopleGroup(NoParams());
+    result.fold(
+      (failure) => emit(PersonGroupFailure(message: failure.message)),
+      (personGroups) {
+        emit(PersonGroupSuccess(personGroups: personGroups));
+      },
+    );
 
-    emit(PersonGroupSuccess(personGroups: []));
+    // emit(PersonGroupSuccess(personGroups: []));
   }
 
   void _onPersonGroupSetSuccuess(

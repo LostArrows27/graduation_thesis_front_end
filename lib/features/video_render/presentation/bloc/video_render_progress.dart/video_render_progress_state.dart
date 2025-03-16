@@ -5,6 +5,8 @@ sealed class VideoRenderProgressState {}
 
 final class VideoRenderProgressInitial extends VideoRenderProgressState {}
 
+final class VideoRenderProgressLoading extends VideoRenderProgressState {}
+
 final class VideoRenderProgressUpdate extends VideoRenderProgressState {
   final int progress;
 
