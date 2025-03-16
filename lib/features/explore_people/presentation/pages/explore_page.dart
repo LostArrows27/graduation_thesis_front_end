@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_thesis_front_end/core/common/layout/home_body_layout.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/widgets/people_list.dart';

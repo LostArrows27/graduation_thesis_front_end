@@ -59,6 +59,14 @@ void _initAuth() {
         markUserDoneLabeling: serviceLocator(),
         photoBloc: serviceLocator(),
         photoViewModeCubit: serviceLocator(),
+        personGroupBloc: serviceLocator(),
+        albumListBloc: serviceLocator(),
+        searchHistoryListenBloc: serviceLocator(),
+        editCaptionBloc: serviceLocator(),
+        deleteImageCubit: serviceLocator(),
+        favoriteImageCubit: serviceLocator(),
+        deleteAlbumCubit: serviceLocator(),
+        changeAlbumNameCubit: serviceLocator(),
         appUserCubit: serviceLocator()));
 }
 
@@ -117,7 +125,7 @@ void _initVideoRender() {
         () => EditVideoSchemaBloc(editVideoSchema: serviceLocator()))
     ..registerLazySingleton(
         () => VideoRenderProgressBloc(videoRenderRepository: serviceLocator()))
-    ..registerLazySingleton(() => RenderStatusBloc(
+    ..registerFactory(() => RenderStatusBloc(
         videoRenderRepository: serviceLocator(),
         getAllVideoRender: serviceLocator()))
     ..registerLazySingleton(
@@ -196,7 +204,7 @@ void _initSearch() {
     // bloc
     ..registerFactory(
         () => SearchHistoryBloc(queryImageByText: serviceLocator()))
-    ..registerLazySingleton(() => SearchHistoryListenBloc(
+    ..registerFactory(() => SearchHistoryListenBloc(
         addSearchHistory: serviceLocator(),
         deleteSearchHistory: serviceLocator(),
         getAllSearchHistory: serviceLocator(),

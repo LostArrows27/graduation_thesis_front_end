@@ -9,6 +9,10 @@ class DeleteAlbumCubit extends Cubit<DeleteAlbumState> {
   final DeleteAlbum _deleteAlbum;
   final AlbumListBloc _albumListBloc;
 
+  clear() {
+    emit(DeleteAlbumInitial());
+  }
+
   DeleteAlbumCubit(
       {required DeleteAlbum deleteAlbum, required AlbumListBloc albumListBloc})
       : _deleteAlbum = deleteAlbum,

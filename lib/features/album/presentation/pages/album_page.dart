@@ -145,27 +145,46 @@ class _AlbumPageState extends State<AlbumPage> {
           },
           builder: (context, state) {
             if (state is AlbumListError) {
-              return Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Error happend. Pressed below button'),
-                      SizedBox(height: 20),
-                      FilledButton(
-                        onPressed: () {
-                          context.read<AlbumListBloc>().add(GetAllAlbumEvent());
-                        },
-                        child: Text('Retry'),
-                      ),
-                    ],
-                  ),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error happend. Pressed below button'),
+                    SizedBox(height: 20),
+                    FilledButton(
+                      onPressed: () {
+                        context.read<AlbumListBloc>().add(GetAllAlbumEvent());
+                      },
+                      child: Text('Retry'),
+                    ),
+                  ],
                 ),
               );
             }
 
             if (state is AlbumListLoading) {
               return Loader();
+            }
+
+            if ((state as AlbumListLoaded).albums.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No album found'),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 120,
+                      child: FilledButton(
+                        onPressed: () {
+                          context.read<AlbumListBloc>().add(GetAllAlbumEvent());
+                        },
+                        child: Text('Retry'),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
             return SingleChildScrollView(

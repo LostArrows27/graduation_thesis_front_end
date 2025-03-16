@@ -13,7 +13,7 @@ class Loader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const CircularProgressIndicator(),
-          (message != null) ? SizedBox(width: 10) : SizedBox(),
+          (message != null) ? SizedBox(height: 20) : SizedBox(),
           (message != null)
               ? Text(
                   message!,

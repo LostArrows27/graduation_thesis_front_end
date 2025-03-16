@@ -25,3 +25,5 @@ final class ChangeAlbumNameEvent extends AlbumListEvent {
 
   ChangeAlbumNameEvent({required this.albumId, required this.albumName});
 }
+
+final class AlbumListClear extends AlbumListEvent {}

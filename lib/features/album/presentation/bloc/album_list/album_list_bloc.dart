@@ -38,6 +38,10 @@ class AlbumListBloc extends Bloc<AlbumListEvent, AlbumListState> {
 
     on<ChangeAlbumNameEvent>(_changeAlbumNameEvent);
 
+    on<AlbumListClear>((event, emit) {
+      emit(AlbumListInitial());
+    });
+
     _photoSubscription = _photoBloc.stream.listen((photoState) {
       if (photoState is PhotoFetchSuccess) {
         add(ReloadAlbum());
@@ -50,8 +54,8 @@ class AlbumListBloc extends Bloc<AlbumListEvent, AlbumListState> {
     if (state is AlbumListLoaded) {
       final currentState = state as AlbumListLoaded;
 
-      final album = currentState.albums
-          .firstWhere((album) => album.id == event.albumId);
+      final album =
+          currentState.albums.firstWhere((album) => album.id == event.albumId);
 
       final newAlbum = album.copyWith(name: event.albumName);
 
@@ -106,16 +110,18 @@ class AlbumListBloc extends Bloc<AlbumListEvent, AlbumListState> {
 
     profilePhotos.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
-    Album profileAlbum = Album(
-        id: 'profile_picture_album_id',
-        ownerId: (_appUserCubit.state as AppUserLoggedIn).user.id,
-        createdAt: profilePhotos.last.createdAt!,
-        updatedAt: profilePhotos.first.updatedAt!,
-        imageList: profilePhotos,
-        imageIdList: profilePhotos.map((e) => e.imageUrl!).toList(),
-        name: 'Profile');
+    if (profilePhotos.isNotEmpty) {
+      Album profileAlbum = Album(
+          id: 'profile_picture_album_id',
+          ownerId: (_appUserCubit.state as AppUserLoggedIn).user.id,
+          createdAt: profilePhotos.last.createdAt!,
+          updatedAt: profilePhotos.first.updatedAt!,
+          imageList: profilePhotos,
+          imageIdList: profilePhotos.map((e) => e.imageUrl!).toList(),
+          name: 'Profile');
 
-    tempAlbums.add(profileAlbum);
+      tempAlbums.add(profileAlbum);
+    }
 
     // NOTE: add favorite album
     List<Photo> favoritePhotos =
@@ -170,16 +176,18 @@ class AlbumListBloc extends Bloc<AlbumListEvent, AlbumListState> {
 
           profilePhotos.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
-          Album profileAlbum = Album(
-              id: 'profile_picture_album_id',
-              ownerId: (_appUserCubit.state as AppUserLoggedIn).user.id,
-              createdAt: profilePhotos.last.createdAt!,
-              updatedAt: profilePhotos.first.updatedAt!,
-              imageList: profilePhotos,
-              imageIdList: profilePhotos.map((e) => e.imageUrl!).toList(),
-              name: 'Profile');
+          if (profilePhotos.isNotEmpty) {
+            Album profileAlbum = Album(
+                id: 'profile_picture_album_id',
+                ownerId: (_appUserCubit.state as AppUserLoggedIn).user.id,
+                createdAt: profilePhotos.last.createdAt!,
+                updatedAt: profilePhotos.first.updatedAt!,
+                imageList: profilePhotos,
+                imageIdList: profilePhotos.map((e) => e.imageUrl!).toList(),
+                name: 'Profile');
 
-          tempAlbums.add(profileAlbum);
+            tempAlbums.add(profileAlbum);
+          }
 
           // NOTE: add favorite album
           List<Photo> favoritePhotos =

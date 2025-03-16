@@ -42,6 +42,10 @@ class SearchHistoryListenBloc
     on<DeleteAllSearchHistoryEvent>(_onDeleteAllSearchHistory);
 
     on<AddSearchHistoryEvent>(_onAddSearchHistory);
+
+    on<SearchHistoryListenClear>((event, emit) {
+      emit(SearchHistoryListenInitial());
+    });
   }
 
   void _onFetchAllSearchHistory(

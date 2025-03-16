@@ -12,3 +12,5 @@ final class ChangeCaptionEvent extends EditCaptionEvent {
     required this.imageId,
   });
 }
+
+final class EditCaptionClear extends EditCaptionEvent {}

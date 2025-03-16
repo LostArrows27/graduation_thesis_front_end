@@ -6,6 +6,7 @@ import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/user.dart';
 import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
+import 'package:graduation_thesis_front_end/features/album/presentation/bloc/album_list/album_list_bloc.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/current_user.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/mark_user_done_labeling.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/update_user_avatar.dart';
@@ -15,8 +16,15 @@ import 'package:graduation_thesis_front_end/features/auth/domain/usecases/upload
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_login.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:graduation_thesis_front_end/features/auth/domain/usecases/user_sign_up.dart';
+import 'package:graduation_thesis_front_end/features/explore_people/presentation/bloc/person_group/person_group_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/change_album_name_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_album_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/delete_image_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/favorite_image_cubit.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/cubit/photo_view_mode_cubit.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/edit_caption/edit_caption_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/search/presentation/bloc/bloc/search_history_listen_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -35,6 +43,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final PhotoBloc _photoBloc;
   final PhotoViewModeCubit _photoViewModeCubit;
 
+  // bloc that need to clear
+  final PersonGroupBloc _personGroupBloc;
+  final AlbumListBloc _albumListBloc;
+  final SearchHistoryListenBloc _searchHistoryListenBloc;
+  final EditCaptionBloc _editCaptionBloc;
+  final DeleteImageCubit _deleteImageCubit;
+  final FavoriteImageCubit _favoriteImageCubit;
+  final DeleteAlbumCubit _deleteAlbumCubit;
+  final ChangeAlbumNameCubit _changeAlbumNameCubit;
+
   AuthBloc(
       {required UserSignup userSignup,
       required UserSignOut userSignOut,
@@ -47,6 +65,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required MarkUserDoneLabeling markUserDoneLabeling,
       required PhotoBloc photoBloc,
       required PhotoViewModeCubit photoViewModeCubit,
+      required PersonGroupBloc personGroupBloc,
+      required AlbumListBloc albumListBloc,
+      required SearchHistoryListenBloc searchHistoryListenBloc,
+      required EditCaptionBloc editCaptionBloc,
+      required DeleteImageCubit deleteImageCubit,
+      required FavoriteImageCubit favoriteImageCubit,
+      required DeleteAlbumCubit deleteAlbumCubit,
+      required ChangeAlbumNameCubit changeAlbumNameCubit,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignup,
         _userSignOut = userSignOut,
@@ -60,6 +86,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _markUserDoneLabeling = markUserDoneLabeling,
         _photoBloc = photoBloc,
         _photoViewModeCubit = photoViewModeCubit,
+        _personGroupBloc = personGroupBloc,
+        _albumListBloc = albumListBloc,
+        _searchHistoryListenBloc = searchHistoryListenBloc,
+        _editCaptionBloc = editCaptionBloc,
+        _deleteImageCubit = deleteImageCubit,
+        _favoriteImageCubit = favoriteImageCubit,
+        _deleteAlbumCubit = deleteAlbumCubit,
+        _changeAlbumNameCubit = changeAlbumNameCubit,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) {
       if (AuthEvent is! AuthUploadProfilePicture) {
@@ -107,6 +141,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _appUserCubit.updateUser(null);
     _photoBloc.add(PhotoClearEvent());
     _photoViewModeCubit.clearState();
+    _personGroupBloc.add(PersonGroupClear());
+    _albumListBloc.add(AlbumListClear());
+    _searchHistoryListenBloc.add(SearchHistoryListenClear());
+    _editCaptionBloc.add(EditCaptionClear());
+    _deleteImageCubit.clear();
+    _favoriteImageCubit.clear();
+    _deleteAlbumCubit.clear();
+    _changeAlbumNameCubit.clear();
 
     final res = await _userSignOut(NoParams());
 

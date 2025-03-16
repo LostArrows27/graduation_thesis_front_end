@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/loader.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_album_image.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/retry_fetch_image.dart';
 
 class GalleryYearViewMode extends StatelessWidget {
   const GalleryYearViewMode({super.key});
@@ -28,10 +30,18 @@ class GalleryYearViewMode extends StatelessWidget {
     return BlocBuilder<PhotoBloc, PhotoState>(
       key: PageStorageKey('yearViewMode'),
       builder: (context, state) {
+        if (state is PhotoFetchLoading) {
+          return Loader();
+        }
+
         if (state is! PhotoFetchSuccess) {
           return Center(
             child: Text('Something wrong happended !'),
           );
+        }
+
+        if (state.groupedByDate.isEmpty) {
+          return RetryFetchImage();
         }
 
         return CustomScrollView(

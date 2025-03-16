@@ -79,6 +79,43 @@ class _PlaceListState extends State<PlaceList> {
           ]);
         }
 
+        if (locationGroup.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 172,
+                    width: 172,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: LocationMapView(
+                        location: LatLng(21.037547, 105.784585)),
+                  )
+                ],
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Place',
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+              SizedBox(height: 3),
+              Text(
+                '${locationGroup.length}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Theme.of(context).colorScheme.outline,
+                ),
+              ),
+            ],
+          );
+        }
+
         locationGroup
             .sort((a, b) => b.photos.length.compareTo(a.photos.length));
 

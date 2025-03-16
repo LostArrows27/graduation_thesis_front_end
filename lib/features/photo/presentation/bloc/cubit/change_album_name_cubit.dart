@@ -9,6 +9,10 @@ class ChangeAlbumNameCubit extends Cubit<ChangeAlbumNameState> {
   final ChangeAlbumName _changeAlbumName;
   final AlbumListBloc _albumListBloc;
 
+  clear() {
+    emit(ChangeAlbumNameInitial());
+  }
+
   ChangeAlbumNameCubit({
     required ChangeAlbumName changeAlbumName,
     required AlbumListBloc albumListBloc,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/core/common/service/speech_recognition_service.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/failure.dart';
@@ -138,19 +139,32 @@ class SearchProviderBody extends StatefulWidget {
 }
 
 class _SearchProviderBodyState extends State<SearchProviderBody> {
+  late SearchHistoryListenBloc _searchHistoryListenBloc;
+  bool _mounted = true;
   bool _isListening = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _searchHistoryListenBloc = context.read<SearchHistoryListenBloc>();
+  }
 
   @override
   void initState() {
     super.initState();
-    final searchHistoryListenBloc = context.read<SearchHistoryListenBloc>();
-    searchHistoryListenBloc.add(ListenSearchHistoryChange());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_mounted && mounted) {
+        _searchHistoryListenBloc.add(FetchAllSearchHistory());
+        _searchHistoryListenBloc.add(ListenSearchHistoryChange());
+      }
+    });
   }
 
   @override
   void dispose() {
-    widget._searchController.dispose();
-    context.read<SearchHistoryListenBloc>().add(UnListenSearchHistoryChange());
+    _mounted = false;
+    _searchHistoryListenBloc.add(UnListenSearchHistoryChange());
     super.dispose();
   }
 
@@ -192,7 +206,7 @@ class _SearchProviderBodyState extends State<SearchProviderBody> {
                       WidgetStateProperty.all(Colors.transparent),
                   barLeading: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        context.pop();
                       },
                       child: Icon(Icons.arrow_back)),
                   barElevation: WidgetStateProperty.all(0),

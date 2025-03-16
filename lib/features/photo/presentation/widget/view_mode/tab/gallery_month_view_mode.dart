@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:graduation_thesis_front_end/core/common/entities/image.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/bloc/photo/photo_bloc.dart';
 import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/components/photo_month_view.dart';
+import 'package:graduation_thesis_front_end/features/photo/presentation/widget/view_mode/retry_fetch_image.dart';
 import 'package:intl/intl.dart';
 
 class GalleryMonthViewMode extends StatelessWidget {
@@ -18,6 +19,10 @@ class GalleryMonthViewMode extends StatelessWidget {
           return Center(
             child: Text('Something wrong happended !'),
           );
+        }
+
+        if (state.groupedByDate.isEmpty) {
+          return RetryFetchImage();
         }
 
         return CustomScrollView(

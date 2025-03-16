@@ -267,9 +267,16 @@ class ChooseImageAlbumModalBody extends StatelessWidget {
 
                                                           List<Album>
                                                               newAlbumList = [
-                                                            recentlyAlbum,
                                                             ...albumList
                                                           ];
+
+                                                          if (recentlyAlbum
+                                                              .imageList
+                                                              .isNotEmpty) {
+                                                            newAlbumList.insert(
+                                                                0,
+                                                                recentlyAlbum);
+                                                          }
 
                                                           return Expanded(
                                                             child: Padding(

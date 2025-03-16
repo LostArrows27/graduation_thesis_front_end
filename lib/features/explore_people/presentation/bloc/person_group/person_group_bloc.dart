@@ -34,6 +34,10 @@ class PersonGroupBloc extends Bloc<PersonGroupEvent, PersonGroupState> {
 
     on<ReloadPersonGroup>(_onReloadPersonGroup);
 
+    on<PersonGroupClear>((event, emit) {
+      emit(PersonGroupInitial());
+    });
+
     _photoSubscription = _photoBloc.stream.listen((photoState) {
       if (photoState is PhotoFetchSuccess) {
         add(ReloadPersonGroup());

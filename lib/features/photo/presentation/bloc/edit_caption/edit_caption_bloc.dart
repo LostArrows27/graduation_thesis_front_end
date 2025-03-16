@@ -19,6 +19,10 @@ class EditCaptionBloc extends Bloc<EditCaptionEvent, EditCaptionState> {
     on<EditCaptionEvent>((event, emit) {});
 
     on<ChangeCaptionEvent>(_onChangeCaption);
+
+    on<EditCaptionClear>((event, emit) {
+      emit(EditCaptionInitial());
+    });
   }
 
   void _onChangeCaption(

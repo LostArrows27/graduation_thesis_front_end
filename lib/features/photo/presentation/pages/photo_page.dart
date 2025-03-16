@@ -72,8 +72,8 @@ class _PhotoPageState extends State<PhotoPage> {
       if (state is PhotoFetchSuccess) {
         context.read<AlbumListBloc>().add(GetAllAlbumEvent());
       }
-    }, builder: (context, state) {
-      if (state is PhotoFetchLoading) {
+    }, builder: (context, photoState) {
+      if (photoState is PhotoFetchLoading) {
         return Scaffold(
           body: Center(
               child: CircularProgressIndicator(

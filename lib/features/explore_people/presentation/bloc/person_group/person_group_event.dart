@@ -23,3 +23,5 @@ final class ChangeGroupNameEvent extends PersonGroupEvent {
       required this.newName,
       required this.personGroups});
 }
+
+final class PersonGroupClear extends PersonGroupEvent {}

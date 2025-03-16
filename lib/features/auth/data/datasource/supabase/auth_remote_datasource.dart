@@ -142,6 +142,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .from('user_profile')
           .upload(imagePath, image);
 
+      await supabaseClient.from('image').insert({
+        'uploader_id': userModel.id,
+        'image_bucket_id': 'user_profile',
+        'image_name': imagePath,
+      });
+
       return supabaseClient.storage
           .from('user_profile')
           .getPublicUrl(imagePath);

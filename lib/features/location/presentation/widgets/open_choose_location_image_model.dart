@@ -216,10 +216,14 @@ class ChooseLocationImageBody extends StatelessWidget {
                                                           name: 'Recently');
 
                                                       List<Album> newAlbumList =
-                                                          [
-                                                        recentlyAlbum,
-                                                        ...albumList
-                                                      ];
+                                                          [...albumList];
+
+                                                      if (recentlyAlbum
+                                                          .imageList
+                                                          .isNotEmpty) {
+                                                        newAlbumList.insert(
+                                                            0, recentlyAlbum);
+                                                      }
 
                                                       return Expanded(
                                                         child: Padding(

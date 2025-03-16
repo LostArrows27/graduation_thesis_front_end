@@ -32,7 +32,7 @@ class VideoRenderPageLayout extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              context.go(Routes.photosPage);
+              Navigator.of(context).pop();
             },
           ),
           title: Text(
@@ -73,20 +73,41 @@ class RenderStatusList extends StatefulWidget {
 
 class _RenderStatusListState extends State<RenderStatusList> {
   List<VideoRender> videoRenderList = [];
+  bool _mounted = true;
+  late RenderStatusBloc _renderStatusBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _renderStatusBloc = context.read<RenderStatusBloc>();
+  }
 
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<RenderStatusBloc>().add(FetchAllRender());
-      context.read<RenderStatusBloc>().add(ListenRenderListChange());
+      if (_mounted && mounted) {
+        try {
+          _renderStatusBloc.add(FetchAllRender());
+          _renderStatusBloc.add(ListenRenderListChange());
+        } catch (e) {
+          print('Error adding event to bloc: $e');
+        }
+      }
     });
   }
 
   @override
   void dispose() {
-    context.read<RenderStatusBloc>().add(UnSubcribeToRenderListChannel());
+    _mounted = false;
+
+    try {
+      _renderStatusBloc.add(UnSubcribeToRenderListChannel());
+    } catch (e) {
+      print('Error unsubscribing from channel: $e');
+    }
+
     super.dispose();
   }
 
@@ -223,6 +244,12 @@ class _RenderStatusListState extends State<RenderStatusList> {
 
         if (state is FetchRenderFailure) {
           return _failedWidget();
+        }
+
+        if (videoRenderList.isEmpty) {
+          return Center(
+            child: Text("No video render found"),
+          );
         }
 
         return ListView.builder(

@@ -9,6 +9,10 @@ class FavoriteImageCubit extends Cubit<FavoriteImageState> {
   final PhotoBloc _photoBloc;
   final PhotoRepository _photoRepository;
 
+  clear() {
+    emit(FavoriteImageInitial());
+  }
+
   FavoriteImageCubit(
       {required PhotoBloc photoBloc, required PhotoRepository photoRepository})
       : _photoBloc = photoBloc,

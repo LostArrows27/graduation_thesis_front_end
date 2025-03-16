@@ -28,3 +28,5 @@ final class AddSearchHistoryEvent extends SearchHistoryListenEvent {
 
   AddSearchHistoryEvent({required this.content});
 }
+
+final class SearchHistoryListenClear extends SearchHistoryListenEvent {}

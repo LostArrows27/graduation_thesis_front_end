@@ -9,6 +9,10 @@ class DeleteImageCubit extends Cubit<DeleteImageCubitState> {
   final DeleteImage _deleteImage;
   final PhotoBloc _photoBloc;
 
+  clear() {
+    emit(DeleteImageCubitInitial());
+  }
+
   DeleteImageCubit(
       {required DeleteImage deleteImage, required PhotoBloc photoBloc})
       : _deleteImage = deleteImage,

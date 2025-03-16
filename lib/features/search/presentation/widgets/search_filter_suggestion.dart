@@ -107,65 +107,69 @@ class SearchFilterSuggestions {
               );
             },
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Times',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 15),
-                SizedBox(
-                  width: 280,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...randomTimeRange.map((timeRange) {
-                        final filterName = timeRange['filter'];
-                        final imageUrl = timeRange['url'];
-
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                searchBloc.add(
-                                    AddSearchHistoryEvent(content: filterName));
-                                provider.selectFilter(FilterOption(
-                                  type: FilterType.timeRange,
-                                  value: filterName,
-                                  categoryName: 'Time Range',
-                                  categoryIcon: Icons.calendar_today_outlined,
-                                ));
-                              },
-                              child: SizedBox(
-                                  width: 130,
-                                  height: 130,
-                                  child: CachedImage(
-                                      imageUrl: imageUrl ?? '',
-                                      borderRadius: 20)),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              filterName ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 13),
-                            ),
-                          ],
-                        );
-                      })
-                    ],
+          if (randomTimeRange.isNotEmpty &&
+              randomTimeRange.every((timeRange) =>
+                  timeRange['url'] != null &&
+                  (timeRange['url'] as String).isNotEmpty))
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Times',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
-                )
-              ],
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: 280,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...randomTimeRange.map((timeRange) {
+                          final filterName = timeRange['filter'];
+                          final imageUrl = timeRange['url'];
+
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  searchBloc.add(AddSearchHistoryEvent(
+                                      content: filterName));
+                                  provider.selectFilter(FilterOption(
+                                    type: FilterType.timeRange,
+                                    value: filterName,
+                                    categoryName: 'Time Range',
+                                    categoryIcon: Icons.calendar_today_outlined,
+                                  ));
+                                },
+                                child: SizedBox(
+                                    width: 130,
+                                    height: 130,
+                                    child: CachedImage(
+                                        imageUrl: imageUrl ?? '',
+                                        borderRadius: 20)),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                filterName ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 13),
+                              ),
+                            ],
+                          );
+                        })
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
           if (peopleList.isNotEmpty) SizedBox(height: 30),
           if (peopleList.isNotEmpty)
             Column(
@@ -219,61 +223,64 @@ class SearchFilterSuggestions {
               ],
             ),
           SizedBox(height: 30),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'Smart Tags',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: randomSmartTags.map((tag) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            searchBloc.add(AddSearchHistoryEvent(content: tag));
-                            controller.text = tag;
-                            controller.selection = TextSelection.collapsed(
-                                offset: controller.text.length);
-                            provider.selectFilter(FilterOption(
-                              type: FilterType.smartTag,
-                              value: tag,
-                              categoryName: 'Smart Tags',
-                              categoryIcon: Icons.tag,
-                            ));
-                          },
-                          child: Chip(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  color: getColorScheme(context).secondary,
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            deleteIcon: null,
-                            backgroundColor: getColorScheme(context).secondary,
-                            label: Text(
-                              tag,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+          if (randomSmartTags.isNotEmpty)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Smart Tags',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
                 ),
-              )
-            ],
-          ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: randomSmartTags.map((tag) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              searchBloc
+                                  .add(AddSearchHistoryEvent(content: tag));
+                              controller.text = tag;
+                              controller.selection = TextSelection.collapsed(
+                                  offset: controller.text.length);
+                              provider.selectFilter(FilterOption(
+                                type: FilterType.smartTag,
+                                value: tag,
+                                categoryName: 'Smart Tags',
+                                categoryIcon: Icons.tag,
+                              ));
+                            },
+                            child: Chip(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: getColorScheme(context).secondary,
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              deleteIcon: null,
+                              backgroundColor:
+                                  getColorScheme(context).secondary,
+                              label: Text(
+                                tag,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
         ],
       ),
     );
