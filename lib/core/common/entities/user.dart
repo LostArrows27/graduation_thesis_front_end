@@ -5,12 +5,14 @@ class User {
   final String email;
   final DateTime? dob;
   final String? avatarUrl;
+  final DateTime? createdAt;
   final List<String>? surveyAnswers;
   final bool isDoneLabelForm;
   User(
       {required this.id,
       required this.name,
       required this.email,
+      this.createdAt,
       this.dob,
       this.avatarUrl,
       this.surveyAnswers,

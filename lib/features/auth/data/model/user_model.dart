@@ -6,6 +6,7 @@ class UserModel extends User {
       required super.name,
       required super.email,
       super.dob,
+      super.createdAt,
       super.avatarUrl,
       super.isDoneLabelForm,
       super.surveyAnswers});
@@ -16,6 +17,8 @@ class UserModel extends User {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       dob: map['dob'] == null ? null : DateTime.parse(map['dob']),
+      createdAt:
+          map['created_at'] == null ? null : DateTime.parse(map['created_at']),
       avatarUrl: map['avatar_url'],
       isDoneLabelForm: map['is_done_label_form'] ?? false,
       surveyAnswers: map['survey_answers'] != null
@@ -33,6 +36,7 @@ class UserModel extends User {
       avatarUrl: user.avatarUrl,
       surveyAnswers: user.surveyAnswers,
       isDoneLabelForm: user.isDoneLabelForm,
+      createdAt: user.createdAt,
     );
   }
 
@@ -44,12 +48,14 @@ class UserModel extends User {
     String? avatarUrl,
     List<String>? surveyAnswers,
     bool? isDoneLabelForm,
+    DateTime? createdAt,
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       dob: dob ?? this.dob,
+      createdAt: createdAt ?? this.createdAt,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       surveyAnswers: surveyAnswers ?? this.surveyAnswers,
       isDoneLabelForm: isDoneLabelForm ?? this.isDoneLabelForm,

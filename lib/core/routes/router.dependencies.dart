@@ -18,6 +18,7 @@ import 'package:graduation_thesis_front_end/features/explore_people/presentation
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/image_location_group_map_page.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/presentation/pages/location_group.dart';
 import 'package:graduation_thesis_front_end/features/location/presentation/pages/pick_location_for_image_page.dart';
+import 'package:graduation_thesis_front_end/features/profile/presentation/page/profile_page.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/pages/fully_search_page.dart';
 import 'package:graduation_thesis_front_end/features/search/presentation/pages/search_page.dart';
 import 'package:graduation_thesis_front_end/core/routes/go_router_refresh_stream.dart';

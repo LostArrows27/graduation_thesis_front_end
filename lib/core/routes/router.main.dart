@@ -201,6 +201,11 @@ final routerConfig = GoRouter(
             initialPlacemark: initialPlacemark);
       },
     ),
+    // profile page
+    GoRoute(
+      path: Routes.profilePage,
+      builder: (context, state) => const ProfilePage(),
+    ),
     // test route
     GoRoute(
       path: Routes.photoViewDemo,

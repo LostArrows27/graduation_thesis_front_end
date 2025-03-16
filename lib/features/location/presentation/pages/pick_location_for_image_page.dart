@@ -76,13 +76,15 @@ class _PickLocationForImagePageBodyState
   void initState() {
     super.initState();
     _mapController = MapControllerWrapper(vsync: this);
-    _alignPositionOnUpdate = AlignOnUpdate.always;
+    _alignPositionOnUpdate = AlignOnUpdate.never;
     _alignPositionStreamController = StreamController<double?>();
     if (widget.initialPosition != null) {
       setState(() {
         _selectedPosition = widget.initialPosition;
         _placemark = widget.initialPlacemark;
       });
+    } else {
+      _alignPositionOnUpdate = AlignOnUpdate.always;
     }
   }
 

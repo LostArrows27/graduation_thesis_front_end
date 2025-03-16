@@ -43,6 +43,8 @@ class Routes {
   static const String imageLocationGroupMapPage =
       '/image-location-group-map-page';
 
+  static const String profilePage = '/profile-page';
+
   // test route
   static const String photoViewDemo = '/photo-view-demo';
   static const String photoSliderDemo = '/photo-slider-demo';
@@ -78,6 +80,7 @@ List<String> homeRouteList = [
 
   Routes.exploreLocationPage,
   Routes.imageLocationGroupMapPage,
+  Routes.profilePage,
 
   // test route
   Routes.photoViewDemo,

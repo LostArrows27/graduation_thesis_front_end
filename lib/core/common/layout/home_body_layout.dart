@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
-import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 
 class BodyLayout extends StatelessWidget {
   final Widget body;
@@ -39,12 +40,12 @@ class BodyLayout extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.notifications_outlined,
-                                size: 26,
-                                color: Theme.of(context).colorScheme.primary)),
-                        SizedBox(width: 4),
+                        // IconButton(
+                        //     onPressed: () {},
+                        //     icon: Icon(Icons.notifications_outlined,
+                        //         size: 26,
+                        //         color: Theme.of(context).colorScheme.primary)),
+                        // SizedBox(width: 4),
                         IconButton(
                             style: IconButton.styleFrom(
                               padding: EdgeInsets.all(4),
@@ -57,7 +58,7 @@ class BodyLayout extends StatelessWidget {
                                 width: 32,
                                 child: GestureDetector(
                                   onTap: () {
-                                    context.read<AuthBloc>().add(AuthSignOut());
+                                    context.push(Routes.profilePage);
                                   },
                                   child: CachedImage(
                                     imageUrl: state?.user.avatarUrl ?? '',
