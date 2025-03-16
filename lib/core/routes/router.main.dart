@@ -166,6 +166,22 @@ final routerConfig = GoRouter(
 
           return SmartTagViewerPage(type: type);
         }),
+    GoRoute(
+        path: Routes.exploreLocationPage,
+        builder: (context, state) {
+          final locationGroups = state.extra as List<LocationGroup>;
+
+          return ExploreLocationPage(locationGroups: locationGroups);
+        }),
+    GoRoute(
+        path: Routes.imageLocationGroupMapPage,
+        builder: (context, state) {
+          final object = state.extra as Map<String, dynamic>;
+          final title = object['title'] as String;
+          final photoList = object['photos'] as List<Photo>;
+
+          return ImageLocationGroupMapPage(photos: photoList, title: title);
+        }),
     // search page
     GoRoute(
       path: Routes.fullySearchPage,

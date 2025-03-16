@@ -52,8 +52,27 @@ class LocationService {
         : 'Unknown location';
   }
 
+  static String getCommonAddress(Placemark placemark) {
+    List<String> addressParts = [];
+
+    if (placemark.administrativeArea?.isNotEmpty ?? false) {
+      addressParts.add(placemark.administrativeArea!);
+    }
+    if (placemark.country?.isNotEmpty ?? false) {
+      addressParts.add(placemark.country!);
+    }
+
+    return addressParts.isNotEmpty
+        ? addressParts.join(', ')
+        : 'Unknown location';
+  }
+
   static String formatShortAddress(Placemark placemark) {
     List<String> addressParts = [];
+
+    if (placemark.street?.isNotEmpty ?? false) {
+      addressParts.add(placemark.street!);
+    }
 
     if (placemark.subAdministrativeArea?.isNotEmpty ?? false) {
       addressParts.add(placemark.subAdministrativeArea!);

@@ -39,6 +39,10 @@ class Routes {
 
   static const String pickImageLocationPage = '/pick-image-location-page';
 
+  static const String exploreLocationPage = '/explore-location-page';
+  static const String imageLocationGroupMapPage =
+      '/image-location-group-map-page';
+
   // test route
   static const String photoViewDemo = '/photo-view-demo';
   static const String photoSliderDemo = '/photo-slider-demo';
@@ -71,6 +75,9 @@ List<String> homeRouteList = [
   Routes.fullySearchPage,
 
   Routes.pickImageLocationPage,
+
+  Routes.exploreLocationPage,
+  Routes.imageLocationGroupMapPage,
 
   // test route
   Routes.photoViewDemo,

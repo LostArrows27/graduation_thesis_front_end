@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_thesis_front_end/core/usecase/usecase.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/entities/person_group.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/change_person_group_name.dart';
 import 'package:graduation_thesis_front_end/features/explore_people/domain/usecase/get_people_group.dart';

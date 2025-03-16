@@ -6,9 +6,13 @@ import 'package:latlong2/latlong.dart';
 class LocationMapView extends StatefulWidget {
   final String imageUrl;
   final LatLng location;
+  final bool interactive;
 
   const LocationMapView(
-      {super.key, required this.imageUrl, required this.location});
+      {super.key,
+      required this.imageUrl,
+      required this.location,
+      this.interactive = true});
 
   @override
   State<LocationMapView> createState() => _LocationMapViewState();
@@ -27,9 +31,9 @@ class _LocationMapViewState extends State<LocationMapView> {
         borderRadius: BorderRadius.circular(10),
         child: FlutterMap(
             options: MapOptions(
-              initialZoom: 13,
-              initialCenter: widget.location,
-            ),
+                initialZoom: 13,
+                initialCenter: widget.location,
+                onTap: widget.interactive ? null : (_, __) {}),
             children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',

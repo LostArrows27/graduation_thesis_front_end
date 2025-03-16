@@ -349,7 +349,45 @@ void showImageInformationBottomModal(
                                   )
                                 ],
                               )
-                            : Container(),
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 20),
+                                  Text(
+                                    'Location',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Add a location...',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color:
+                                              getColorScheme(context).outline,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            context.push(
+                                                Routes.pickImageLocationPage,
+                                                extra: {
+                                                  'photos': [photo],
+                                                });
+                                          },
+                                          iconSize: 20,
+                                          icon: Icon(Icons.edit)),
+                                    ],
+                                  )
+                                ],
+                              ),
                         faces.isNotEmpty
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.start,

@@ -1,9 +1,9 @@
 import 'dart:math';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/enum/app_enum.dart';
+import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/convert_string_to_song.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
@@ -169,15 +169,9 @@ class _EditVideoSchemaPageState extends State<EditVideoSchemaPage> {
                       SizedBox(
                         width: double.infinity,
                         height: 200,
-                        child: CachedNetworkImage(
+                        child: CachedImage(
                           imageUrl: widget.videoSchema.thumbnailUrl!,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest,
-                              child:
-                                  Center(child: CircularProgressIndicator())),
                         ),
                       ),
                       Positioned(
