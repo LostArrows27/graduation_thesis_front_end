@@ -50,7 +50,7 @@ class ConfirmDonePage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      context.go(Routes.albumsPage);
+                      context.go(Routes.photosPage);
                     },
                     child: Text("Continue",
                         style: TextStyle(

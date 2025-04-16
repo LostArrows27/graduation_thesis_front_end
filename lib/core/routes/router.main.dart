@@ -234,6 +234,10 @@ final routerConfig = GoRouter(
     final appUserCubit = BlocProvider.of<AppUserCubit>(context);
     final authState = appUserCubit.state;
 
+    if (state.fullPath == Routes.confirmDonePage) {
+      return null;
+    }
+
     if (authState is AppUserLoggedIn) {
       if (homeRouteList.contains(state.fullPath)) {
         return null;
@@ -257,11 +261,6 @@ final routerConfig = GoRouter(
 
     if (authState is AppUserWithMissingLabel) {
       return Routes.uploadImageLabelPage;
-    }
-
-    // check if user in confirming page (redirect after done labeling)
-    if (state.fullPath == Routes.confirmDonePage) {
-      return null;
     }
 
     // check current page

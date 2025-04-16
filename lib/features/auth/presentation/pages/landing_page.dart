@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/lottie_loader.dart';
+import 'package:graduation_thesis_front_end/core/keys/testing_key.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/theme/app_pallete.dart';
 import 'package:graduation_thesis_front_end/features/auth/presentation/bloc/auth_bloc.dart';
@@ -184,6 +185,7 @@ class StaticOverlay extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: OutlinedButton(
+                key: TestingKey.loginScreenButton,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white, width: 2),
@@ -216,6 +218,7 @@ class StaticOverlay extends StatelessWidget {
                 ),
               ),
               TextButton(
+                key: TestingKey.signUpScreenButton,
                 onPressed: () {
                   context.push(Routes.signUpPage);
                 },

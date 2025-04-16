@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_thesis_front_end/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:graduation_thesis_front_end/core/common/widgets/cached_image.dart';
 import 'package:graduation_thesis_front_end/core/utils/get_color_scheme.dart';
 import 'package:graduation_thesis_front_end/core/utils/group_image_by_location.dart';
@@ -26,9 +27,9 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: BlocBuilder<AuthBloc, AuthState>(
+          child: BlocBuilder<AppUserCubit, AppUserState>(
             builder: (context, state) {
-              if (state is! AuthSuccess) {
+              if (state is! AppUserLoggedIn) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );

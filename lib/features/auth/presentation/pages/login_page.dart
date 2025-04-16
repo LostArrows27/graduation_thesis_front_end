@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_thesis_front_end/core/keys/testing_key.dart';
 import 'package:graduation_thesis_front_end/core/routes/routes.dart';
 import 'package:graduation_thesis_front_end/core/utils/padding.dart';
 import 'package:graduation_thesis_front_end/core/utils/show_snackbar.dart';
@@ -71,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         children: [
                           AuthField(
+                              key: TestingKey.emailField,
                               hintText: "Email Address",
                               isEnabled: state is AuthLoading ? false : true,
                               validators: [
@@ -80,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 24),
                           AuthField(
                               hintText: "Password",
+                              key: TestingKey.passwordField,
                               isEnabled: state is AuthLoading ? false : true,
                               controller: _passwordController,
                               validators: [
@@ -104,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           SizedBox(height: 10),
                           FilledButton(
+                            key: TestingKey.loginButton,
                             onPressed: state is AuthLoading
                                 ? null
                                 : () {
